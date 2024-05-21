@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4n0vpir1kcup"]
+
+[ext_resource type="Script" path="res://addons/object_creator/InputScripts/default_input.gd" id="1_bd2hn"]
+
+[node name="DefaultInput" type="VBoxContainer"]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.2
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_bd2hn")
+
+[node name="InputContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PropertyName" type="Label" parent="InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="PropertyType" type="Label" parent="InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Input" type="LineEdit" parent="InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="WarningContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="WrongInputWarning" type="Label" parent="WarningContainer"]
+layout_mode = 2
+size_flags_horizontal = 3

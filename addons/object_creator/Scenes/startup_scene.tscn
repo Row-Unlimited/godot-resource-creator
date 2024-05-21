@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://8frg8yhp0w80"]
+
+[ext_resource type="Script" path="res://addons/object_creator/object_creator.gd" id="1_8x6gw"]
+[ext_resource type="Script" path="res://addons/object_creator/class_loader.gd" id="2_70apg"]
+
+[node name="StartupScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8x6gw")
+
+[node name="ClassLoader" type="Node" parent="."]
+script = ExtResource("2_70apg")

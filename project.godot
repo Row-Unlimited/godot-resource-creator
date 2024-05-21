@@ -11,9 +11,14 @@ config_version=5
 [application]
 
 config/name="Godot-object-creator"
-config/features=PackedStringArray("4.2", "Forward Plus")
+run/main_scene="res://addons/object_creator/Scenes/startup_scene.tscn"
+config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [dotnet]
 
 project/assembly_name="Godot-object-creator"
+
+[editor_plugins]
+
+enabled=PackedStringArray()
