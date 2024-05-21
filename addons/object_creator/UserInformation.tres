@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="UserInformation" load_steps=2 format=3 uid="uid://ddvfw5k524ibm"]
+
+[ext_resource type="Script" path="res://addons/object_creator/user_information.gd" id="1_myur8"]
+
+[resource]
+script = ExtResource("1_myur8")
+defaultExportPath = ""
+usedExportPaths = []
+usedClassPaths = []
+isIntegrated = false
+integratedClassPaths = []

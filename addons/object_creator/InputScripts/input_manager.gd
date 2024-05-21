@@ -1,0 +1,73 @@
+@tool
+class_name InputManager
+extends VBoxContainer
+
+var property: Dictionary
+var inputType: Variant.Type
+var nameLabel
+var typeLabel
+var inputNode
+var inputWarning
+
+func initialize_input(propertyDict: Dictionary):
+	property = propertyDict
+
+
+func attempt_submit() -> Variant:
+	var returnValue
+	return returnValue
+
+## takes an input that fits the input type and checks whether it fits the range criteria
+## not implemented yet
+func check_input_range(input: Variant) -> bool:
+	if typeof(input) != inputType:
+		return false
+	# TODO: add functionality that makes it possible to set custom ranges
+	match typeof(input):
+		TYPE_BOOL:
+			return true
+		TYPE_INT:
+			return true
+		TYPE_FLOAT:
+			return true
+		TYPE_STRING:
+			return true
+		TYPE_VECTOR2:
+			pass
+		TYPE_NODE_PATH:
+			pass
+		TYPE_CALLABLE:
+			pass
+		TYPE_DICTIONARY:
+			pass
+		TYPE_ARRAY:
+			pass
+	
+	return true
+
+func return_type_string(type: Variant.Type) -> String:
+	match typeof(type):
+		TYPE_BOOL:
+			return "bool"
+		TYPE_INT:
+			return "int"
+		TYPE_FLOAT:
+			return "float"
+		TYPE_STRING:
+			return "String"
+		TYPE_VECTOR2:
+			return "Vector"
+		TYPE_NODE_PATH:
+			return "Node Path"
+		TYPE_CALLABLE:
+			return "callable"
+		TYPE_DICTIONARY:
+			return "Dictionary"
+		TYPE_ARRAY:
+			return "Array"
+		_:
+			return "unsupported"
+
+
+func show_input_warning():
+	pass

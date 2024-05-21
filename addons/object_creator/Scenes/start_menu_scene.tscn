@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://dkmg23t8lqaly"]
+
+[node name="startup_scene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="path_menu" type="Control" parent="."]
+layout_mode = 1
+anchor_top = 0.4
+anchor_right = 1.0
+anchor_bottom = 0.8
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="used_path" type="Control" parent="path_menu"]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="used_path_button" type="OptionButton" parent="path_menu/used_path"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.7
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+item_count = 1
+selected = 0
+popup/item_0/text = ""
+popup/item_0/id = 0
+
+[node name="possible_path" type="Control" parent="path_menu"]
+layout_mode = 1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="possible_path_button" type="OptionButton" parent="path_menu/possible_path"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.7
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+item_count = 1
+selected = 0
+popup/item_0/text = ""
+popup/item_0/id = 0
