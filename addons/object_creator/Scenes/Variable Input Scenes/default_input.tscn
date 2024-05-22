@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://hd5073q6w1rl"]
+[gd_scene load_steps=3 format=3 uid="uid://hd5073q6w1rl"]
 
 [ext_resource type="Script" path="res://addons/object_creator/InputScripts/default_input.gd" id="1_t6dnr"]
+[ext_resource type="LabelSettings" uid="uid://c7ay5h8tbaidb" path="res://addons/object_creator/Assets/input_warning.tres" id="2_w0jf7"]
 
 [node name="DefaultInput" type="VBoxContainer"]
 anchors_preset = -1
@@ -14,15 +15,18 @@ script = ExtResource("1_t6dnr")
 [node name="InputContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 3
+alignment = 1
 
 [node name="PropertyName" type="Label" parent="InputContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 1
 size_flags_stretch_ratio = 2.0
 
 [node name="PropertyType" type="Label" parent="InputContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 1
 
 [node name="Input" type="LineEdit" parent="InputContainer"]
 layout_mode = 2
@@ -34,5 +38,8 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="WrongInputWarning" type="Label" parent="WarningContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
+text = "Please add a valid String for the specified Property before finishing creation"
+label_settings = ExtResource("2_w0jf7")

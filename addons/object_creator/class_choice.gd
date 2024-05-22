@@ -1,5 +1,6 @@
 @tool
 extends Control
+## UI Window that handles choosing which class to create an Object from
 
 var scrollContainer: ScrollContainer
 var flowContainer: GridContainer

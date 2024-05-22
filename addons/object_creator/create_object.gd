@@ -1,5 +1,7 @@
 @tool
 extends Control
+## UI Window which creates custom input boxes for each property of the chosen class
+## Checks if Inputs are correct by calling attempt_submit method in the InputManager objects
 
 var testInput = preload("res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn")
 var inputRootNode: VBoxContainer
@@ -60,6 +62,7 @@ func on_submit_pressed():
 		var inputValue = inputNode.attempt_submit()
 		if inputValue != null:
 			tempObject.set(inputNode.property["name"], inputValue)
+			inputNode.hide_input_warning()
 		else:
 			missingInputNodes.append(inputNode)
 	

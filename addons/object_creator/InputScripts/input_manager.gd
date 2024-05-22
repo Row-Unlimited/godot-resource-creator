@@ -1,6 +1,8 @@
 @tool
 class_name InputManager
 extends VBoxContainer
+## Parent Class of all Input Scenes
+## Should be an abstract class
 
 var property: Dictionary
 var inputType: Variant.Type
@@ -46,7 +48,7 @@ func check_input_range(input: Variant) -> bool:
 	return true
 
 func return_type_string(type: Variant.Type) -> String:
-	match typeof(type):
+	match type:
 		TYPE_BOOL:
 			return "bool"
 		TYPE_INT:
@@ -70,4 +72,8 @@ func return_type_string(type: Variant.Type) -> String:
 
 
 func show_input_warning():
+	inputWarning.visible = true
 	pass
+
+func hide_input_warning():
+	inputWarning.visible = false
