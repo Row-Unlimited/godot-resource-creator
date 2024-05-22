@@ -1,5 +1,6 @@
 @tool
 extends InputManager
+## default input box used for int/String/float
 
 func initialize_input(propertyDict: Dictionary):
 	property = propertyDict
@@ -26,13 +27,10 @@ func attempt_submit() -> Variant:
 		Variant.Type.TYPE_NODE_PATH:
 			pass
 	
-	if not check_input_range(returnValue) or returnValue == null:
+	if check_input_range(returnValue) or returnValue == null:
 		returnValue = null
 		show_input_warning()
 	return returnValue
-
-func show_input_warning():
-	pass
 
 func style_input():
 	nameLabel.text = property["name"]

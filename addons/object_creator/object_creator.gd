@@ -1,17 +1,28 @@
 @tool
 extends Node
+## Main plugin class, creates and manages UI Windows and oversees process of object creation
 
 var classLoader
-var userInformation = preload("res://addons/object_creator/UserInformation.tres")
+var pluginConfig = preload("res://addons/object_creator/PluginConfig.tres")
 var classChoiceScreen = preload("res://addons/object_creator/Scenes/class_choice.tscn")
 var createObjectScreen = preload("res://addons/object_creator/Scenes/create_object.tscn")
+var pathChoiceScreen = preload("res://addons/object_creator/Scenes/path_choice.tscn")
+var navigator = preload("res://addons/object_creator/Scenes/navigator.tscn")
+var currentWindow: Control
+
 var isClassChoiceNeeded = true;
 var possibleClassObjects: Array
 var objectClass = null
 
-var finalObject
+var useResourceFormat = false
 
-var currentWindow: Control
+var finalObject
+var path: String
+
+var externalCreationHandler: Object = null
+var externalHandlingMethodName: String = ""
+
+signal creation_finished(object, path: String, exportAsResource: bool)
 
 func _ready():
 	classLoader = $ClassLoader
@@ -45,12 +56,18 @@ func check_creation_status():
 	else:
 		call_create_object_window()
 
+## wraps up the object creation process.
+## per default it just exports the object and is done, but this can be modified for integration
+func finish_creation_process():
+	emit_signal("creation_finished", finalObject, path, useResourceFormat)
+	Exporter.new(path, [finalObject], false)
+
 ## takes an array of class objects and initiates the class choice window
 func call_class_choice_window(classes: Array):
 	var classObjects: Array
 	var classObject
 	for cObject in classes:
-		classObject = userInformation.contains(cObject)
+		classObject = pluginConfig.contains(cObject)
 		if classObject == null:
 			classObjects.append(cObject)
 			
@@ -62,10 +79,17 @@ func call_class_choice_window(classes: Array):
 func call_create_object_window():
 	open_new_window(createObjectScreen.instantiate())
 	currentWindow.initialize_UI(objectClass)
-	currentWindow.connect("object_created", Callable(self, "on_object_created"))
+	if pluginConfig.setExportPath.is_empty():
+		currentWindow.connect("object_created", Callable(self, "on_object_created_default"))
+	else:
+			currentWindow.connect("object_created", Callable(self, "on_object_created_integrated_path"))
+			if externalCreationHandler != null:
+				currentWindow.connect("object_created", Callable(externalCreationHandler, externalHandlingMethodName))
 
-func call_path_choice_window():
-	pass
+func set_external_creation_handler(object: Object, methodName: String):
+	if object != null and not methodName.is_empty():
+		externalCreationHandler = object
+		externalHandlingMethodName = methodName
 
 func open_new_window(windowRoot: Control):
 	if currentWindow != null:
@@ -78,10 +102,16 @@ func on_class_chosen(cObject):
 	objectClass = cObject
 	call_create_object_window()
 
-func on_object_created(object):
+func on_object_created_default(object):
 	finalObject = object
-	if userInformation.isIntegrated:
-		pass
-	else:
-		call_path_choice_window()
-	pass
+	open_new_window(pathChoiceScreen.instantiate())
+	currentWindow.initialize_UI(pluginConfig)
+	currentWindow.connect("path_chosen", Callable(self, "on_path_chosen"))
+
+func on_object_created_integrated_path(object):
+	path = pluginConfig.setExportPath
+	finish_creation_process()
+
+func on_path_chosen(pathString: String):
+	path = pathString
+	finish_creation_process()
