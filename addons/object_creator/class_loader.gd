@@ -1,19 +1,20 @@
 @tool
 class_name ClassLoader
 extends Node
+## searches through project structure (excluding .git/.godot) and fetches all custom classes that can be created
 
-const userInformationPath = "res://addons/object_creator/UserInformation.tres"
-var userInformation = preload(userInformationPath)
+const pluginConfigPath = "res://addons/object_creator/PluginConfig.tres"
+var pluginConfig = preload(pluginConfigPath)
 
 func check_for_integration() -> bool:
-	if userInformation.isIntegrated:
+	if pluginConfig.isIntegrated:
 		return true
 	else:
 		return false
 
 func return_integrated_classes() -> Array:
 	var ClassArray = []
-	for path in userInformation.integratedClassPaths:
+	for path in pluginConfig.integratedClassPaths:
 		ClassArray.append(ClassObject.new(path, return_file_name_from_path(path)))
 	
 	return ClassArray
@@ -64,3 +65,4 @@ func return_file_name_from_path(path: String) -> String:
 	
 	returnString = returnString.reverse()
 	return returnString
+
