@@ -10,6 +10,8 @@ var inputNodes: Array
 var classObject: ClassObject
 var propertyList: Array
 
+var skippedProperties =["resource_local_to_scene", "resource_path", "resource_name"]
+
 signal object_created(object)
 
 func initialize_UI(cObject: ClassObject):
@@ -22,7 +24,7 @@ func initialize_UI(cObject: ClassObject):
 	for property: Dictionary in propertyList:
 		print(property["name"] + " " + str(property["type"]))
 		var newInputPath = determine_input_type(property)
-		if newInputPath != "":
+		if newInputPath != "" and not skippedProperties.has(property["name"]):
 			var newInput = load(newInputPath).instantiate()
 			inputRootNode.add_child(newInput)
 			newInput.initialize_input(property)
