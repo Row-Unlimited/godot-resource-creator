@@ -1,5 +1,5 @@
 class_name TestScript
-extends Object
+extends Resource
 
-var test: int
-var test2: String
+@export var test: int
+@export var test2: String
