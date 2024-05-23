@@ -60,7 +60,7 @@ func check_creation_status():
 ## per default it just exports the object and is done, but this can be modified for integration
 func finish_creation_process():
 	emit_signal("creation_finished", finalObject, path, useResourceFormat)
-	Exporter.new(path, [finalObject], false)
+	Exporter.new(path, [finalObject])
 
 ## takes an array of class objects and initiates the class choice window
 func call_class_choice_window(classes: Array):

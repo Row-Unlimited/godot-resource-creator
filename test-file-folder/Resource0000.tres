@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="TestScript" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/gd-scripts/test_script.gd" id="1_o3wud"]
+
+[resource]
+script = ExtResource("1_o3wud")
+test = 2
+test2 = "dasfda"
