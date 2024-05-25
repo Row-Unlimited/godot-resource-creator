@@ -58,7 +58,17 @@ func return_type_string(type: Variant.Type) -> String:
 		TYPE_STRING:
 			return "String"
 		TYPE_VECTOR2:
-			return "Vector"
+			return "Vector2"
+		TYPE_VECTOR2I:
+			return "Vector2i"
+		TYPE_VECTOR3:
+			return "Vector3"
+		TYPE_VECTOR3I:
+			return "Vector3i"
+		TYPE_VECTOR4:
+			return "Vector4"
+		TYPE_VECTOR4I:
+			return "Vector4i"
 		TYPE_NODE_PATH:
 			return "Node Path"
 		TYPE_CALLABLE:

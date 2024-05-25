@@ -26,13 +26,12 @@ signal creation_finished(object, path: String, exportAsResource: bool)
 
 func _ready():
 	classLoader = $ClassLoader
-	check_creation_status()
 
 ## checks the status of the plugin
 ## if the plugin is integrated it will directly only include named classes
 ## if not it will search through the entire project structure for classes
 ## if there is one single possible class it calls the creation screen else it calls the class choice window
-func check_creation_status():
+func start_creation_process():
 	if classLoader.check_for_integration():
 		var classes: Array = classLoader.return_integrated_classes()
 		match classes.size():
@@ -61,6 +60,8 @@ func check_creation_status():
 func finish_creation_process():
 	emit_signal("creation_finished", finalObject, path, useResourceFormat)
 	Exporter.new(path, [finalObject])
+	reset_process()
+	
 
 ## takes an array of class objects and initiates the class choice window
 func call_class_choice_window(classes: Array):
@@ -97,6 +98,13 @@ func open_new_window(windowRoot: Control):
 	currentWindow = windowRoot
 	add_child(windowRoot)
 
+func reset_process():
+	if currentWindow != null:
+		remove_child(currentWindow)
+		currentWindow = null
+	start_creation_process()
+	finalObject = null
+	
 
 func on_class_chosen(cObject):
 	objectClass = cObject

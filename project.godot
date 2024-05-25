@@ -21,4 +21,4 @@ project/assembly_name="Godot-object-creator"
 
 [editor_plugins]
 
-enabled=PackedStringArray()
+enabled=PackedStringArray("res://addons/object_creator/plugin.cfg")
