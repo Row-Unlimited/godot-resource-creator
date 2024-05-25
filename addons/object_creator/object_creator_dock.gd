@@ -5,7 +5,8 @@ var dock
 
 func _enter_tree():
 	dock = preload(scenePath).instantiate()
-	add_child(dock)
+	add_control_to_dock(DOCK_SLOT_LEFT_UL, dock)
+	dock.start_creation_process()
 
 
 func _exit_tree():

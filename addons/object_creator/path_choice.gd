@@ -32,6 +32,7 @@ func on_export_pressed():
 		if inputNew.text.is_empty():
 			warningLabel.text = "You have not chosen a path please try again"
 			warningLabel.visible = true
+			return
 		else:
 			pathString = inputNew.text
 	
