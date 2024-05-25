@@ -35,4 +35,3 @@ func attempt_submit() -> Variant:
 func style_input():
 	nameLabel.text = property["name"]
 	typeLabel.text = return_type_string(property["type"])
-	

@@ -14,9 +14,9 @@ script = ExtResource("1_ibp1o")
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.1
+anchor_left = 0.05
 anchor_top = 0.3
-anchor_right = 0.9
+anchor_right = 0.95
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2

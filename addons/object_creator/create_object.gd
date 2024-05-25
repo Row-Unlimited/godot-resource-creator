@@ -22,7 +22,6 @@ func initialize_UI(cObject: ClassObject):
 	submitButton.connect("pressed", Callable(self, "on_submit_pressed"))
 	
 	for property: Dictionary in propertyList:
-		print(property["name"] + " " + str(property["type"]))
 		var newInputPath = determine_input_type(property)
 		if newInputPath != "" and not skippedProperties.has(property["name"]):
 			var newInput = load(newInputPath).instantiate()
@@ -41,8 +40,6 @@ func determine_input_type(property: Dictionary) -> String:
 			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"
 		TYPE_STRING:
 			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"
-		TYPE_VECTOR2:
-			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
 		TYPE_NODE_PATH:
 			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"
 		TYPE_CALLABLE:
@@ -51,6 +48,18 @@ func determine_input_type(property: Dictionary) -> String:
 			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/dictionary_input.tscn"
 		TYPE_ARRAY:
 			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/array_input.tscn"
+		TYPE_VECTOR2:
+			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
+		TYPE_VECTOR2I:
+			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
+		TYPE_VECTOR3:
+			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
+		TYPE_VECTOR3I:
+			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
+		TYPE_VECTOR4:
+			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
+		TYPE_VECTOR4I:
+			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
 		_:
 			sceneString = ""
 	return sceneString

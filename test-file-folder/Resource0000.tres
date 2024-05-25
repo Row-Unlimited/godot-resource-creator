@@ -1,8 +1,10 @@
-[gd_resource type="Resource" script_class="TestScript" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="TestScript" load_steps=2 format=3 uid="uid://dxo5suw51jgqp"]
 
-[ext_resource type="Script" path="res://scripts/gd-scripts/test_script.gd" id="1_o3wud"]
+[ext_resource type="Script" path="res://scripts/gd-scripts/test_script.gd" id="1_ogd54"]
 
 [resource]
-script = ExtResource("1_o3wud")
-test = 2
-test2 = "dasfda"
+script = ExtResource("1_ogd54")
+test = 4
+test2 = "asdfadsf"
+test3 = true
+testVector = Vector3(1, 2, 3)
