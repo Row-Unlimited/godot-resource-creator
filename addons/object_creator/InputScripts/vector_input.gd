@@ -4,6 +4,15 @@ extends InputManager
 
 var isInt: bool
 
+
+func set_up_nodes():
+	typeLabel = get_node("InputContainer/PropertyType")
+	nameLabel = get_node("InputContainer/PropertyName")
+	inputNode = get_node("InputContainer/Input")
+	inputWarning = get_node("WarningContainer/WrongInputWarning")
+	typeLabel.text = return_type_string(inputType)
+	inputNode.create_vector_UI(inputType)
+
 func initialize_input(propertyDict: Dictionary):
 	property = propertyDict
 	typeLabel = get_node("InputContainer/PropertyType")

@@ -80,7 +80,6 @@ func return_type_string(type: Variant.Type) -> String:
 		_:
 			return "unsupported"
 
-
 func show_input_warning():
 	inputWarning.visible = true
 	pass
