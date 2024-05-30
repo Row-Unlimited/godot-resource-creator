@@ -5,3 +5,4 @@ extends Resource
 @export var test2: String
 @export var test3: bool
 @export var testVector: Vector3
+@export var testArray: Array
