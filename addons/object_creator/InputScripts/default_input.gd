@@ -2,12 +2,17 @@
 extends InputManager
 ## default input box used for int/String/float
 
-func initialize_input(propertyDict: Dictionary):
-	property = propertyDict
+func set_up_nodes():
 	typeLabel = get_node("InputContainer/PropertyType")
 	nameLabel = get_node("InputContainer/PropertyName")
 	inputNode = get_node("InputContainer/Input")
 	inputWarning = get_node("WarningContainer/WrongInputWarning")
+	typeLabel.text = return_type_string(inputType)
+
+
+func initialize_input(propertyDict: Dictionary):
+	property = propertyDict
+	set_up_nodes()
 	
 	style_input()
 
