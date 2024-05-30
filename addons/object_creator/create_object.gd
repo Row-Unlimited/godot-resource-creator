@@ -54,7 +54,8 @@ func determine_input_type(property: Dictionary) -> String:
 		_:
 			if vectorTypes.has(property["type"]):
 				sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
-			sceneString = ""
+			else:
+				sceneString = ""
 	return sceneString
 
 

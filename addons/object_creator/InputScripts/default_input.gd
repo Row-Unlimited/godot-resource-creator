@@ -2,6 +2,8 @@
 extends InputManager
 ## default input box used for int/String/float
 
+
+
 func set_up_nodes():
 	typeLabel = get_node("InputContainer/PropertyType")
 	nameLabel = get_node("InputContainer/PropertyName")
@@ -13,7 +15,6 @@ func set_up_nodes():
 func initialize_input(propertyDict: Dictionary):
 	property = propertyDict
 	set_up_nodes()
-	
 	style_input()
 
 func attempt_submit() -> Variant:
