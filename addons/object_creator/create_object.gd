@@ -4,6 +4,7 @@ extends Control
 ## Checks if Inputs are correct by calling attempt_submit method in the InputManager objects
 
 var testInput = preload("res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn")
+var breakLine = preload("res://addons/object_creator/Scenes/break_line.tscn")
 var inputRootNode: VBoxContainer
 var submitButton: Button
 var inputNodes: Array
@@ -25,11 +26,13 @@ func initialize_UI(cObject: ClassObject):
 		var newInputPath = determine_input_type(property)
 		if newInputPath != "" and not skippedProperties.has(property["name"]):
 			var newInput = load(newInputPath).instantiate()
+			inputRootNode.add_child(breakLine.instantiate())
 			inputRootNode.add_child(newInput)
 			newInput.initialize_input(property)
 			inputNodes.append(newInput)
 
 func determine_input_type(property: Dictionary) -> String:
+	var vectorTypes = [TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I, TYPE_VECTOR4, TYPE_VECTOR4I]
 	var sceneString: String
 	match property["type"]:
 		TYPE_BOOL:
@@ -48,19 +51,9 @@ func determine_input_type(property: Dictionary) -> String:
 			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/dictionary_input.tscn"
 		TYPE_ARRAY:
 			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/array_input.tscn"
-		TYPE_VECTOR2:
-			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
-		TYPE_VECTOR2I:
-			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
-		TYPE_VECTOR3:
-			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
-		TYPE_VECTOR3I:
-			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
-		TYPE_VECTOR4:
-			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
-		TYPE_VECTOR4I:
-			sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
 		_:
+			if vectorTypes.has(property["type"]):
+				sceneString = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
 			sceneString = ""
 	return sceneString
 
@@ -77,9 +70,9 @@ func on_submit_pressed():
 		else:
 			missingInputNodes.append(inputNode)
 	
-	if not missingInputNodes.is_empty():
+	if missingInputNodes.is_empty():
+		emit_signal("object_created", tempObject)
+	else:
 		for inputManager: InputManager in missingInputNodes:
 			inputManager.show_input_warning()
 		return
-	else:
-		emit_signal("object_created", tempObject)

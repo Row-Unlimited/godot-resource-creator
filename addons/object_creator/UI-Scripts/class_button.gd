@@ -11,4 +11,3 @@ signal class_chosen(cObject: ClassObject)
 
 func _pressed():
 	emit_signal("class_chosen", classObject)
-	pass
