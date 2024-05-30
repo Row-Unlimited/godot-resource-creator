@@ -19,6 +19,7 @@ func return_integrated_classes() -> Array:
 	
 	return ClassArray
 
+
 func return_possible_classes() -> Array:
 	var classArray = []
 	var startPath = "res://"
@@ -34,6 +35,7 @@ func return_possible_classes() -> Array:
 	classArray = tempClasses
 	
 	return classArray
+
 
 ## recursive function that searches from the given directory for all files that end with fileType
 func search_filetypes_in_directory(fileType: String, directory: String) -> Array:
@@ -65,4 +67,3 @@ func return_file_name_from_path(path: String) -> String:
 	
 	returnString = returnString.reverse()
 	return returnString
-

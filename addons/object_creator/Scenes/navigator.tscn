@@ -4,7 +4,7 @@
 
 [node name="Navigator" type="Control"]
 layout_mode = 3
-anchor_left = 0.8
+anchor_left = 0.7
 anchor_top = 0.8
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -21,7 +21,15 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.141176, 0, 0, 1)
 
-[node name="Label" type="Label" parent="ColorRect"]
+[node name="UIControl" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UIControl"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -31,7 +39,7 @@ anchor_bottom = 0.05
 grow_horizontal = 2
 text = "Navigator"
 
-[node name="ButtonBox" type="VBoxContainer" parent="."]
+[node name="ButtonBox" type="VBoxContainer" parent="UIControl"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.05
@@ -42,15 +50,15 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="BackButton" type="Button" parent="ButtonBox"]
+[node name="BackButton" type="Button" parent="UIControl/ButtonBox"]
 layout_mode = 2
 text = "Back"
 
-[node name="ResetButton" type="Button" parent="ButtonBox"]
+[node name="ResetButton" type="Button" parent="UIControl/ButtonBox"]
 layout_mode = 2
-text = "Reset Process"
+text = "Reset"
 
-[node name="ConfirmationBox" type="VBoxContainer" parent="."]
+[node name="ConfirmationBox" type="VBoxContainer" parent="UIControl"]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -62,10 +70,10 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="ConfirmButton" type="Button" parent="ConfirmationBox"]
+[node name="ConfirmButton" type="Button" parent="UIControl/ConfirmationBox"]
 layout_mode = 2
 text = "Confirm"
 
-[node name="CancelButton" type="Button" parent="ConfirmationBox"]
+[node name="CancelButton" type="Button" parent="UIControl/ConfirmationBox"]
 layout_mode = 2
 text = "Cancel"
