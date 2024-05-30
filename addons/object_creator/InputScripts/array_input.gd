@@ -17,17 +17,16 @@ var inputManagers: Array
 const VECTOR_TYPES = [TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I, TYPE_VECTOR4, TYPE_VECTOR4I]
 
 func set_up_nodes():
-	typeLabel = get_node("InputContainer/PropertyType")
-	nameLabel = get_node("InputContainer/PropertyName")
-	inputNode = get_node("InputContainer/Input")
-	inputWarning = get_node("WarningContainer/WrongInputWarning")
+	typeLabel = get_node("AddElementSection/PropertyType")
+	nameLabel = get_node("AddElementSection/PropertyName")
+	inputWarning = get_node("Warning")
 	addElementButton = get_node("AddElementSection/AddElementButton")
 	elementTypeButton = get_node("AddElementSection/ElementTypeButton")
-	typeLabel.text = return_type_string(inputType)
 
 func initialize_input(propertyDict: Dictionary):
 	property = propertyDict
 	set_up_nodes()
+	nameLabel.text = propertyDict["name"]
 
 func _on_add_element_pressed():
 	var isVector = false
