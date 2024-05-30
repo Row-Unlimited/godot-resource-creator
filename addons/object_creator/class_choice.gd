@@ -23,7 +23,7 @@ func create_class_buttons(classObjects: Array):
 		if check_class_requirements(object):
 			var newButton = buttonScene.instantiate()
 			newButton.classObject = object
-			newButton.connect("class_chosen", Callable(get_parent(), "on_class_chosen"))
+			newButton.connect("class_chosen", Callable(get_parent().get_parent(), "on_class_chosen"))
 			flowContainer.add_child(newButton)
 
 func check_class_requirements(object: ClassObject) -> bool:
