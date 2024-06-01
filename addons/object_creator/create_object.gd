@@ -72,8 +72,11 @@ func on_submit_pressed():
 			missingInputNodes.append(inputNode)
 	
 	if missingInputNodes.is_empty():
+		print("yippie")
 		emit_signal("object_created", tempObject)
 	else:
+		print("oooh noooo")
 		for inputManager: InputManager in missingInputNodes:
+			print(inputManager.return_type_string(inputManager.inputType))
 			inputManager.show_input_warning()
 		return

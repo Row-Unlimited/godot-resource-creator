@@ -65,17 +65,17 @@ func _on_type_button_selected(index):
 	selectedType = elementTypeButton.return_type_by_index(index)
 
 func attempt_submit() -> Variant:
-	var missingInputNodes: Array
+	var missingInputNodes = []
 	var returnArray = []
 	for inputManager: InputManager in inputManagers:
-		var inputValue = inputNode.attempt_submit()
+		var inputValue = inputManager.attempt_submit()
 		if inputValue != null:
-			inputNode.hide_input_warning()
+			inputManager.hide_input_warning()
 			returnArray.append(inputValue)
 		else:
-			missingInputNodes.append(inputNode)
+			missingInputNodes.append(inputManager)
 	
-	if missingInputNodes.is_empty():
+	if not missingInputNodes.is_empty():
 		for inputManager: InputManager in missingInputNodes:
 			inputManager.show_input_warning()
 		return null
