@@ -49,11 +49,10 @@ func search_filetypes_in_directory(fileType: String, directory: String) -> Array
 			filePathArray.append(directory + "/" + path)
 	
 	for path in directoryPaths:
-		if not (path.contains(".git") or path.contains(".godot")):
+		if not Helper.check_string_contains_array(pluginConfig.ignoredDirectories, path):
 			filePathArray.append_array(search_filetypes_in_directory(fileType, directory + "/" + path))
 	
 	return filePathArray
-
 
 func return_file_name_from_path(path: String) -> String:
 	var returnString = path.reverse()
