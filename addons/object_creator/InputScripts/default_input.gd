@@ -13,14 +13,14 @@ func set_up_nodes():
 
 
 func initialize_input(propertyDict: Dictionary):
-	property = propertyDict
 	set_up_nodes()
+	set_property_information(propertyDict)
 	style_input()
 
 func attempt_submit() -> Variant:
 	var returnValue = null
 	var tempValue: String = inputNode.text
-	match property["type"]:
+	match inputType:
 		Variant.Type.TYPE_INT:
 			if tempValue.is_valid_int():
 				returnValue = tempValue.to_int()
@@ -33,7 +33,7 @@ func attempt_submit() -> Variant:
 		Variant.Type.TYPE_NODE_PATH:
 			pass
 	
-	if check_input_range(returnValue) or returnValue == null:
+	if not check_input_range(returnValue) or returnValue == null:
 		returnValue = null
 		show_input_warning()
 	return returnValue
