@@ -1,6 +1,6 @@
 @tool
 class_name ClassObject
-extends Object
+extends Resource
 
 var timesUsed: int = 0 ## how often this class was created, is used to sort the classes in the choice window
 var className: String

@@ -80,6 +80,12 @@ func return_type_string(type: Variant.Type) -> String:
 		_:
 			return "unsupported"
 
+## sets the labels and vars for a given property, is used in non array inputs
+func set_property_information(property: Dictionary):
+	self.property = property
+	nameLabel.text = property["name"]
+	inputType = property["type"]
+
 func show_input_warning():
 	inputWarning.visible = true
 	pass
