@@ -41,7 +41,8 @@ func _ready():
 func start_creation_process():
 	if isDefaultCallableActive:
 		navigatorCallable = Callable(self, "handle_navigator")
-	navigator.connect("navigator_pressed", navigatorCallable)
+	if not navigator.is_connected("navigator_pressed", navigatorCallable):
+		navigator.connect("navigator_pressed", navigatorCallable)
 	if classLoader.check_for_integration():
 		var classes: Array = classLoader.return_integrated_classes()
 		match classes.size():
