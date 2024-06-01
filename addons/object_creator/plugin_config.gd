@@ -8,10 +8,11 @@ extends Resource
 @export var classObjects: Array
 @export var setExportPath: String
 @export var disableNavigator: bool = false
+@export var ignoredDirectories: Array
 
 
 func contains(cObject: ClassObject) -> ClassObject:
-	for classObject in classObjects:
+	for classObject: ClassObject in classObjects:
 		if classObject.className == cObject.className:
 			return classObject
 	return null

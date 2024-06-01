@@ -5,13 +5,15 @@ This file should give a broad overview over how Users can integrate this plugin
 
 Integration mainly happens with the help of the PluginConfig.tres file in the plugin folder, which is a resource file of the plugin_config.gd class. <br>
 
-## UserInformation variables:
+## PluginConfig variables:
 
 - usedClassPaths: Array of inner project class paths which can be used to limit the classes in the class selection screen. <br> If only a single path is given, this will skip the Class choice Screen in its entirety.
 
 - setExportPath: String var which immediately sets a hard export path, which skips the Window where Users have to pick the export path
 
 - disableNavigator to disable the navigator UI
+
+- ignoredDirectories: to add directory names of directories whose classes should be ignored in the class choice screen
 
 ## Code API
 

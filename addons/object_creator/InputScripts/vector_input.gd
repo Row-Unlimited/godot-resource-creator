@@ -26,7 +26,6 @@ func initialize_input(propertyDict: Dictionary):
 func attempt_submit() -> Variant:
 	var returnValue = null
 	var tempValue = inputNode.return_input()
-	print(tempValue)
 	if not check_input_range(tempValue) or tempValue == null:
 		returnValue = null
 		show_input_warning()
