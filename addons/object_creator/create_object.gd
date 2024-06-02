@@ -28,6 +28,8 @@ func initialize_UI(cObject: ClassObject):
 			var newInput = load(newInputPath).instantiate()
 			inputRootNode.add_child(breakLine.instantiate())
 			inputRootNode.add_child(newInput)
+			if (newInputPath.contains("array")):
+				newInput.arrayInput = load(newInputPath)
 			newInput.initialize_input(property)
 			inputNodes.append(newInput)
 
