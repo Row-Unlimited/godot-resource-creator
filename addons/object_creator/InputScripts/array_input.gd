@@ -11,17 +11,21 @@ var breakLine = preload("res://addons/object_creator/Scenes/break_line_array.tsc
 
 var addElementButton: Button
 var elementTypeButton: DataTypeOptionButton
+var isMinimized = false
+var addElementSection: HBoxContainer
 
 var selectedType: Variant.Type = Variant.Type.TYPE_NIL
 var inputManagers: Array
 const VECTOR_TYPES = [TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I, TYPE_VECTOR4, TYPE_VECTOR4I]
 
 func set_up_nodes():
-	typeLabel = get_node("AddElementSection/PropertyType")
-	nameLabel = get_node("AddElementSection/PropertyName")
+	addElementSection = get_node("AddElementSection")
+	typeLabel = addElementSection.et_node("PropertyType")
+	nameLabel = addElementSection.get_node("PropertyName")
 	inputWarning = get_node("Warning")
-	addElementButton = get_node("AddElementSection/AddElementButton")
-	elementTypeButton = get_node("AddElementSection/ElementTypeButton")
+	addElementButton = addElementSection.get_node("AddElementButton")
+	elementTypeButton = addElementSection.get_node("ElementTypeButton")
+	
 
 func initialize_input(propertyDict: Dictionary):
 	property = propertyDict
@@ -81,3 +85,14 @@ func attempt_submit() -> Variant:
 		return null
 	
 	return returnArray
+
+
+func _on_minimize_pressed():
+	for node: Node in get_children():
+		if node.name != "AddElementSection" and node.name != "Warning":
+			node.visible = isMinimized
+	if isMinimized:
+		isMinimized = false
+	else:
+		isMinimized = true
+	pass 
