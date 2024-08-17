@@ -2,10 +2,10 @@
 extends Node
 ## Main plugin class, creates and manages UI Windows and oversees process of object creation
 
-const PLUGIN_PATH = "res://addons/object_creator/PluginConfig.tres"
+const PLUGIN_CONFIG_PATH = "res://addons/object_creator/PluginConfig.tres"
 
 var classLoader ## Node used to load class information from the project
-var pluginConfig = preload(PLUGIN_PATH)
+var pluginConfig #= preload(PLUGIN_CONFIG_PATH)
 var classChoiceScreen = preload("res://addons/object_creator/Scenes/class_choice.tscn")
 var createObjectScreen = preload("res://addons/object_creator/Scenes/create_object.tscn")
 var pathChoiceScreen = preload("res://addons/object_creator/Scenes/path_choice.tscn")
@@ -39,6 +39,7 @@ func _ready():
 ## if not it will search through the entire project structure for classes
 ## if there is one single possible class it calls the creation screen else it calls the class choice window
 func start_creation_process():
+	pluginConfig = ResourceLoader.load(PLUGIN_CONFIG_PATH, "", ResourceLoader.CACHE_MODE_IGNORE)
 	if isDefaultCallableActive:
 		navigatorCallable = Callable(self, "handle_navigator")
 	if not navigator.is_connected("navigator_pressed", navigatorCallable):
@@ -73,7 +74,9 @@ func finish_creation_process():
 	Exporter.new(path, [finalObject])
 	pluginConfig.update_user_class_information(objectClass)
 	pluginConfig.sort_arrays()
-	ResourceSaver.save(pluginConfig, PLUGIN_PATH)
+	for cObject in pluginConfig.classObjects:
+		print(cObject.className + " " + cObject.path)
+	ResourceSaver.save(pluginConfig, PLUGIN_CONFIG_PATH, )
 	reset_process()
 
 func reset_process():
