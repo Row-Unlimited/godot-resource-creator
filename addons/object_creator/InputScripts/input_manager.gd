@@ -2,7 +2,7 @@
 class_name InputManager
 extends VBoxContainer
 ## Parent Class of all Input Scenes
-## Should be an abstract class
+## Should in essence be regarded as an abstract class
 
 var property: Dictionary
 var inputType: Variant.Type
@@ -10,6 +10,7 @@ var nameLabel
 var typeLabel
 var inputNode
 var inputWarning
+var array_position: int # position if inputmanager is within an array
 
 func initialize_input(propertyDict: Dictionary):
 	property = propertyDict
