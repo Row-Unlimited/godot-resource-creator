@@ -9,6 +9,7 @@ extends Resource
 @export var setExportPath: String
 @export var disableNavigator: bool = false
 @export var ignoredDirectories: Array
+@export var is_main_dock : bool = false
 
 
 func contains(cObject: ClassObject) -> ClassObject:

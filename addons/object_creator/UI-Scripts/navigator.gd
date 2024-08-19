@@ -41,6 +41,8 @@ func _ready():
 	activeWindow = get_tree().root
 	UIControl = get_node("UIControl")
 	activeWindow.connect("size_changed", Callable(self, "handle_resize"))
+	
+	style_navigator()
 
 func on_back_pressed():
 	isReset = false
@@ -54,6 +56,7 @@ func on_reset_pressed():
 
 func on_confirm_pressed():
 	emit_signal("navigator_pressed", isReset)
+	toggle_box()
 
 func toggle_box():
 	var oldBox = currentBox
@@ -86,3 +89,19 @@ func handle_resize():
 	else:
 		scalePercentY = 1
 	UIControl.scale = Vector2(scalePercentX, scalePercentY)
+
+func style_navigator():
+	var colorRect = get_node("ColorRect")
+	var root = EditorInterface.get_base_control()
+	var accent_color = root.get_theme_color("accent_color", "Editor")
+	var base_color = root.get_theme_color("base_color", "Editor")
+	colorRect.color = base_color * 0.5
+	var hello = tr
+	var accent_average = ((accent_color.r + accent_color.b + accent_color.g)/3)
+	var base_average = ((base_color.r + base_color.b + base_color.g)/3)
+	var base_modifier = 0.5 if base_average > 0.5 else 1.3
+	var accent_modifier = 1.3 if accent_average < 0.5 else 0.5
+	
+	backButton.get_theme_stylebox("hover").bg_color = accent_color * accent_modifier
+	backButton.get_theme_stylebox("normal").bg_color = base_color * base_modifier
+	backButton.get_theme_stylebox("pressed").bg_color = accent_color

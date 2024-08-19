@@ -10,6 +10,7 @@ var classChoiceScreen = preload("res://addons/object_creator/Scenes/class_choice
 var createObjectScreen = preload("res://addons/object_creator/Scenes/create_object.tscn")
 var pathChoiceScreen = preload("res://addons/object_creator/Scenes/path_choice.tscn")
 var navigator
+var settings_button
 var currentWindow: Control
 var uiNode: Control
 
@@ -33,6 +34,7 @@ func _ready():
 	classLoader = $ClassLoader
 	uiNode = get_node("UINode")
 	navigator = get_node("Navigator")
+	settings_button = get_node("Settings-Button")
 
 ## checks the status of the plugin
 ## if the plugin is integrated it will directly only include named classes
@@ -42,6 +44,7 @@ func start_creation_process():
 	pluginConfig = ResourceLoader.load(PLUGIN_CONFIG_PATH, "", ResourceLoader.CACHE_MODE_IGNORE)
 	if isDefaultCallableActive:
 		navigatorCallable = Callable(self, "handle_navigator")
+	settings_button.activate_button(Callable(self, "_on_options_button_pressed"))
 	if not navigator.is_connected("navigator_pressed", navigatorCallable):
 		navigator.connect("navigator_pressed", navigatorCallable)
 	if classLoader.check_for_integration():
@@ -112,7 +115,7 @@ func call_class_choice_window(classes: Array):
 		else:
 			classObjects.append(classObject)
 	open_new_window(classChoiceScreen.instantiate())
-	currentWindow.create_class_buttons(classObjects)
+	currentWindow.create_class_buttons(classObjects, Callable(self, "on_class_chosen"))
 
 func call_create_object_window():
 	open_new_window(createObjectScreen.instantiate())
@@ -149,4 +152,7 @@ func on_object_created_integrated_path(object):
 func on_path_chosen(pathString: String):
 	path = pathString
 	finish_creation_process()
+
+func _on_options_button_pressed():
+	pass # TODO add settings
 #endregion
