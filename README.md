@@ -6,7 +6,7 @@ Process should later on be able to be shortened and integrated into other projec
 
 For Integration information look [here](Integration.md)
 
-Project-Goals:
+## Project-Goals:
 
 - [x] Finish basic Object creation functionality
 - [x] Add reset button
@@ -17,3 +17,7 @@ Project-Goals:
 - [ ] Add custom Objects as possible Data Type
 - [ ] Improve UX by sorting classes or paths by how often they were created etc.
 - [ ] Add back button after choosing class
+
+## Current Issues
+- [ ] Add proper Settings menu for Config
+- [ ] Proper Main Dock integration

@@ -17,13 +17,13 @@ func _ready():
 	file.close()
 	resourceClasses = JSON.parse_string(json_string)
 
-func create_class_buttons(classObjects: Array):
+func create_class_buttons(classObjects: Array, return_callable: Callable):
 	var totalPosition = margin
 	for object: ClassObject in classObjects:
 		if check_class_requirements(object):
 			var newButton = buttonScene.instantiate()
 			newButton.classObject = object
-			newButton.connect("class_chosen", Callable(get_parent().get_parent(), "on_class_chosen"))
+			newButton.connect("class_chosen", return_callable)
 			flowContainer.add_child(newButton)
 
 func check_class_requirements(object: ClassObject) -> bool:
