@@ -17,6 +17,7 @@ signal object_created(object)
 
 func initialize_UI(cObject: ClassObject):
 	classObject = cObject
+	# create object of the class from the script path and get the property list
 	propertyList = load(classObject.path).new().get_property_list()
 	inputRootNode = get_node("ScrollContainer/VBoxContainer")
 	submitButton = get_node("SubmitBox/CreateObject")
