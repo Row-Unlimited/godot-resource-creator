@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cn68n4oj5xiwm"]
 
-[ext_resource type="Script" path="res://addons/object_creator/InputScripts/array_input.gd" id="1_3yt2x"]
-[ext_resource type="Script" path="res://addons/object_creator/UI-Scripts/data_type_option_button.gd" id="2_jdguy"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/array_input.gd" id="1_3yt2x"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/data_type_option_button.gd" id="2_jdguy"]
 [ext_resource type="LabelSettings" uid="uid://c7ay5h8tbaidb" path="res://addons/object_creator/Assets/input_warning.tres" id="3_1eya5"]
 
 [node name="ArrayInput" type="VBoxContainer"]

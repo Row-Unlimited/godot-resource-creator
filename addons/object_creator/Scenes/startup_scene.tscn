@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://8frg8yhp0w80"]
 
-[ext_resource type="Script" path="res://addons/object_creator/object_creator.gd" id="1_8x6gw"]
-[ext_resource type="Script" path="res://addons/object_creator/class_loader.gd" id="2_70apg"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/object_creator.gd" id="1_8x6gw"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/class_loader.gd" id="2_70apg"]
 [ext_resource type="PackedScene" uid="uid://bwkxq5yitdt3m" path="res://addons/object_creator/Scenes/navigator.tscn" id="3_dosa5"]
 [ext_resource type="Texture2D" uid="uid://s6vcbnq6kmai" path="res://addons/object_creator/Assets/settings-button.png" id="4_vxi2q"]
-[ext_resource type="Script" path="res://addons/object_creator/Settings/settings_button.gd" id="5_7ukq7"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/Settings/settings_button.gd" id="5_vsukn"]
 
 [node name="StartupScene" type="Control"]
 layout_mode = 3
@@ -40,4 +40,4 @@ grow_vertical = 0
 texture_normal = ExtResource("4_vxi2q")
 ignore_texture_size = true
 stretch_mode = 0
-script = ExtResource("5_7ukq7")
+script = ExtResource("5_vsukn")

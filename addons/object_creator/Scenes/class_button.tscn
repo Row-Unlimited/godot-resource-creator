@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://doa0eklv7bh04"]
 
-[ext_resource type="Script" path="res://addons/object_creator/UI-Scripts/class_button.gd" id="1_8lyfy"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/class_button.gd" id="1_8lyfy"]
 
 [node name="ClassButton" type="Button"]
 offset_right = 100.0
