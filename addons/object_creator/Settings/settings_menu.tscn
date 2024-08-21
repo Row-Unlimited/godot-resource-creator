@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://dsujtld1j4i2v"]
+[gd_scene load_steps=2 format=3 uid="uid://dsujtld1j4i2v"]
+
+[ext_resource type="Script" path="res://addons/object_creator/Settings/settings_menu.gd" id="1_v24fh"]
 
 [node name="SettingsMenu" type="Control"]
 layout_mode = 3
@@ -7,3 +9,4 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_v24fh")

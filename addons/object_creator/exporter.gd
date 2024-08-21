@@ -19,13 +19,13 @@ func _init(path: String, objects: Array):
 
 func create_file_name(path: String, object: Object) -> String:
 	var directory = DirAccess.open(path)
-	var dirFiles = directory.get_files()
-	var numberFiles = 0
+	var dir_files = directory.get_files()
+	var number_files = 0
 	var fileName: String
 	
-	for filePath in dirFiles:
+	for filePath in dir_files:
 		if filePath.ends_with(".tres"):
-			numberFiles += 1
+			number_files += 1
 	
-	fileName = object.get_class() + "000" + str(numberFiles) + ".tres"
+	fileName = object.get_class() + "000" + str(number_files) + ".tres"
 	return fileName

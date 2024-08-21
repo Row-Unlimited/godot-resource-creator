@@ -3,7 +3,7 @@ class_name ArrayElementInput
 extends VBoxContainer
 ## This Class is used in the array_element_input scene to handle UI of Array Inputs
 ## sets up the InputManager as childObject and updates the array_position of InputManager
-## sends signals for movement and removing to the ArrayInputManager above
+## sends signals for movement and removing to the Array_inputManager above
 
 var position_child : int : 
 	set(value):

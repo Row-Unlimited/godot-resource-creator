@@ -3,36 +3,37 @@ extends Node
 ## Main plugin class, creates and manages UI Windows and oversees process of object creation
 
 const PLUGIN_CONFIG_PATH = "res://addons/object_creator/PluginConfig.tres"
+const SETTINGS_CLASS_PATH = "res://addons/object_creator/plugin_config.gd"
 
-var classLoader ## Node used to load class information from the project
-var pluginConfig #= preload(PLUGIN_CONFIG_PATH)
-var classChoiceScreen = preload("res://addons/object_creator/Scenes/class_choice.tscn")
-var createObjectScreen = preload("res://addons/object_creator/Scenes/create_object.tscn")
-var pathChoiceScreen = preload("res://addons/object_creator/Scenes/path_choice.tscn")
+var class_loader ## Node used to load class information from the project
+var plugin_config #= preload(PLUGIN_CONFIG_PATH)
+var class_choiceScreen = preload("res://addons/object_creator/Scenes/class_choice.tscn")
+var create_objectScreen = preload("res://addons/object_creator/Scenes/create_object.tscn")
+var path_choiceScreen = preload("res://addons/object_creator/Scenes/path_choice.tscn")
 var navigator
 var settings_button
-var currentWindow: Control
-var uiNode: Control
+var current_window: Control
+var ui_node: Control
 
-var isClassChoiceNeeded = true;
-var possibleClassObjects: Array
-var objectClass: ClassObject = null
+var is_classChoiceNeeded = true;
+var possible_classObjects: Array
+var object_class: ClassObject = null
 
-var useResourceFormat = false
+var use_resourceFormat = false
 
-var finalObject
+var final_object
 var path: String
 
-var externalCreationHandler: Object = null
-var externalHandlingMethodName: String = ""
-var navigatorCallable: Callable
-var isDefaultCallableActive = true
+var external_creationHandler: Object = null
+var external_handlingMethodName: String = ""
+var navigator_callable: Callable
+var is_defaultCallableActive = true
 
 signal creation_finished(object, path: String, exportAsResource: bool)
 
 func _ready():
-	classLoader = $ClassLoader
-	uiNode = get_node("UINode")
+	class_loader = $ClassLoader
+	ui_node = get_node("UINode")
 	navigator = get_node("Navigator")
 	settings_button = get_node("Settings-Button")
 
@@ -41,65 +42,65 @@ func _ready():
 ## if not it will search through the entire project structure for classes
 ## if there is one single possible class it calls the creation screen else it calls the class choice window
 func start_creation_process():
-	pluginConfig = ResourceLoader.load(PLUGIN_CONFIG_PATH, "", ResourceLoader.CACHE_MODE_IGNORE)
-	if isDefaultCallableActive:
-		navigatorCallable = Callable(self, "handle_navigator")
+	plugin_config = ResourceLoader.load(PLUGIN_CONFIG_PATH, "", ResourceLoader.CACHE_MODE_IGNORE)
+	if is_defaultCallableActive:
+		navigator_callable = Callable(self, "handle_navigator")
 	settings_button.activate_button(Callable(self, "_on_options_button_pressed"))
-	if not navigator.is_connected("navigator_pressed", navigatorCallable):
-		navigator.connect("navigator_pressed", navigatorCallable)
-	if classLoader.check_for_integration():
-		var classes: Array = classLoader.return_integrated_classes()
+	if not navigator.is_connected("navigator_pressed", navigator_callable):
+		navigator.connect("navigator_pressed", navigator_callable)
+	if class_loader.check_for_integration():
+		var classes: Array = class_loader.return_integrated_classes()
 		match classes.size():
 			0:
 				pass
 			1:
-				isClassChoiceNeeded = false
-				objectClass = classes.front()
+				is_classChoiceNeeded = false
+				object_class = classes.front()
 			_:
-				possibleClassObjects = classes
+				possible_classObjects = classes
 		pass
 	
-	if isClassChoiceNeeded:
-		possibleClassObjects = classLoader.return_possible_classes()
-		if possibleClassObjects.size() == 1:
-			objectClass = possibleClassObjects.front()
-			isClassChoiceNeeded = false
+	if is_classChoiceNeeded:
+		possible_classObjects = class_loader.return_possible_classes()
+		if possible_classObjects.size() == 1:
+			object_class = possible_classObjects.front()
+			is_classChoiceNeeded = false
 	
-	if isClassChoiceNeeded:
-		call_class_choice_window(possibleClassObjects)
+	if is_classChoiceNeeded:
+		call_class_choice_window(possible_classObjects)
 	else:
-		call_create_object_window()
+		call_create_object_window(object_class)
 
 ## wraps up the object creation process.
 ## per default it just exports the object and is done, but this can be modified for integration
 func finish_creation_process():
-	emit_signal("creation_finished", finalObject, path, useResourceFormat)
-	Exporter.new(path, [finalObject])
-	pluginConfig.update_user_class_information(objectClass)
-	pluginConfig.sort_arrays()
-	for cObject in pluginConfig.classObjects:
-		print(cObject.className + " " + cObject.path)
-	ResourceSaver.save(pluginConfig, PLUGIN_CONFIG_PATH, )
+	emit_signal("creation_finished", final_object, path, use_resourceFormat)
+	Exporter.new(path, [final_object])
+	plugin_config.update_user_class_information(object_class)
+	plugin_config.sort_arrays()
+	for cObject in plugin_config.classObjects:
+		print(cObject.name_class + " " + cObject.path)
+	ResourceSaver.save(plugin_config, PLUGIN_CONFIG_PATH, )
 	reset_process()
 
 func reset_process():
-	if currentWindow != null:
-		uiNode.remove_child(currentWindow)
-		currentWindow = null
+	if current_window != null:
+		ui_node.remove_child(current_window)
+		current_window = null
 	start_creation_process()
-	finalObject = null
+	final_object = null
 
 func set_external_creation_handler(object: Object, methodName: String):
 	if object != null and not methodName.is_empty():
-		externalCreationHandler = object
-		externalHandlingMethodName = methodName
+		external_creationHandler = object
+		external_handlingMethodName = methodName
 
 func set_navigator_callable(callable: Callable):
-	navigatorCallable = callable
+	navigator_callable = callable
 
 #region UI-Handling
-func handle_navigator(isReset: bool):
-	if isReset:
+func handle_navigator(is_reset: bool):
+	if is_reset:
 		reset_process()
 	pass
 
@@ -108,51 +109,52 @@ func call_class_choice_window(classes: Array):
 	var classObjects: Array
 	var classObject
 	for cObject in classes:
-		classObject = pluginConfig.contains(cObject)
+		classObject = plugin_config.contains(cObject)
 		if classObject == null:
 			classObjects.append(cObject)
 			
 		else:
 			classObjects.append(classObject)
-	open_new_window(classChoiceScreen.instantiate())
-	currentWindow.create_class_buttons(classObjects, Callable(self, "on_class_chosen"))
+	open_new_window(class_choiceScreen.instantiate())
+	current_window.create_class_buttons(classObjects, Callable(self, "on_class_chosen"))
 
-func call_create_object_window():
-	open_new_window(createObjectScreen.instantiate())
-	currentWindow.initialize_UI(objectClass)
-	if pluginConfig.setExportPath.is_empty():
-		currentWindow.connect("object_created", Callable(self, "on_object_created_default"))
+func call_create_object_window(cObject: ClassObject):
+	open_new_window(create_objectScreen.instantiate())
+	current_window.initialize_UI(cObject)
+	if plugin_config.set_exportPath.is_empty():
+		current_window.connect("object_created", Callable(self, "on_object_created_default"))
 	else:
-			currentWindow.connect("object_created", Callable(self, "on_object_created_integrated_path"))
-			if externalCreationHandler != null:
-				currentWindow.connect("object_created", Callable(externalCreationHandler, externalHandlingMethodName))
+			current_window.connect("object_created", Callable(self, "on_object_created_integrated_path"))
+			if external_creationHandler != null:
+				current_window.connect("object_created", Callable(external_creationHandler, external_handlingMethodName))
 
 func open_new_window(windowRoot: Control):
-	if currentWindow != null:
-		uiNode.remove_child(currentWindow)
-	currentWindow = windowRoot
-	uiNode.add_child(windowRoot)
+	if current_window != null:
+		ui_node.remove_child(current_window)
+	current_window = windowRoot
+	ui_node.add_child(windowRoot)
 #endregion
 
 #region signal functions
 func on_class_chosen(cObject):
-	objectClass = cObject
-	call_create_object_window()
+	object_class = cObject
+	call_create_object_window(object_class)
 
 func on_object_created_default(object):
-	finalObject = object
-	open_new_window(pathChoiceScreen.instantiate())
-	currentWindow.initialize_UI(pluginConfig)
-	currentWindow.connect("path_chosen", Callable(self, "on_path_chosen"))
+	final_object = object
+	open_new_window(path_choiceScreen.instantiate())
+	current_window.initialize_UI(plugin_config)
+	current_window.connect("path_chosen", Callable(self, "on_path_chosen"))
 
 func on_object_created_integrated_path(object):
-	path = pluginConfig.setExportPath
+	path = plugin_config.set_exportPath
 	finish_creation_process()
 
-func on_path_chosen(pathString: String):
-	path = pathString
+func on_path_chosen(path_string: String):
+	path = path_string
 	finish_creation_process()
 
 func _on_options_button_pressed():
-	pass # TODO add settings
+	var settings_object: ClassObject = ClassObject.new(SETTINGS_CLASS_PATH, "PluginConfig", plugin_config)
+	call_create_object_window(settings_object)
 #endregion
