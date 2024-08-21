@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://pwg28rbinbjg"]
 
-[ext_resource type="Script" path="res://addons/object_creator/path_choice.gd" id="1_6a5k6"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/path_choice.gd" id="1_b0q4g"]
 [ext_resource type="LabelSettings" uid="uid://c7ay5h8tbaidb" path="res://addons/object_creator/Assets/input_warning.tres" id="1_bb1da"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_opjdf"]
@@ -13,7 +13,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_6a5k6")
+script = ExtResource("1_b0q4g")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 1
