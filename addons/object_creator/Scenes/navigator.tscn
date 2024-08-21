@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bwkxq5yitdt3m"]
 
-[ext_resource type="Script" path="res://addons/object_creator/UI-Scripts/navigator.gd" id="1_a5urb"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/navigator.gd" id="1_a5urb"]
 
 [node name="Navigator" type="Control"]
 layout_mode = 3

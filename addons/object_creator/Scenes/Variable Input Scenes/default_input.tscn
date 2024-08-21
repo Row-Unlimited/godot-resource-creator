@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://hd5073q6w1rl"]
 
-[ext_resource type="Script" path="res://addons/object_creator/InputScripts/default_input.gd" id="1_t6dnr"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/default_input.gd" id="1_t6dnr"]
 [ext_resource type="LabelSettings" uid="uid://c7ay5h8tbaidb" path="res://addons/object_creator/Assets/input_warning.tres" id="2_w0jf7"]
 
 [node name="DefaultInput" type="VBoxContainer"]

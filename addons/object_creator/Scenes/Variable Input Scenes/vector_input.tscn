@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://c5mithlbn00gg"]
 
-[ext_resource type="Script" path="res://addons/object_creator/InputScripts/vector_input.gd" id="1_6bawn"]
-[ext_resource type="Script" path="res://addons/object_creator/UI-Scripts/vector_input_input.gd" id="1_6vewi"]
-[ext_resource type="Script" path="res://addons/object_creator/UI-Scripts/custom_line_edit.gd" id="2_o3c11"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/vector_input.gd" id="1_6bawn"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/vector_input_input.gd" id="1_6vewi"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/custom_line_edit.gd" id="2_o3c11"]
 
 [node name="VectorInput" type="VBoxContainer"]
 anchors_preset = -1
@@ -40,7 +40,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 placeholder_text = "x"
 script = ExtResource("2_o3c11")
-acceptNumbersOnly = true
 
 [node name="Y" type="LineEdit" parent="InputContainer/Input"]
 visible = false
@@ -49,7 +48,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 placeholder_text = "y"
 script = ExtResource("2_o3c11")
-acceptNumbersOnly = true
 
 [node name="Z" type="LineEdit" parent="InputContainer/Input"]
 visible = false
@@ -58,7 +56,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 placeholder_text = "z"
 script = ExtResource("2_o3c11")
-acceptNumbersOnly = true
 
 [node name="W" type="LineEdit" parent="InputContainer/Input"]
 visible = false
@@ -67,7 +64,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 placeholder_text = "w"
 script = ExtResource("2_o3c11")
-acceptNumbersOnly = true
 
 [node name="WarningContainer" type="HBoxContainer" parent="."]
 layout_mode = 2

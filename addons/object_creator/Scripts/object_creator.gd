@@ -3,7 +3,7 @@ extends Node
 ## Main plugin class, creates and manages UI Windows and oversees process of object creation
 
 const PLUGIN_CONFIG_PATH = "res://addons/object_creator/PluginConfig.tres"
-const SETTINGS_CLASS_PATH = "res://addons/object_creator/plugin_config.gd"
+const SETTINGS_CLASS_PATH = "res://addons/object_creator/Scripts/plugin_config.gd"
 
 var class_loader ## Node used to load class information from the project
 var plugin_config #= preload(PLUGIN_CONFIG_PATH)

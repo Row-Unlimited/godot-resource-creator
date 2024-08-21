@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://k1h1c8gdgvyn"]
 
-[ext_resource type="Script" path="res://addons/object_creator/InputScripts/bool_input.gd" id="1_v0gea"]
-[ext_resource type="Script" path="res://addons/object_creator/UI-Scripts/bool_input_button.gd" id="2_i81gb"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/bool_input.gd" id="1_v0gea"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/bool_input_button.gd" id="2_i81gb"]
 
 [node name="BoolInput" type="VBoxContainer"]
 anchors_preset = -1
