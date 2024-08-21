@@ -5,25 +5,25 @@ extends VBoxContainer
 ## Should in essence be regarded as an abstract class
 
 var property: Dictionary
-var inputType: Variant.Type
-var nameLabel
-var typeLabel
-var inputNode
-var inputWarning
+var input_type: Variant.Type
+var name_label
+var type_label
+var input_node
+var input_warning
 var array_position: int # position if inputmanager is within an array
 
-func initialize_input(propertyDict: Dictionary):
-	property = propertyDict
+func initialize_input(property_dict: Dictionary):
+	property = property_dict
 
 
 func attempt_submit() -> Variant:
-	var returnValue
-	return returnValue
+	var return_value
+	return return_value
 
 ## takes an input that fits the input type and checks whether it fits the range criteria
 ## not implemented yet
 func check_input_range(input: Variant) -> bool:
-	if typeof(input) != inputType:
+	if typeof(input) != input_type:
 		return false
 	# TODO: add functionality that makes it possible to set custom ranges
 	match typeof(input):
@@ -84,12 +84,17 @@ func return_type_string(type: Variant.Type) -> String:
 ## sets the labels and vars for a given property, is used in non array inputs
 func set_property_information(property: Dictionary):
 	self.property = property
-	nameLabel.text = property["name"]
-	inputType = property["type"]
+	name_label.text = property["name"]
+	input_type = property["type"]
 
 func show_input_warning():
-	inputWarning.visible = true
+	input_warning.visible = true
 	pass
 
 func hide_input_warning():
-	inputWarning.visible = false
+	input_warning.visible = false
+
+## virtual function that should be used so each input type can receive input when created
+## primarily useful when we're dealing with editing objects instead of creating them
+func receive_input(input):
+	pass

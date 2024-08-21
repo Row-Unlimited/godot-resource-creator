@@ -2,13 +2,13 @@
 class_name PluginConfig
 extends Resource
 
-@export var usedExportPaths: Array
+@export var used_exportPaths: Array
 @export var isIntegrated: bool
-@export var integratedClassPaths: Array
+@export var integrated_classPaths: Array
 @export var classObjects: Array
-@export var setExportPath: String
-@export var disableNavigator: bool = false
-@export var ignoredDirectories: Array
+@export var set_exportPath: String
+@export var disable_navigator: bool = false
+@export var ignored_directories: Array
 @export var is_main_dock : bool = false
 
 
@@ -19,30 +19,30 @@ func contains(cObject: ClassObject) -> ClassObject:
 	return null
 
 func update_user_path_information(path: String):
-	for pathTuple: PathTuple in usedExportPaths:
+	for pathTuple: PathTuple in used_exportPaths:
 		if pathTuple.path == path:
-			pathTuple.timesUsed += 1
+			pathTuple.times_used += 1
 			return
-	var newTuple = PathTuple.new(path)
-	usedExportPaths.append(newTuple)
+	var new_tuple = PathTuple.new(path)
+	used_exportPaths.append(new_tuple)
 
 func update_user_class_information(classObjectNew: ClassObject):
 	for cObject: ClassObject in classObjects:
 		if cObject.path == classObjectNew.path:
-			cObject.timesUsed += 1
+			cObject.times_used += 1
 			return
 	classObjects.append(classObjectNew)
 
 func sort_arrays():
-	usedExportPaths.sort_custom(return_higher_path)
+	used_exportPaths.sort_custom(return_higher_path)
 	classObjects.sort_custom(return_higher_class)
 
 func return_higher_path(a: PathTuple, b: PathTuple):
-	if a.timesUsed >= b.timesUsed:
+	if a.times_used >= b.times_used:
 		return true
 	return false
 
 func return_higher_class(a: ClassObject, b: ClassObject):
-	if a.timesUsed >= b.timesUsed:
+	if a.times_used >= b.times_used:
 		return true
 	return false

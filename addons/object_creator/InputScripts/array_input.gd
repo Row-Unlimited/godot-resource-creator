@@ -1,107 +1,112 @@
 @tool
 extends InputManager
-## This class Handles ArrayInputs as InputManager
+## This class Handles Array_inputs as InputManager
 ## Uses array_element_input as InputNodes for the UI of the Inputs.
-## InputManager Objects are stored in inputManagers array and sorted when UI nodes are moved
+## InputManager Objects are stored in input_managers array and sorted when UI nodes are moved
 
-var arrayElementScene = preload("res://addons/object_creator/Scenes/Variable Input Scenes/array_element_input.tscn")
+var array_element_scene = preload("res://addons/object_creator/Scenes/Variable Input Scenes/array_element_input.tscn")
 
-var defaultInput = preload("res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn")
-var boolInput = preload("res://addons/object_creator/Scenes/Variable Input Scenes/bool_input.tscn")
-var arrayInput
-var vectorInput = preload("res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn")
+var default_input = preload("res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn")
+var bool_input = preload("res://addons/object_creator/Scenes/Variable Input Scenes/bool_input.tscn")
+var array_input
+var vector_input = preload("res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn")
 
-var addElementButton: Button
-var elementTypeButton: DataTypeOptionButton
-var isMinimized = false
-var addElementSection: HBoxContainer
+var add_element_button: Button
+var element_type_button: DataTypeOptionButton
+var is_minimized = false
+var add_element_section: HBoxContainer
 
-var selectedType: Variant.Type = Variant.Type.TYPE_NIL
-var inputManagers: Array
+var selected_type: Variant.Type = Variant.Type.TYPE_NIL
+var input_managers: Array
 const VECTOR_TYPES = [TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I, TYPE_VECTOR4, TYPE_VECTOR4I]
 
 func set_up_nodes():
-	addElementSection = get_node("AddElementSection")
-	typeLabel = addElementSection.get_node("PropertyType")
-	nameLabel = addElementSection.get_node("PropertyName")
-	inputWarning = get_node("Warning")
-	addElementButton = addElementSection.get_node("AddElementButton")
-	elementTypeButton = addElementSection.get_node("ElementTypeButton")
+	add_element_section = get_node("AddElementSection")
+	type_label = add_element_section.get_node("PropertyType")
+	name_label = add_element_section.get_node("PropertyName")
+	input_warning = get_node("Warning")
+	add_element_button = add_element_section.get_node("AddElementButton")
+	element_type_button = add_element_section.get_node("ElementTypeButton")
 	
 
-func initialize_input(propertyDict: Dictionary):
-	property = propertyDict
+func initialize_input(property_dict: Dictionary):
+	property = property_dict
 	set_up_nodes()
-	nameLabel.text = propertyDict["name"]
+	name_label.text = property_dict["name"]
 
-func _on_add_element_pressed():
-	var isVector = false
-	var newScene: PackedScene
-	match selectedType:
+func add_element(element_type: Variant.Type, def_input=null):
+	var is_vector = false
+	var new_scene: PackedScene
+	match selected_type:
 		TYPE_NIL:
 			return
 		TYPE_INT:
-			newScene = defaultInput
+			new_scene = default_input
 		TYPE_FLOAT:
-			newScene = defaultInput
+			new_scene = default_input
 		TYPE_STRING:
-			newScene = defaultInput
+			new_scene = default_input
 		TYPE_BOOL:
-			newScene = boolInput
+			new_scene = bool_input
 		TYPE_ARRAY:
-			newScene = arrayInput
+			new_scene = array_input
 		_:
-			if VECTOR_TYPES.has(selectedType):
-				newScene = vectorInput
-				isVector = true
+			if VECTOR_TYPES.has(selected_type):
+				new_scene = vector_input
+				is_vector = true
+	var new_input_node: ArrayElementInput =  array_element_scene.instantiate()
+	var new_input_manager = new_scene.instantiate()
+	input_managers.append(new_input_manager)
+	new_input_manager.input_type = selected_type
 	
-	var newInputNode: ArrayElementInput =  arrayElementScene.instantiate()
-	var newInputManager = newScene.instantiate()
-	inputManagers.append(newInputManager)
-	newInputManager.inputType = selectedType
-	
-	add_child(newInputNode) # add ArrayElementInput as new child
+	add_child(new_input_node) # add ArrayElementInput as new child
 	var actual_position = get_children().size() - 2 
-	move_child(newInputNode, actual_position) # so the warning is always at the bottom
+	move_child(new_input_node, actual_position) # so the warning is always at the bottom
 	# Sets the child position so we can move it with the arrow up and down buttons
-	newInputNode.position_child = actual_position
-	newInputNode.initialize_input(newInputManager)
+	new_input_node.position_child = actual_position
+	new_input_node.initialize_input(new_input_manager)
 	
 	# connect remove and move buttons
-	newInputNode.connect("move_node", Callable(self, "_on_move_node"))
-	newInputNode.connect("remove_node", Callable(self, "_on_remove_node"))
+	new_input_node.connect("move_node", Callable(self, "_on_move_node"))
+	new_input_node.connect("remove_node", Callable(self, "_on_remove_node"))
+
+	if def_input != null:
+		new_input_manager.receive_input(default_input)
+
+func _on_add_element_pressed():
+	add_element(selected_type)
 
 
 func _on_type_button_selected(index):
-	selectedType = elementTypeButton.return_type_by_index(index)
+	selected_type = element_type_button.return_type_by_index(index)
 
 func attempt_submit() -> Variant:
-	var missingInputNodes = []
-	var returnArray = []
-	for inputManager: InputManager in inputManagers:
-		var inputValue = inputManager.attempt_submit()
-		if inputValue != null:
-			inputManager.hide_input_warning()
-			returnArray.append(inputValue)
+	var missing_input_nodes = []
+	var return_array = []
+	for input_manager: InputManager in input_managers:
+		var input_value = input_manager.attempt_submit()
+		if input_value != null:
+			input_manager.hide_input_warning()
+			return_array.append(input_value)
 		else:
-			missingInputNodes.append(inputManager)
+			missing_input_nodes.append(input_manager)
 	
-	if not missingInputNodes.is_empty():
-		for inputManager: InputManager in missingInputNodes:
-			inputManager.show_input_warning()
+	if not missing_input_nodes.is_empty():
+		for input_manager: InputManager in missing_input_nodes:
+			input_manager.show_input_warning()
 		return null
 	
-	return returnArray
+	return return_array
 
 ## Minimizes Arrays for better UX
 func _on_minimize_pressed():
 	for node: Node in get_children():
 		if node.name != "AddElementSection" and node.name != "Warning":
-			node.visible = isMinimized
-	if isMinimized:
-		isMinimized = false
+			node.visible = is_minimized
+	if is_minimized:
+		is_minimized = false
 	else:
-		isMinimized = true
+		is_minimized = true
 	pass 
 
 ## Moves an InputNode in the Array UI
@@ -123,10 +128,14 @@ func _on_move_node(node: ArrayElementInput, new_position: int):
 					
 			i += 1
 		
-		inputManagers.sort_custom(func(a, b): return a.array_position < b.array_position)
-		print(inputManagers)
+		input_managers.sort_custom(func(a, b): return a.array_position < b.array_position)
 
 ## Removes InputNode from the Array UI
 func _on_remove_node(node: ArrayElementInput):
-	inputManagers.remove_at(inputManagers.find(node.input))
+	input_managers.remove_at(input_managers.find(node.input))
 	remove_child(node)
+
+func receive_input(input):
+	print(input)
+	for element in input:
+		add_element(typeof(element), element)

@@ -5,39 +5,42 @@ extends InputManager
 
 
 func set_up_nodes():
-	typeLabel = get_node("InputContainer/PropertyType")
-	nameLabel = get_node("InputContainer/PropertyName")
-	inputNode = get_node("InputContainer/Input")
-	inputWarning = get_node("WarningContainer/WrongInputWarning")
-	typeLabel.text = return_type_string(inputType)
+	type_label = get_node("InputContainer/PropertyType")
+	name_label = get_node("InputContainer/PropertyName")
+	input_node = get_node("InputContainer/Input")
+	input_warning = get_node("WarningContainer/WrongInputWarning")
+	type_label.text = return_type_string(input_type)
 
 
-func initialize_input(propertyDict: Dictionary):
+func initialize_input(property_dict: Dictionary):
 	set_up_nodes()
-	set_property_information(propertyDict)
+	set_property_information(property_dict)
 	style_input()
 
 func attempt_submit() -> Variant:
-	var returnValue = null
-	var tempValue: String = inputNode.text
-	match inputType:
+	var return_value = null
+	var temp_value: String = input_node.text
+	match input_type:
 		Variant.Type.TYPE_INT:
-			if tempValue.is_valid_int():
-				returnValue = tempValue.to_int()
+			if temp_value.is_valid_int():
+				return_value = temp_value.to_int()
 		Variant.Type.TYPE_FLOAT:
-			if tempValue.is_valid_float():
-				returnValue = tempValue.to_float()
+			if temp_value.is_valid_float():
+				return_value = temp_value.to_float()
 		Variant.Type.TYPE_STRING:
-			if not tempValue.is_empty():
-				returnValue = tempValue
+			if not temp_value.is_empty():
+				return_value = temp_value
 		Variant.Type.TYPE_NODE_PATH:
 			pass
 	
-	if not check_input_range(returnValue) or returnValue == null:
-		returnValue = null
+	if not check_input_range(return_value) or return_value == null:
+		return_value = null
 		show_input_warning()
-	return returnValue
+	return return_value
 
 func style_input():
-	nameLabel.text = property["name"]
-	typeLabel.text = return_type_string(property["type"])
+	name_label.text = property["name"]
+	type_label.text = return_type_string(property["type"])
+
+func receive_input(input):
+	input_node.text = str(input)

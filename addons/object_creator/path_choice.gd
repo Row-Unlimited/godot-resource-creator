@@ -2,42 +2,42 @@
 extends Control
 ## UI Window which makes it possible for the User to select an export path
 
-var inputNew: LineEdit
-var inputKnown: OptionButton
-var exportButton: Button
-var warningLabel: Label
-var pluginConfig: PluginConfig
+var input_new: LineEdit
+var input_known: OptionButton
+var export_button: Button
+var warning_label: Label
+var plugin_config: PluginConfig
 
 signal path_chosen(path: String)
 
 func initialize_UI(config: PluginConfig):
-	inputNew = get_node("ScrollContainer/VBoxContainer/AddPathInput")
-	inputKnown = get_node("ScrollContainer/VBoxContainer/KnownPathSelection")
-	exportButton = get_node("ExportArea/Button")
-	warningLabel = get_node("ExportArea/Label")
-	exportButton.connect("pressed", Callable(self, "on_export_pressed"))
-	pluginConfig = config
+	input_new = get_node("ScrollContainer/VBoxContainer/AddPathInput")
+	input_known = get_node("ScrollContainer/VBoxContainer/KnownPathSelection")
+	export_button = get_node("ExportArea/Button")
+	warning_label = get_node("ExportArea/Label")
+	export_button.connect("pressed", Callable(self, "on_export_pressed"))
+	plugin_config = config
 	
 	
-	# TODO: sort OptionButton according to pathTuple.timesUsed var
-	for pathTuple: PathTuple in pluginConfig.usedExportPaths:
+	# TODO: sort OptionButton according to pathTuple.times_used var
+	for pathTuple: PathTuple in plugin_config.used_exportPaths:
 		if DirAccess.dir_exists_absolute(pathTuple.path):
-			inputKnown.add_item(pathTuple.path)
+			input_known.add_item(pathTuple.path)
 
 func on_export_pressed():
-	var pathString: String
-	if inputKnown.selected != -1:
-		pathString = inputKnown.get_item_text(inputKnown.selected)
+	var path_string: String
+	if input_known.selected != -1:
+		path_string = input_known.get_item_text(input_known.selected)
 	else:
-		if inputNew.text.is_empty():
-			warningLabel.text = "You have not chosen a path please try again"
-			warningLabel.visible = true
+		if input_new.text.is_empty():
+			warning_label.text = "You have not chosen a path please try again"
+			warning_label.visible = true
 			return
 		else:
-			pathString = inputNew.text
+			path_string = input_new.text
 	
-	if DirAccess.dir_exists_absolute(pathString):
-		emit_signal("path_chosen", pathString)
+	if DirAccess.dir_exists_absolute(path_string):
+		emit_signal("path_chosen", path_string)
 	else:
-		warningLabel.text = "You're chosen directory does not seem to exist, please try again"
-		warningLabel.visible = true
+		warning_label.text = "You're chosen directory does not seem to exist, please try again"
+		warning_label.visible = true
