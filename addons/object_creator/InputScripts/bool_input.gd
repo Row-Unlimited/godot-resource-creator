@@ -1,28 +1,32 @@
 @tool
 extends InputManager
 
-var toggleStatus = false
+var toggle_status = false
 
 func set_up_nodes():
-	typeLabel = get_node("InputContainer/PropertyType")
-	nameLabel = get_node("InputContainer/PropertyName")
-	inputNode = get_node("InputContainer/Input")
-	inputWarning = get_node("WarningContainer/WrongInputWarning")
+	type_label = get_node("InputContainer/PropertyType")
+	name_label = get_node("InputContainer/PropertyName")
+	input_node = get_node("InputContainer/Input")
+	input_warning = get_node("WarningContainer/WrongInputWarning")
 
 
-func initialize_input(propertyDict: Dictionary):
-	typeLabel = get_node("InputContainer/PropertyType")
-	nameLabel = get_node("InputContainer/PropertyName")
-	inputNode = get_node("InputContainer/Input")
-	inputWarning = get_node("WarningContainer/WrongInputWarning")
-	inputNode.connect("toggled", Callable(self, "on_toggled"))
+func initialize_input(property_dict: Dictionary):
+	type_label = get_node("InputContainer/PropertyType")
+	name_label = get_node("InputContainer/PropertyName")
+	input_node = get_node("InputContainer/Input")
+	input_warning = get_node("WarningContainer/WrongInputWarning")
+	input_node.connect("toggled", Callable(self, "on_toggled"))
 	
-	set_property_information(propertyDict)
-	typeLabel.text = return_type_string(property["type"])
+	set_property_information(property_dict)
+	type_label.text = return_type_string(property["type"])
 
 func attempt_submit() -> Variant:
 	
-	return toggleStatus
+	return toggle_status
 
 func on_toggled(toggled_on):
-	toggleStatus = toggled_on
+	toggle_status = toggled_on
+
+func receive_input(input):
+	input_node.toggle_mode = input
+	toggle_status = input

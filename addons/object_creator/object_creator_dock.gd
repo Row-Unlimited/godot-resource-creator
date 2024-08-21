@@ -3,12 +3,12 @@ extends EditorPlugin
 const scenePath = "res://addons/object_creator/Scenes/startup_scene.tscn"
 const PLUGIN_CONFIG_PATH = "res://addons/object_creator/PluginConfig.tres"
 var dock
-var pluginConfig = preload(PLUGIN_CONFIG_PATH)
+var plugin_config = preload(PLUGIN_CONFIG_PATH)
 
 func _enter_tree():
 	dock = preload(scenePath).instantiate()
 	
-	if pluginConfig.is_main_dock:
+	if plugin_config.is_main_dock:
 		EditorInterface.get_editor_main_screen().add_child(dock)
 	else:
 		add_control_to_dock(DOCK_SLOT_LEFT_UL, dock)
@@ -18,7 +18,7 @@ func _enter_tree():
 
 
 func _has_main_screen():
-	return pluginConfig.is_main_dock
+	return plugin_config.is_main_dock
 
 
 func _make_visible(visible):

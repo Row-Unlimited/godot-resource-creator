@@ -1,35 +1,51 @@
 @tool
 extends InputManager
-## default input box used for int/String/float
+
+const vector_enum_types = [5, 6, 9, 10, 12, 13]
+
 
 var isInt: bool
 
 
 func set_up_nodes():
-	typeLabel = get_node("InputContainer/PropertyType")
-	nameLabel = get_node("InputContainer/PropertyName")
-	inputNode = get_node("InputContainer/Input")
-	inputWarning = get_node("WarningContainer/WrongInputWarning")
-	typeLabel.text = return_type_string(inputType)
-	inputNode.create_vector_UI(inputType)
+	type_label = get_node("InputContainer/PropertyType")
+	name_label = get_node("InputContainer/PropertyName")
+	input_node = get_node("InputContainer/Input")
+	input_warning = get_node("WarningContainer/WrongInputWarning")
+	type_label.text = return_type_string(input_type)
+	input_node.create_vector_UI(input_type)
 
-func initialize_input(propertyDict: Dictionary):
-	typeLabel = get_node("InputContainer/PropertyType")
-	nameLabel = get_node("InputContainer/PropertyName")
-	inputNode = get_node("InputContainer/Input")
-	inputWarning = get_node("WarningContainer/WrongInputWarning")
+func initialize_input(property_dict: Dictionary):
+	type_label = get_node("InputContainer/PropertyType")
+	name_label = get_node("InputContainer/PropertyName")
+	input_node = get_node("InputContainer/Input")
+	input_warning = get_node("WarningContainer/WrongInputWarning")
 	
-	set_property_information(propertyDict)
-	typeLabel.text = return_type_string(inputType)
-	inputNode.create_vector_UI(inputType)
+	set_property_information(property_dict)
+	type_label.text = return_type_string(input_type)
+	input_node.create_vector_UI(input_type)
 
 func attempt_submit() -> Variant:
-	var returnValue = null
-	var tempValue = inputNode.return_input()
-	if not check_input_range(tempValue) or tempValue == null:
-		returnValue = null
+	var return_value = null
+	var temp_value = input_node.return_input()
+	if not check_input_range(temp_value) or temp_value == null:
+		return_value = null
 		show_input_warning()
 	else:
-		returnValue = tempValue
-	return returnValue
+		return_value = temp_value
+	return return_value
 
+func receive_input(input):
+	if is_vector(input):
+		var input_values = []
+		input_node.x_input.text = input.x
+		input_node.y_input.text = input.y
+		if(typeof(input) > 6):
+			input_node.z_input.text = input.z
+			if(typeof(input) > 10):
+				input_node.wInput.text = input.w
+	else:
+		assert(false, "Error: you are trying to input a non vector object to a vector input")
+
+func is_vector(input) -> bool:
+	return typeof(input) in vector_enum_types
