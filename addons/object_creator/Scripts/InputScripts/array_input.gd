@@ -37,7 +37,7 @@ func initialize_input(property_dict: Dictionary):
 func add_element(element_type: Variant.Type, def_input=null):
 	var is_vector = false
 	var new_scene: PackedScene
-	match selected_type:
+	match element_type:
 		TYPE_NIL:
 			return
 		TYPE_INT:
@@ -51,13 +51,13 @@ func add_element(element_type: Variant.Type, def_input=null):
 		TYPE_ARRAY:
 			new_scene = array_input
 		_:
-			if VECTOR_TYPES.has(selected_type):
+			if VECTOR_TYPES.has(element_type):
 				new_scene = vector_input
 				is_vector = true
 	var new_input_node: ArrayElementInput =  array_element_scene.instantiate()
 	var new_input_manager = new_scene.instantiate()
 	input_managers.append(new_input_manager)
-	new_input_manager.input_type = selected_type
+	new_input_manager.input_type = element_type
 	
 	add_child(new_input_node) # add ArrayElementInput as new child
 	var actual_position = get_children().size() - 2 
@@ -69,9 +69,9 @@ func add_element(element_type: Variant.Type, def_input=null):
 	# connect remove and move buttons
 	new_input_node.connect("move_node", Callable(self, "_on_move_node"))
 	new_input_node.connect("remove_node", Callable(self, "_on_remove_node"))
-
 	if def_input != null:
-		new_input_manager.receive_input(default_input)
+		print(def_input)
+		new_input_manager.receive_input(def_input)
 
 func _on_add_element_pressed():
 	add_element(selected_type)
@@ -136,6 +136,5 @@ func _on_remove_node(node: ArrayElementInput):
 	remove_child(node)
 
 func receive_input(input):
-	print(input)
 	for element in input:
 		add_element(typeof(element), element)
