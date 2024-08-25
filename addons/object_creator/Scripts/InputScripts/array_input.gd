@@ -70,7 +70,6 @@ func add_element(element_type: Variant.Type, def_input=null):
 	new_input_node.connect("move_node", Callable(self, "_on_move_node"))
 	new_input_node.connect("remove_node", Callable(self, "_on_remove_node"))
 	if def_input != null:
-		print(def_input)
 		new_input_manager.receive_input(def_input)
 
 func _on_add_element_pressed():
