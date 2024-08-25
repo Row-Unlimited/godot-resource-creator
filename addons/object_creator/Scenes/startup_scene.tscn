@@ -1,10 +1,15 @@
-[gd_scene load_steps=6 format=3 uid="uid://8frg8yhp0w80"]
+[gd_scene load_steps=8 format=3 uid="uid://8frg8yhp0w80"]
 
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/object_creator.gd" id="1_8x6gw"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/class_loader.gd" id="2_70apg"]
 [ext_resource type="PackedScene" uid="uid://bwkxq5yitdt3m" path="res://addons/object_creator/Scenes/navigator.tscn" id="3_dosa5"]
+[ext_resource type="Shader" path="res://addons/object_creator/Assets/image-lighten.gdshader" id="4_m6b33"]
 [ext_resource type="Texture2D" uid="uid://s6vcbnq6kmai" path="res://addons/object_creator/Assets/settings-button.png" id="4_vxi2q"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/Settings/settings_button.gd" id="5_vsukn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ouqqc"]
+shader = ExtResource("4_m6b33")
+shader_parameter/active = false
 
 [node name="StartupScene" type="Control"]
 layout_mode = 3
@@ -30,6 +35,7 @@ grow_vertical = 2
 layout_mode = 1
 
 [node name="Settings-Button" type="TextureButton" parent="."]
+material = SubResource("ShaderMaterial_ouqqc")
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
@@ -41,3 +47,6 @@ texture_normal = ExtResource("4_vxi2q")
 ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("5_vsukn")
+
+[connection signal="button_down" from="Settings-Button" to="Settings-Button" method="_on_button_down"]
+[connection signal="button_up" from="Settings-Button" to="Settings-Button" method="_on_button_up"]
