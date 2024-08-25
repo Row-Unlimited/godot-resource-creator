@@ -20,3 +20,13 @@ func activate_button(callable: Callable):
 func handle_resize():
 	# TODO add proper resizing
 	pass
+
+
+func _on_button_up():
+	material.set_shader_parameter("active", false)
+
+
+
+func _on_button_down():
+	material.set_shader_parameter("active", true)
+	print(material.get_shader_parameter("active"))

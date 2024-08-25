@@ -56,6 +56,11 @@ func return_input() -> Variant:
 	var return_vector
 	for input in input_array:
 		var temp_value: String = input.retrieve_input()
+
+		print(temp_value)
+		if not check_valid(temp_value):
+			return null
+
 		if temp_value.is_empty():
 			if accept_empty_inputs:
 				value_array.append(0 if isInt else 0.)
@@ -78,3 +83,7 @@ func return_input() -> Variant:
 		Variant.Type.TYPE_VECTOR4I:
 			return_vector = Vector4i(value_array[0], value_array[1], value_array[2], value_array[3])
 	return return_vector
+
+func check_valid(value):
+	return (value.is_valid_int() if isInt else value.is_valid_float())
+		
