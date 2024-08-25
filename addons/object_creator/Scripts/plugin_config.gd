@@ -10,6 +10,7 @@ extends Resource
 @export var disable_navigator: bool = false
 @export var ignored_directories: Array
 @export var is_main_dock : bool = false
+@export var accept_empty_inputs : bool = true
 
 
 func contains(cObject: ClassObject) -> ClassObject:

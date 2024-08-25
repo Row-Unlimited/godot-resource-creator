@@ -11,6 +11,7 @@ var type_label
 var input_node
 var input_warning
 var array_position: int # position if inputmanager is within an array
+var accept_empty_inputs : bool
 
 func initialize_input(property_dict: Dictionary):
 	property = property_dict
@@ -90,6 +91,15 @@ func set_property_information(property: Dictionary):
 func show_input_warning():
 	input_warning.visible = true
 	pass
+
+func return_empty_by_type():
+	match input_type:
+		TYPE_INT:
+			return 0
+		TYPE_FLOAT:
+			return 0.
+		TYPE_STRING:
+			return ""
 
 func hide_input_warning():
 	input_warning.visible = false
