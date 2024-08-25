@@ -12,3 +12,4 @@ set_exportPath = ""
 disable_navigator = false
 ignored_directories = [".git", ".godot", "object_creator"]
 is_main_dock = false
+accept_empty_inputs = true

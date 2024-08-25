@@ -118,9 +118,9 @@ func call_class_choice_window(classes: Array):
 	open_new_window(class_choiceScreen.instantiate())
 	current_window.create_class_buttons(classObjects, Callable(self, "on_class_chosen"))
 
-func call_create_object_window(cObject: ClassObject):
+func call_create_object_window(cObject: ClassObject, menu_type=CreateObject.CreateMenuType.NORMAL):
 	open_new_window(create_objectScreen.instantiate())
-	current_window.initialize_UI(cObject)
+	current_window.initialize_UI(cObject, menu_type)
 	if plugin_config.set_exportPath.is_empty():
 		current_window.connect("object_created", Callable(self, "on_object_created_default"))
 	else:
@@ -156,5 +156,5 @@ func on_path_chosen(path_string: String):
 
 func _on_options_button_pressed():
 	var settings_object: ClassObject = ClassObject.new(SETTINGS_CLASS_PATH, "PluginConfig", plugin_config)
-	call_create_object_window(settings_object)
+	call_create_object_window(settings_object, CreateObject.CreateMenuType.SETTINGS)
 #endregion
