@@ -12,6 +12,8 @@ var vector_type
 var variable_number: int
 var input_array: Array
 
+var accept_empty_inputs : bool
+
 func _ready():
 	x_input = $X
 	input_array.append(x_input)
@@ -55,9 +57,12 @@ func return_input() -> Variant:
 	for input in input_array:
 		var temp_value: String = input.retrieve_input()
 		if temp_value.is_empty():
-			return null
+			if accept_empty_inputs:
+				value_array.append(0 if isInt else 0.)
+			else:
+				return null
 		else:
-			value_array.append(temp_value.to_int())
+			value_array.append(temp_value.to_int() if isInt else temp_value.to_float())
 	
 	match vector_type:
 		Variant.Type.TYPE_VECTOR2:

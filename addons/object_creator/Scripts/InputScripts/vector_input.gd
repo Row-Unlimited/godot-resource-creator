@@ -24,6 +24,7 @@ func initialize_input(property_dict: Dictionary):
 	set_property_information(property_dict)
 	type_label.text = return_type_string(input_type)
 	input_node.create_vector_UI(input_type)
+	input_node.accept_empty_inputs = accept_empty_inputs
 
 func attempt_submit() -> Variant:
 	var return_value = null

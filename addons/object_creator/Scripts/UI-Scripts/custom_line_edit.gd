@@ -14,7 +14,6 @@ func _ready():
 	connect("text_changed", Callable(self, "on_text_changed"))
 
 func retrieve_input() -> String:
-	print(str(input_type))
 	match input_type:
 		TYPE_INT:
 			if not text.is_valid_int():
