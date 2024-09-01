@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bfx440s41agqa"]
+
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/FastTest/fast_test.gd" id="1_2aoag"]
+
+[node name="TestScene" type="Node"]
+script = ExtResource("1_2aoag")
