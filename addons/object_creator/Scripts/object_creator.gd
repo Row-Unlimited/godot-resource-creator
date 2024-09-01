@@ -5,7 +5,8 @@ extends Node
 const PLUGIN_CONFIG_PATH = "res://addons/object_creator/PluginConfig.tres"
 const SETTINGS_CLASS_PATH = "res://addons/object_creator/Scripts/plugin_config.gd"
 
-var class_loader ## Node used to load class information from the project
+var class_loader : ClassLoader ## Node used to load class information from the project
+var exporter : Exporter
 var plugin_config #= preload(PLUGIN_CONFIG_PATH)
 var class_choiceScreen = preload("res://addons/object_creator/Scenes/class_choice.tscn")
 var create_objectScreen = preload("res://addons/object_creator/Scenes/create_object.tscn")
@@ -14,6 +15,8 @@ var navigator
 var settings_button
 var current_window: Control
 var ui_node: Control
+
+var is_settings_menu = false
 
 var is_classChoiceNeeded = true;
 var possible_classObjects: Array
@@ -24,10 +27,12 @@ var use_resourceFormat = false
 var final_object
 var path: String
 
+#region integration_variables
 var external_creationHandler: Object = null
 var external_handlingMethodName: String = ""
 var navigator_callable: Callable
 var is_defaultCallableActive = true
+#endregion
 
 signal creation_finished(object, path: String, exportAsResource: bool)
 
@@ -36,6 +41,7 @@ func _ready():
 	ui_node = get_node("UINode")
 	navigator = get_node("Navigator")
 	settings_button = get_node("Settings-Button")
+	exporter = get_node("Exporter")
 
 ## checks the status of the plugin
 ## if the plugin is integrated it will directly only include named classes
@@ -45,7 +51,7 @@ func start_creation_process():
 	plugin_config = ResourceLoader.load(PLUGIN_CONFIG_PATH, "", ResourceLoader.CACHE_MODE_IGNORE)
 	if is_defaultCallableActive:
 		navigator_callable = Callable(self, "handle_navigator")
-	settings_button.activate_button(Callable(self, "_on_options_button_pressed"))
+	settings_button.activate_button(Callable(self, "_on_settings_button_pressed"))
 	if not navigator.is_connected("navigator_pressed", navigator_callable):
 		navigator.connect("navigator_pressed", navigator_callable)
 	if class_loader.check_for_integration():
@@ -75,7 +81,7 @@ func start_creation_process():
 ## per default it just exports the object and is done, but this can be modified for integration
 func finish_creation_process():
 	emit_signal("creation_finished", final_object, path, use_resourceFormat)
-	Exporter.new(path, [final_object])
+	exporter.export_files(path, [final_object])
 	plugin_config.update_user_class_information(object_class)
 	plugin_config.sort_arrays()
 	for cObject in plugin_config.classObjects:
@@ -101,8 +107,10 @@ func set_navigator_callable(callable: Callable):
 #region UI-Handling
 func handle_navigator(is_reset: bool):
 	if is_reset:
+		is_settings_menu = false
 		reset_process()
-	pass
+	else:
+		navigate_back()
 
 ## takes an array of class objects and initiates the class choice window
 func call_class_choice_window(classes: Array):
@@ -121,6 +129,7 @@ func call_class_choice_window(classes: Array):
 func call_create_object_window(cObject: ClassObject, menu_type=CreateObject.CreateMenuType.NORMAL):
 	open_new_window(create_objectScreen.instantiate())
 	current_window.initialize_UI(cObject, menu_type)
+	current_window.connect("settings_changed", Callable(exporter, "save_settings_file"))
 	if plugin_config.set_exportPath.is_empty():
 		current_window.connect("object_created", Callable(self, "on_object_created_default"))
 	else:
@@ -133,6 +142,11 @@ func open_new_window(windowRoot: Control):
 		ui_node.remove_child(current_window)
 	current_window = windowRoot
 	ui_node.add_child(windowRoot)
+
+func navigate_back():
+	print("hellop")
+	pass
+
 #endregion
 
 #region signal functions
@@ -154,7 +168,12 @@ func on_path_chosen(path_string: String):
 	path = path_string
 	finish_creation_process()
 
-func _on_options_button_pressed():
-	var settings_object: ClassObject = ClassObject.new(SETTINGS_CLASS_PATH, "PluginConfig", plugin_config)
-	call_create_object_window(settings_object, CreateObject.CreateMenuType.SETTINGS)
+func _on_settings_button_pressed():
+	if not is_settings_menu:
+		var settings_object: ClassObject = ClassObject.new(SETTINGS_CLASS_PATH, "PluginConfig", plugin_config)
+		call_create_object_window(settings_object, CreateObject.CreateMenuType.SETTINGS)
+		is_settings_menu = true
+	else:
+		navigate_back()
+
 #endregion

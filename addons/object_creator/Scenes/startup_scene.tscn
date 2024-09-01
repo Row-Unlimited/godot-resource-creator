@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://8frg8yhp0w80"]
+[gd_scene load_steps=9 format=3 uid="uid://8frg8yhp0w80"]
 
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/object_creator.gd" id="1_8x6gw"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/class_loader.gd" id="2_70apg"]
 [ext_resource type="PackedScene" uid="uid://bwkxq5yitdt3m" path="res://addons/object_creator/Scenes/navigator.tscn" id="3_dosa5"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/exporter.gd" id="4_46auy"]
 [ext_resource type="Shader" path="res://addons/object_creator/Assets/image-lighten.gdshader" id="4_m6b33"]
 [ext_resource type="Texture2D" uid="uid://s6vcbnq6kmai" path="res://addons/object_creator/Assets/settings-button.png" id="4_vxi2q"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/Settings/settings_button.gd" id="5_vsukn"]
@@ -33,6 +34,9 @@ grow_vertical = 2
 
 [node name="Navigator" parent="." instance=ExtResource("3_dosa5")]
 layout_mode = 1
+
+[node name="Exporter" type="Node" parent="."]
+script = ExtResource("4_46auy")
 
 [node name="Settings-Button" type="TextureButton" parent="."]
 material = SubResource("ShaderMaterial_ouqqc")

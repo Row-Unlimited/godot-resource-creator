@@ -29,4 +29,3 @@ func _on_button_up():
 
 func _on_button_down():
 	material.set_shader_parameter("active", true)
-	print(material.get_shader_parameter("active"))
