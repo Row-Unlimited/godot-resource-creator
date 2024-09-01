@@ -8,6 +8,11 @@ static func check_string_contains_array(stringArray: Array, checkString: String)
 			return true
 	return false
 
+## updates one objects values with another objects ones[br]
+## [param skipped_properties]: will skip certain variables if their names match[br]
+## [param ignore_propery_overflow]: 	if set to true the func will ignore it if the update_object has variables
+## 									that the base_object has not[br]
+## [param ignore_null_values]: if set to false, null values from the update_object will also be used to overwrite the base_object
 static func update_object(base_object: Object, update_object: Object, skipped_properties=[], ignore_propery_overflow = false, ignore_null_values = true):
 	var new_properties = update_object.get_property_list()
 	var old_property_keys = []
@@ -27,6 +32,9 @@ static func update_object(base_object: Object, update_object: Object, skipped_pr
 		if update_value or not ignore_null_values:
 			base_object.set(property_name, update_value)
 
+## compares arrays and returns whether they are the same.[br]
+## [param ignore_order]: if set to false, the method will also check whether the elements
+## are in the correct order
 static func compare_arrays(arr1: Array, arr2: Array, ignore_order=true):
 	if arr1.size() != arr2.size():
 		return false
@@ -43,6 +51,8 @@ static func compare_arrays(arr1: Array, arr2: Array, ignore_order=true):
 	
 	return true
 
+## prints the name of all variables and their current values of an object[br]
+## [param skipped_properties]: will skip certain variables if their names are the same
 static func print_object_values(obj: Object, skipped_properties=[]):
 	var properties = obj.get_property_list()
 	for property in properties:

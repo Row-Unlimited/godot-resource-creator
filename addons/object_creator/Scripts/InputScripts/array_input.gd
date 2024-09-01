@@ -4,6 +4,8 @@ extends InputManager
 ## Uses array_element_input as InputNodes for the UI of the Inputs.
 ## InputManager Objects are stored in input_managers array and sorted when UI nodes are moved
 
+const SUPPORTED_TYPES = ["String", "int", "float", "bool", "Array", "Dictionary","Vector2", "Vector3", "Vector4", "Vector2i", "Vector3i", "Vector4i"]
+
 var array_element_scene = preload("res://addons/object_creator/Scenes/Variable Input Scenes/array_element_input.tscn")
 
 var default_input = preload("res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn")
@@ -20,6 +22,12 @@ var selected_type: Variant.Type = Variant.Type.TYPE_NIL
 var input_managers: Array
 const VECTOR_TYPES = [TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I, TYPE_VECTOR4, TYPE_VECTOR4I]
 
+## gets called first and is used to initialize values
+func initialize_input(property_dict: Dictionary):
+	property = property_dict
+	set_up_nodes()
+	name_label.text = property_dict["name"]
+
 func set_up_nodes():
 	add_element_section = get_node("AddElementSection")
 	type_label = add_element_section.get_node("PropertyType")
@@ -27,12 +35,30 @@ func set_up_nodes():
 	input_warning = get_node("Warning")
 	add_element_button = add_element_section.get_node("AddElementButton")
 	element_type_button = add_element_section.get_node("ElementTypeButton")
-	
+	for type in SUPPORTED_TYPES:
+		element_type_button.add_item(type)
+	check_typed_array()
 
-func initialize_input(property_dict: Dictionary):
-	property = property_dict
-	set_up_nodes()
-	name_label.text = property_dict["name"]
+
+func check_typed_array():
+	var type_arr: String
+	var hint_string : String = property["hint_string"]
+	match property["hint"]:
+		31:
+			type_arr = hint_string
+		23:
+			var regex = RegEx.new()
+			regex.compile("([1-9]{1}[0-9]{0,1}):")
+			type_arr = regex.search(hint_string).get_string()
+			type_arr = return_type_string(type_arr.to_int())
+	if not type_arr:
+		return
+	if type_arr in SUPPORTED_TYPES:
+		disable_select_type_button([type_arr], true)
+	else:
+		# TODO  find solution
+		assert(false, "unsupported type in typed array")
+		
 
 func add_element(element_type: Variant.Type, def_input=null):
 	var is_vector = false
@@ -137,3 +163,15 @@ func _on_remove_node(node: ArrayElementInput):
 func receive_input(input):
 	for element in input:
 		add_element(typeof(element), element)
+
+func disable_select_type_button(types: Array, include_types_only = false):
+	for i in element_type_button.item_count:
+		var should_be_disabled = element_type_button.get_item_text(i) in types
+		should_be_disabled = should_be_disabled if not include_types_only else not should_be_disabled
+		element_type_button.set_item_disabled(i, should_be_disabled)
+	# now select a not disabled button
+	for i in element_type_button.item_count:
+		if element_type_button.is_item_disabled(i) == false:
+			element_type_button.select(i)
+			element_type_button.emit_signal("item_selected", i)
+			break
