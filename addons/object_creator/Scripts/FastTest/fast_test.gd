@@ -9,9 +9,10 @@ func _ready() -> void:
 	test_crap()
 
 func test_crap():
-	var test_obj = TestClass.new()
-	for property in test_obj.get_property_list():
-		print(property)
+	var path = "InputContainer/Input/X"
+	print(Helper.remove_items_from_path(path, 1))
+	print(Helper.remove_items_from_path(path, 2))
+	pass
 
 func test_helper_update():
 	var test_object_1 = TestClass.new()

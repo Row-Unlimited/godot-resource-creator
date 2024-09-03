@@ -1,15 +1,15 @@
 [gd_scene load_steps=2 format=3 uid="uid://btrkagmlpc8vv"]
 
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/default_input.gd" id="1_fbmgn"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/dictionary_input.gd" id="1_5ibh3"]
 
-[node name="DefaultInput" type="VBoxContainer"]
+[node name="DictionaryInput" type="VBoxContainer"]
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 0.2
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-script = ExtResource("1_fbmgn")
+script = ExtResource("1_5ibh3")
 
 [node name="InputContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
@@ -34,5 +34,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="WrongInputWarning" type="Label" parent="WarningContainer"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
+text = "Invalid Input"

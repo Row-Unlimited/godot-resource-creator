@@ -17,7 +17,7 @@ var property_list: Array
 
 var accept_empty_inputs
 
-var skipped_properties =["resource_local_to_scene", "resource_path", "resource_name"]
+var SKIPPED_PROPERTIES =["resource_local_to_scene", "resource_path", "resource_name", "resource_scene_unique_id"]
 
 var menu_type = CreateMenuType.NORMAL
 enum CreateMenuType {
@@ -44,7 +44,7 @@ func initialize_UI(cObject: ClassObject, create_menu_type: CreateMenuType = Crea
 	# Create UI for every single Input
 	for property: Dictionary in property_list:
 		var property_input_path = determine_input_type(property)
-		if property_input_path != "" and not skipped_properties.has(property["name"]):
+		if property_input_path != "" and not SKIPPED_PROPERTIES.has(property["name"]):
 			var new_input : InputManager = load(property_input_path).instantiate()
 			
 			add_breakline()
@@ -53,8 +53,6 @@ func initialize_UI(cObject: ClassObject, create_menu_type: CreateMenuType = Crea
 			new_input.accept_empty_inputs = accept_empty_inputs
 			
 			input_root_node.add_child(new_input)
-			if (property_input_path.contains("array")):
-				new_input.array_input = load(property_input_path)
 			new_input.initialize_input(property)
 
 			input_nodes.append(new_input)

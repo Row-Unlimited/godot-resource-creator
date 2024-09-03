@@ -17,25 +17,25 @@ script = ExtResource("1_d8801")
 [node name="BreakLine" parent="." instance=ExtResource("2_2g3rl")]
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="ButtonContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 alignment = 2
 
-[node name="MoveUpButton" type="Button" parent="HBoxContainer"]
+[node name="MoveUpButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 icon = ExtResource("2_8ajga")
 
-[node name="MoveDownButton" type="Button" parent="HBoxContainer"]
+[node name="MoveDownButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 icon = ExtResource("3_knb70")
 
-[node name="RemoveButton" type="Button" parent="HBoxContainer"]
+[node name="RemoveButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 icon = ExtResource("4_h1ket")
 
-[connection signal="pressed" from="HBoxContainer/MoveUpButton" to="." method="_on_move_up_pressed"]
-[connection signal="pressed" from="HBoxContainer/MoveDownButton" to="." method="_on_move_down_pressed"]
-[connection signal="pressed" from="HBoxContainer/RemoveButton" to="." method="_on_remove_button_pressed"]
+[connection signal="pressed" from="ButtonContainer/MoveUpButton" to="." method="_on_move_up_pressed"]
+[connection signal="pressed" from="ButtonContainer/MoveDownButton" to="." method="_on_move_down_pressed"]
+[connection signal="pressed" from="ButtonContainer/RemoveButton" to="." method="_on_remove_button_pressed"]

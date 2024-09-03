@@ -5,6 +5,9 @@ extends VBoxContainer
 ## sets up the InputManager as childObject and updates the array_position of InputManager
 ## sends signals for movement and removing to the Array_inputManager above
 
+var key_line_edit : LineEdit
+var button_container : HBoxContainer
+
 var position_child : int : 
 	set(value):
 		position_child = value
@@ -32,3 +35,11 @@ func _on_move_down_pressed():
 
 func _on_remove_button_pressed():
 	emit_signal("remove_node", self)
+
+func add_key_lineEdit():
+	button_container = get_node("ButtonContainer")
+	key_line_edit = LineEdit.new()
+	key_line_edit.placeholder_text = "Key"
+	button_container.add_child(key_line_edit)
+	button_container.move_child(key_line_edit, 0)
+	key_line_edit.size_flags_horizontal = Control.SIZE_EXPAND

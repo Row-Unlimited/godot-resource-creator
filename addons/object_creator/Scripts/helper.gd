@@ -63,3 +63,12 @@ static func print_object_values(obj: Object, skipped_properties=[]):
 			var value_string = property_name + ": " + str(obj.get(property_name))
 			print(value_string)
 			print("--".rpad(value_string.length(), "-"))
+
+static func remove_items_from_path(path: String, number_items : int):
+	var path_reverse = path.reverse()
+	for i in number_items:
+		var signifier_index = path_reverse.find("/")
+		if signifier_index == -1:
+			return null
+		path_reverse = path_reverse.substr(signifier_index + 1)
+	return path_reverse.reverse()
