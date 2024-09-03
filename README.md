@@ -21,3 +21,4 @@ For Integration information look [here](Integration.md)
 ## Current Issues
 - [ ] Add proper Settings menu for Config
 - [ ] Proper Main Dock integration
+- [ ] Add Sub Resource Creation

@@ -1,4 +1,5 @@
 @tool
+class_name ArrayInput
 extends InputManager
 ## This class Handles Array_inputs as InputManager
 ## Uses array_element_input as InputNodes for the UI of the Inputs.
@@ -8,10 +9,15 @@ const SUPPORTED_TYPES = ["String", "int", "float", "bool", "Array", "Dictionary"
 
 var array_element_scene = preload("res://addons/object_creator/Scenes/Variable Input Scenes/array_element_input.tscn")
 
-var default_input = preload("res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn")
-var bool_input = preload("res://addons/object_creator/Scenes/Variable Input Scenes/bool_input.tscn")
-var array_input
-var vector_input = preload("res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn")
+## holds the scene paths to all the different InputManager scenes
+var input_scenes = {
+	"default": preload("res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"),
+	"bool": preload("res://addons/object_creator/Scenes/Variable Input Scenes/bool_input.tscn"),
+	"vector": preload("res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"),
+	"array": load("res://addons/object_creator/Scenes/Variable Input Scenes/array_input.tscn"),
+	"dictionary": load("res://addons/object_creator/Scenes/Variable Input Scenes/dictionary_input.tscn"),
+	"object": preload("res://addons/object_creator/Scenes/Variable Input Scenes/object_input.tscn")
+}
 
 var add_element_button: Button
 var element_type_button: DataTypeOptionButton
@@ -37,7 +43,10 @@ func set_up_nodes():
 	element_type_button = add_element_section.get_node("ElementTypeButton")
 	for type in SUPPORTED_TYPES:
 		element_type_button.add_item(type)
-	check_typed_array()
+	if property:
+		check_typed_array()
+	else:
+		make_name_input(true)
 
 
 func check_typed_array():
@@ -59,7 +68,7 @@ func check_typed_array():
 		# TODO  find solution
 		assert(false, "unsupported type in typed array")
 		
-
+# TODO: fix that vectors can be added
 func add_element(element_type: Variant.Type, def_input=null):
 	var is_vector = false
 	var new_scene: PackedScene
@@ -67,18 +76,18 @@ func add_element(element_type: Variant.Type, def_input=null):
 		TYPE_NIL:
 			return
 		TYPE_INT:
-			new_scene = default_input
+			new_scene = input_scenes["default"]
 		TYPE_FLOAT:
-			new_scene = default_input
+			new_scene = input_scenes["default"]
 		TYPE_STRING:
-			new_scene = default_input
+			new_scene = input_scenes["default"]
 		TYPE_BOOL:
-			new_scene = bool_input
+			new_scene = input_scenes["bool"]
 		TYPE_ARRAY:
-			new_scene = array_input
+			new_scene = input_scenes["array"]
 		_:
 			if VECTOR_TYPES.has(element_type):
-				new_scene = vector_input
+				new_scene = input_scenes["vector"]
 				is_vector = true
 	var new_input_node: ArrayElementInput =  array_element_scene.instantiate()
 	var new_input_manager = new_scene.instantiate()
@@ -175,3 +184,7 @@ func disable_select_type_button(types: Array, include_types_only = false):
 			element_type_button.select(i)
 			element_type_button.emit_signal("item_selected", i)
 			break
+
+func make_name_input(is_dict=false):
+	# empty function since the ArrayElementInput needs to be set with that, which happens one step above
+	pass
