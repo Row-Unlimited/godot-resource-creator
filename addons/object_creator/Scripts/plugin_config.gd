@@ -4,11 +4,11 @@ extends Resource
 
 @export var used_exportPaths: Array
 @export var isIntegrated: bool
-@export var integrated_classPaths: Array
+@export var integrated_classPaths: Array[String]
 @export var classObjects: Array
 @export var set_exportPath: String
 @export var disable_navigator: bool = false
-@export var ignored_directories: Array
+@export var ignored_directories: Array[String]
 @export var is_main_dock : bool = false
 @export var accept_empty_inputs : bool = true
 

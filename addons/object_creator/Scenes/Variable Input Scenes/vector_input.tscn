@@ -74,6 +74,6 @@ size_flags_vertical = 3
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Invalid String for Resource creation"
+text = "Invalid Input for Resource creation"
 label_settings = ExtResource("4_q32at")
 horizontal_alignment = 1
