@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://c4nafikdyelds"]
 
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/array_element_input.gd" id="1_d8801"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/multi_element_container.gd" id="1_d8801"]
 [ext_resource type="PackedScene" uid="uid://b45y4htt48hlq" path="res://addons/object_creator/Scenes/break_line_array.tscn" id="2_2g3rl"]
 [ext_resource type="Texture2D" uid="uid://cya8l0htpkrnn" path="res://addons/object_creator/Assets/Arrow-Up.png" id="2_8ajga"]
 [ext_resource type="Texture2D" uid="uid://b3b6pivlgk6nc" path="res://addons/object_creator/Assets/Arrow-Down.png" id="3_knb70"]

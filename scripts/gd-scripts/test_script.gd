@@ -7,3 +7,4 @@ extends Resource
 @export var testVector: Vector3
 @export var testArray: Array
 @export var test_typed_array := [1] as Array[int]
+@export var test_dict : Dictionary

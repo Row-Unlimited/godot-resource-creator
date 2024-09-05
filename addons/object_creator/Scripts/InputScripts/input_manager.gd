@@ -81,19 +81,6 @@ func return_type_string(type: Variant.Type) -> String:
 		_:
 			return "unsupported"
 
-## makes the name_label into a LineEdit so you can change it
-## is used in dictionaries
-func make_name_input(is_dict=false):
-	var label_parent = get_node(Helper.remove_items_from_path(name_label.get_path(), 1))
-	var index = name_label.get_index()
-	name_label.free()
-	name_label = LineEdit.new()
-	if is_dict:
-		name_label.placeholder_text = "Key"
-
-	label_parent.add_child(name_label)
-	label_parent.move_child(name_label, index)
-
 ## sets the labels and vars for a given property, is used in non array inputs
 func set_property_information(property: Dictionary):
 	self.property = property

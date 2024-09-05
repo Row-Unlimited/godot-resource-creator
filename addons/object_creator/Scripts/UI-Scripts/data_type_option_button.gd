@@ -16,6 +16,8 @@ func return_type_by_index(index: int) -> Variant.Type:
 			return_type = TYPE_BOOL
 		"Array":
 			return_type = TYPE_ARRAY
+		"Dictionary":
+			return_type = TYPE_DICTIONARY
 		"Vector 2":
 			return_type = TYPE_VECTOR2
 		"Vector 2i":
