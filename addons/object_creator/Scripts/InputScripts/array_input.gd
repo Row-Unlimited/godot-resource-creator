@@ -2,12 +2,12 @@
 class_name ArrayInput
 extends InputManager
 ## This class Handles Array_inputs as InputManager
-## Uses array_element_input as InputNodes for the UI of the Inputs.
+## Uses multi_element_container as InputNodes for the UI of the Inputs.
 ## InputManager Objects are stored in input_managers array and sorted when UI nodes are moved
 
 const SUPPORTED_TYPES = ["String", "int", "float", "bool", "Array", "Dictionary","Vector2", "Vector3", "Vector4", "Vector2i", "Vector3i", "Vector4i"]
 
-var array_element_scene = preload("res://addons/object_creator/Scenes/Variable Input Scenes/array_element_input.tscn")
+var element_container_scene = preload("res://addons/object_creator/Scenes/Variable Input Scenes/multi_element_container.tscn")
 
 ## holds the scene paths to all the different InputManager scenes
 var input_scenes = {
@@ -72,6 +72,7 @@ func check_typed_array():
 func add_element(element_type: Variant.Type, def_input=null):
 	var is_vector = false
 	var new_scene: PackedScene
+	print(element_type)
 	match element_type:
 		TYPE_NIL:
 			return
@@ -85,16 +86,18 @@ func add_element(element_type: Variant.Type, def_input=null):
 			new_scene = input_scenes["bool"]
 		TYPE_ARRAY:
 			new_scene = input_scenes["array"]
+		TYPE_DICTIONARY:
+			new_scene = input_scenes["dictionary"]
 		_:
 			if VECTOR_TYPES.has(element_type):
 				new_scene = input_scenes["vector"]
 				is_vector = true
-	var new_input_node: ArrayElementInput =  array_element_scene.instantiate()
+	var new_input_node: MultiElementContainer =  element_container_scene.instantiate()
 	var new_input_manager = new_scene.instantiate()
 	input_managers.append(new_input_manager)
 	new_input_manager.input_type = element_type
 	
-	add_child(new_input_node) # add ArrayElementInput as new child
+	add_child(new_input_node) # add MultiElementContainer as new child
 	var actual_position = get_children().size() - 2 
 	move_child(new_input_node, actual_position) # so the warning is always at the bottom
 	# Sets the child position so we can move it with the arrow up and down buttons
@@ -144,9 +147,9 @@ func _on_minimize_pressed():
 	pass 
 
 ## Moves an InputNode in the Array UI
-## Is called by a signal when the remove Button is pressed in ArrayElementInput
+## Is called by a signal when the remove Button is pressed in MultiElementContainer
 ## Since the Array UI represents the Array Position later on, this also sorts the Input Managers
-func _on_move_node(node: ArrayElementInput, new_position: int):
+func _on_move_node(node: MultiElementContainer, new_position: int):
 	
 	if new_position >= get_children().size() - 1 or new_position < 1:
 		return # elements shouldn't be under the warning or over the first element
@@ -165,7 +168,7 @@ func _on_move_node(node: ArrayElementInput, new_position: int):
 		input_managers.sort_custom(func(a, b): return a.array_position < b.array_position)
 
 ## Removes InputNode from the Array UI
-func _on_remove_node(node: ArrayElementInput):
+func _on_remove_node(node: MultiElementContainer):
 	input_managers.remove_at(input_managers.find(node.input))
 	remove_child(node)
 
@@ -186,5 +189,5 @@ func disable_select_type_button(types: Array, include_types_only = false):
 			break
 
 func make_name_input(is_dict=false):
-	# empty function since the ArrayElementInput needs to be set with that, which happens one step above
+	# empty function since the MultiElementContainer needs to be set with that, which happens one step above
 	pass
