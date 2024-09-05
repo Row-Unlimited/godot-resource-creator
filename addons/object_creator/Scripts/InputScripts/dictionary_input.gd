@@ -141,7 +141,6 @@ func attempt_submit() -> Variant:
 		for input_manager: InputManager in missing_input_nodes:
 			input_manager.show_input_warning()
 		return null
-	print(return_dict)
 	return return_dict
 
 ## Minimizes Dictionary for better UX

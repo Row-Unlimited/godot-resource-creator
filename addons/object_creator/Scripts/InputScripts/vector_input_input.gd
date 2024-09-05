@@ -52,22 +52,21 @@ func create_vector_UI(type: Variant.Type):
 
 
 func return_input() -> Variant:
+	print(accept_empty_inputs)
 	var value_array = []
 	var return_vector
 	for input in input_array:
 		var temp_value: String = input.retrieve_input()
-
-		print(temp_value)
-		if not check_valid(temp_value):
-			return null
 
 		if temp_value.is_empty():
 			if accept_empty_inputs:
 				value_array.append(0 if isInt else 0.)
 			else:
 				return null
-		else:
+		elif check_valid(temp_value):
 			value_array.append(temp_value.to_int() if isInt else temp_value.to_float())
+		else:
+			return null
 	
 	match vector_type:
 		Variant.Type.TYPE_VECTOR2:
