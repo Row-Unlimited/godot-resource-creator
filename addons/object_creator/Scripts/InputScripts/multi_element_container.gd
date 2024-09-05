@@ -1,12 +1,14 @@
 @tool
-class_name ArrayElementInput
+class_name MultiElementContainer
 extends VBoxContainer
-## This Class is used in the array_element_input scene to handle UI of Array Inputs
+## This Class is used in the multi_element_container scene to handle UI of Array Inputs
 ## sets up the InputManager as childObject and updates the array_position of InputManager
 ## sends signals for movement and removing to the Array_inputManager above
 
 var key_line_edit : LineEdit
 var button_container : HBoxContainer
+
+var input_manager : InputManager
 
 var position_child : int : 
 	set(value):
@@ -16,8 +18,8 @@ var position_child : int :
 			input.array_position = value - 1
 var input: InputManager
 
-signal move_node(node:ArrayElementInput, isUpwards: int)
-signal remove_node(node:ArrayElementInput)
+signal move_node(node : MultiElementContainer, isUpwards: int)
+signal remove_node(node : MultiElementContainer)
 
 func initialize_input(input: InputManager):
 	add_child(input)
@@ -43,3 +45,8 @@ func add_key_lineEdit():
 	button_container.add_child(key_line_edit)
 	button_container.move_child(key_line_edit, 0)
 	key_line_edit.size_flags_horizontal = Control.SIZE_EXPAND
+
+## removes the move buttons since we don't need them for dictionaries
+func remove_move_buttons():
+	for button in [get_node("ButtonContainer/MoveDownButton"), get_node("ButtonContainer/MoveUpButton")]:
+		button.visible = false
