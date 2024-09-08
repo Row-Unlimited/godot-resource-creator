@@ -15,7 +15,7 @@ func initialize_input(property_dict: Dictionary):
 	set_property_information(property_dict)
 	style_input()
 
-func attempt_submit() -> Variant:
+func attempt_submit(mute_warnings=false) -> Variant:
 	var return_value = null
 	var temp_value: String = input_node.text
 	match input_type:
@@ -37,8 +37,14 @@ func attempt_submit() -> Variant:
 
 	if not check_input_range(return_value) or return_value == null:
 		return_value = null
-		show_input_warning()
+		show_input_warning(true)
 	return return_value
+
+func submit_status_dict():
+	# if it's a property it has a name, if it's a sub_element like in an array it is empty
+	var property_name = property["name"] if property else "" 
+	var status_dict = {"value" : input_node.text, "type" : input_type, "name" : property_name}
+	return status_dict
 
 func style_input():
 	name_label.text = property["name"]

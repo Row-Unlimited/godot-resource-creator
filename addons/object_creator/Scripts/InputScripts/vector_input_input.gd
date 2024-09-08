@@ -12,8 +12,6 @@ var vector_type
 var variable_number: int
 var input_array: Array
 
-var accept_empty_inputs : bool
-
 func _ready():
 	x_input = $X
 	input_array.append(x_input)
@@ -51,8 +49,7 @@ func create_vector_UI(type: Variant.Type):
 		input.visible = true
 
 
-func return_input() -> Variant:
-	print(accept_empty_inputs)
+func return_input(accept_empty_inputs) -> Variant:
 	var value_array = []
 	var return_vector
 	for input in input_array:
@@ -83,6 +80,7 @@ func return_input() -> Variant:
 			return_vector = Vector4i(value_array[0], value_array[1], value_array[2], value_array[3])
 	return return_vector
 
+## checks if a vector input is valid
 func check_valid(value):
 	return (value.is_valid_int() if isInt else value.is_valid_float())
 		

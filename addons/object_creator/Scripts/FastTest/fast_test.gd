@@ -1,4 +1,5 @@
 @tool
+class_name FastTest
 extends Node
 
 
@@ -9,9 +10,9 @@ func _ready() -> void:
 	test_crap()
 
 func test_crap():
-	var path = "InputContainer/Input/X"
-	print(Helper.remove_items_from_path(path, 1))
-	print(Helper.remove_items_from_path(path, 2))
+	var strings = ["(12, 2, 3, 0)", "(12, 0.0001)", "(12.00003, 4.980)", "(0, 2.3, 4)"]
+	for string in strings:
+		print(Helper.string_to_vector(string))
 	pass
 
 func test_helper_update():

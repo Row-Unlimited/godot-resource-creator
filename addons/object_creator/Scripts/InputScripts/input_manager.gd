@@ -16,9 +16,15 @@ var accept_empty_inputs : bool
 func initialize_input(property_dict: Dictionary):
 	property = property_dict
 
-func attempt_submit() -> Variant:
+func attempt_submit(mute_warnings=false) -> Variant:
 	var return_value
 	return return_value
+
+## Parent Virtual Function for all input Managers to bring their input into a save format
+## So the CreateObject class can save it
+func submit_status_dict() -> Dictionary:
+	# TODO: I should consider moving the dict creation in this parent function and only changing the value in the sub_functions
+	return {}
 
 ## takes an input that fits the input type and checks whether it fits the range criteria
 ## not implemented yet
@@ -87,7 +93,9 @@ func set_property_information(property: Dictionary):
 	name_label.text = property["name"]
 	input_type = property["type"]
 
-func show_input_warning():
+func show_input_warning(mute_warnings=false):
+	if mute_warnings:
+		return
 	input_warning.visible = true
 	pass
 
