@@ -30,6 +30,10 @@ const type_to_output_signal = ["object_created", "settings_changed"]
 signal object_created(object)
 signal settings_changed(plugin_config_object)
 
+## Creates the create_object menu UI and Logic[br]
+## takes the class from the class_object and gets the property list[br]
+## then it filters out all the properties that are skipped or non-export vars
+## and creates an Input Manager for every not filtered Property according to their Type
 func initialize_UI(cObject: ClassObject, create_menu_type: CreateMenuType = CreateMenuType.NORMAL):
 	class_object = cObject
 	# create object of the class from the script path and get the property list
@@ -41,10 +45,18 @@ func initialize_UI(cObject: ClassObject, create_menu_type: CreateMenuType = Crea
 	# sets up the window settings, so whether it is a special menu or whether it should accept empty inputs
 	menu_set_up(create_menu_type)
 
+	# filters out variables that are not export variables
+	var export_var_lines = Helper.filter_lines(load(class_object.path).new().get_script().source_code, ["@export var"])
+	var prune_lambda = func(x): return Helper.prune_string(x, "var", ":")
+	export_var_lines = export_var_lines.map(prune_lambda)
+
 	# Create UI for every single Input
 	for property: Dictionary in property_list:
+		print(property)
+		var property_name = property["name"]
+
 		var property_input_path = determine_input_type(property)
-		if property_input_path != "" and not SKIPPED_PROPERTIES.has(property["name"]):
+		if property_input_path != "" and not SKIPPED_PROPERTIES.has(property_name) and property_name in export_var_lines:
 			var new_input : InputManager = load(property_input_path).instantiate()
 			
 			add_breakline()
@@ -58,7 +70,7 @@ func initialize_UI(cObject: ClassObject, create_menu_type: CreateMenuType = Crea
 			input_nodes.append(new_input)
 
 			if cObject.premade_object:
-				var object_pre_value = cObject.premade_object.get(property["name"])
+				var object_pre_value = cObject.premade_object.get(property_name)
 				if typeof(object_pre_value) == property["type"] :
 					new_input.receive_input(object_pre_value)
 			
@@ -106,12 +118,12 @@ func on_submit_pressed():
 			input_node.hide_input_warning()
 		else:
 			missing_inputNodes.append(input_node)
-	
+
 	if missing_inputNodes.is_empty():
 		emit_signal(output_signal, temp_object)
 	else:
 		for inputManager: InputManager in missing_inputNodes:
-			inputManager.show_input_warning()
+			inputManager.show_input_warning(true)
 		return
 
 ## function we use to customize the create_object menu so it can be used for settings or other purposes
@@ -123,13 +135,20 @@ func menu_set_up(create_menu_type: CreateMenuType):
 	match create_menu_type:
 		CreateMenuType.SETTINGS:
 			create_settings_menu()
+		_:
+			create_default_menu()
 			
 
+## sets up default variables for create_object menu
+func create_default_menu():
+	add_headline(class_object.name_class)
 
+## sets up special variables for the settings create_object menu
 func create_settings_menu():
 	add_headline("Settings")
 	menu_type = CreateMenuType.SETTINGS
 
+## adds a headline with [paramname text] as String value at the top of the window
 func add_headline(text: String):
 	var new_headline = headline.instantiate()
 	new_headline.text = text
@@ -138,3 +157,28 @@ func add_headline(text: String):
 
 func add_breakline():
 	input_root_node.add_child(breakline.instantiate())
+
+## Saves the current creation status as a dict. [br]
+## Every InputManager returns a Dict with a [b]property name[/b] key or 
+## a [b]value[/b] key for sub inputs (like in arrays) even if the value is empty [br]
+## [b]Format:[/b] [br]
+## 			- Simple Variables are safed as string values [br]
+##			- bool will be safed as strings "BOOL_TRUE" or "BOOL_FALSE" [br]
+##			- Arrays are safed as actual Arrays with a dict value for each element 
+##			the dicts have: [br]
+##				+ a key "type" with Variant.type int values [br]
+##				+ a key "class" for the object class if type is an object [br]
+## 				+ a key "value" with the string input [br]
+##			- Dictionaries will be safed as actual dicts, and the values will be dicts analogous to the arrays [br]
+##			- Vectors will be safed as strings of the format: [br]
+##				VECTOR::<value>,<value>,<value>,<value>::
+func save_status_to_dict():
+	var save_dict: Dictionary = {}
+	
+	for input_node: InputManager in input_nodes:
+		var status_dict = input_node.submit_status_dict()
+		if status_dict != null:
+			var status_dict_key =status_dict["name"]
+			save_dict[status_dict_key] = status_dict
+
+	print(save_dict)

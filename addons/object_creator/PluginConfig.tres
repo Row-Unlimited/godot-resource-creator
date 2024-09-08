@@ -6,10 +6,10 @@
 script = ExtResource("1_myur8")
 used_exportPaths = []
 isIntegrated = false
-integrated_classPaths = []
+integrated_classPaths = Array[String]([])
 classObjects = []
 set_exportPath = ""
 disable_navigator = false
-ignored_directories = [".git", ".godot", "object_creator"]
+ignored_directories = Array[String]([".git", ".godot", "object_creator"])
 is_main_dock = false
 accept_empty_inputs = true

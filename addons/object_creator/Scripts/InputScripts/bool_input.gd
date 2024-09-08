@@ -20,9 +20,16 @@ func initialize_input(property_dict: Dictionary):
 	set_property_information(property_dict)
 	type_label.text = return_type_string(property["type"])
 
-func attempt_submit() -> Variant:
+func attempt_submit(mute_warnings=false) -> Variant:
 	
 	return toggle_status
+
+func submit_status_dict():
+	var value_converted = "BOOL_TRUE" if toggle_status else "BOOL_FALSE"
+	# if it's a property it has a name, if it's a sub_element like in an array it is empty
+	var property_name = property["name"] if property else "" 
+	var status_dict = {"value" : value_converted, "type" : input_type, "name" : property_name}
+	return status_dict
 
 func on_toggled(toggled_on):
 	toggle_status = toggled_on

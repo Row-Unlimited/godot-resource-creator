@@ -45,8 +45,6 @@ func set_up_nodes():
 		element_type_button.add_item(type)
 	if property:
 		check_typed_array()
-	else:
-		make_name_input(true)
 
 
 func check_typed_array():
@@ -117,7 +115,7 @@ func _on_add_element_pressed():
 func _on_type_button_selected(index):
 	selected_type = element_type_button.return_type_by_index(index)
 
-func attempt_submit() -> Variant:
+func attempt_submit(mute_warnings=false) -> Variant:
 	var missing_input_nodes = []
 	var return_array = []
 	for input_manager: InputManager in input_managers:
@@ -130,10 +128,20 @@ func attempt_submit() -> Variant:
 	
 	if not missing_input_nodes.is_empty():
 		for input_manager: InputManager in missing_input_nodes:
-			input_manager.show_input_warning()
+			input_manager.show_input_warning(true)
 		return null
 	
 	return return_array
+
+func submit_status_dict():
+	var value_list = [] # value of the status_dict; Contains all input nodes status_dicts
+	for input_manager in input_managers:
+		value_list += input_manager.submit_status_dict()
+	
+	# if it's a property it has a name, if it's a sub_element like in an array it is empty
+	var property_name = property["name"] if property else "" 
+	var status_dict = {"value" : value_list, "type" : input_type, "name" : property_name}
+	return status_dict
 
 ## Minimizes Arrays for better UX
 func _on_minimize_pressed():
@@ -172,10 +180,13 @@ func _on_remove_node(node: MultiElementContainer):
 	input_managers.remove_at(input_managers.find(node.input))
 	remove_child(node)
 
+## takes an array and fills the input with input fields for each array element
 func receive_input(input):
 	for element in input:
 		add_element(typeof(element), element)
 
+## disables certain types so the select button can't choose them anymore
+## [param include_types_only] makes it so only the values in types are enabled and all others are disabled
 func disable_select_type_button(types: Array, include_types_only = false):
 	for i in element_type_button.item_count:
 		var should_be_disabled = element_type_button.get_item_text(i) in types
@@ -187,7 +198,3 @@ func disable_select_type_button(types: Array, include_types_only = false):
 			element_type_button.select(i)
 			element_type_button.emit_signal("item_selected", i)
 			break
-
-func make_name_input(is_dict=false):
-	# empty function since the MultiElementContainer needs to be set with that, which happens one step above
-	pass

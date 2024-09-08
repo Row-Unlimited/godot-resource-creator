@@ -13,7 +13,7 @@ For Integration information look [here](Integration.md)
 - [x] Add Vector Data Types
 - [ ] Add Integration functionality
 - [ ] Add Callable Data Type
-- [ ] Add Array/Dictionary Data Types
+- [x] Add Array/Dictionary Data Types
 - [ ] Add custom Objects as possible Data Type
 - [ ] Improve UX by sorting classes or paths by how often they were created etc.
 - [ ] Add back button after choosing class
@@ -22,3 +22,4 @@ For Integration information look [here](Integration.md)
 - [ ] Add proper Settings menu for Config
 - [ ] Proper Main Dock integration
 - [ ] Add Sub Resource Creation
+- [ ] Make it so create_object instances are saved automatically so that one can leave/re-enter an object creation screen
