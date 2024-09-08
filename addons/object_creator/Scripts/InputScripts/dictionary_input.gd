@@ -2,10 +2,6 @@
 class_name DictionaryInput
 extends InputManager
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
 const SUPPORTED_TYPES = ["String", "int", "float", "bool", "Array", "Dictionary","Vector2", "Vector3", "Vector4", "Vector2i", "Vector3i", "Vector4i"]
 
 var element_container_scene = preload("res://addons/object_creator/Scenes/Variable Input Scenes/multi_element_container.tscn")
@@ -62,6 +58,7 @@ func check_typed_dict():
 	pass
 
 # TODO: add key_type: Variant.Type,
+## Adds a new element to a Dictionary Input
 func add_element( value_type: Variant.Type, def_input = null):
 	var is_vector = false
 	var new_scene: PackedScene
@@ -118,7 +115,7 @@ func _on_add_element_button_pressed() -> void:
 func _on_type_button_selected(index):
 	selected_type = element_type_button.return_type_by_index(index)
 
-func attempt_submit() -> Variant:
+func attempt_submit(mute_warnings=false) -> Variant:
 	var missing_input_nodes = []
 	var return_dict = {}
 
@@ -139,9 +136,26 @@ func attempt_submit() -> Variant:
 	
 	if not missing_input_nodes.is_empty():
 		for input_manager: InputManager in missing_input_nodes:
-			input_manager.show_input_warning()
+			input_manager.show_input_warning(true)
 		return null
 	return return_dict
+
+func submit_status_dict():
+	var value_list = {} # value of the status_dict; Contains all input nodes status_dicts
+	for container in element_containers:
+		var input_dict = container.input_manager.submit_status_dict()
+		var container_key = container.key_line_edit.text
+
+		if not container_key or container_key in value_list.keys():
+			# TODO: add correct behavior for reaction
+			continue
+		else:
+			value_list[container_key] = input_dict
+	
+	# if it's a property it has a name, if it's a sub_element like in an array it is empty
+	var property_name = property["name"] if property else "" 
+	var status_dict = {"value" : value_list, "type" : input_type, "name" : property_name}
+	return status_dict
 
 ## Minimizes Dictionary for better UX
 func _on_minimize_pressed():
@@ -163,6 +177,8 @@ func receive_input(input):
 	for element in input:
 		add_element(typeof(element), element)
 
+## disables certain types so the select button can't choose them anymore
+## [param include_types_only] makes it so only the values in types are enabled and all others are disabled
 func disable_select_type_button(types: Array, include_types_only = false):
 	for i in element_type_button.item_count:
 		var should_be_disabled = element_type_button.get_item_text(i) in types

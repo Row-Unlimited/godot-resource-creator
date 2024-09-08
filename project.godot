@@ -22,3 +22,13 @@ project/assembly_name="Godot-object-creator"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/object_creator/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://addons/object_creator/Assets/": "green",
+"res://addons/object_creator/Scenes/": "blue",
+"res://addons/object_creator/Scripts/": "red",
+"res://scripts/": "gray",
+"res://test-file-folder/": "gray"
+}

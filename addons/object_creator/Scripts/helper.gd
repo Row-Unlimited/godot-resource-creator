@@ -72,3 +72,44 @@ static func remove_items_from_path(path: String, number_items : int):
 			return null
 		path_reverse = path_reverse.substr(signifier_index + 1)
 	return path_reverse.reverse()
+
+## takes a String in the default form we receive when using the str() function on a string object [br]
+## example: (1, 2, 3) [br]
+## and returns a Vector2/3/4 [br]
+static func string_to_vector(vec_str : String):
+	var regex = RegEx.new()
+	regex.compile(r"(?<number>([1-9]+[0-9]*|0)\.*([0-9]*))[,\)]")
+	var numbers = []
+	for result in regex.search_all(vec_str):
+		numbers.append(result.get_string("number").to_float())
+	
+	match numbers.size():
+		2:
+			return Vector2(numbers[0], numbers[1])
+		3:
+			return Vector3(numbers[0], numbers[1], numbers[2])
+		4:
+			return Vector4(numbers[0], numbers[1], numbers[2], numbers[3])
+		_:
+			return null
+
+static func filter_lines(single_string: String, filter_terms : Array[String]) -> Array[String]:
+	var filtered_lines = [] as Array[String]
+	var single_string_lines = single_string.split("\n")
+	for term in filter_terms:
+		for i in single_string_lines.size():
+			var current_line = single_string_lines[i]
+			if term in current_line:
+				filtered_lines.append(current_line)
+
+	return filtered_lines
+	
+
+static func prune_string(string: String, start: String, end : String) -> String:
+	var i_start = string.find(start) + start.length() if start in string else 0
+	string = string.substr(i_start)
+	string = string.reverse()
+	var i_end = string.find(end) + end.length() if end in string else 0
+	print(i_end)
+	string = string.substr(i_end).reverse()
+	return string.strip_edges()
