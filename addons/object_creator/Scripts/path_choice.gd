@@ -1,5 +1,5 @@
 @tool
-extends Control
+extends CreationWindow
 ## UI Window which makes it possible for the User to select an export path
 
 var input_new: LineEdit
@@ -7,14 +7,18 @@ var input_known: OptionButton
 var export_button: Button
 var warning_label: Label
 var plugin_config: PluginConfig
+@onready var json_button = $ScrollContainer/VBoxContainer/JSONButton
 
-signal path_chosen(path: String)
+signal path_chosen(path: String, is_json: bool)
+
+func _ready() -> void:
+	window_type = WindowType.PATH_CHOICE
 
 func initialize_UI(config: PluginConfig):
 	input_new = get_node("ScrollContainer/VBoxContainer/AddPathInput")
 	input_known = get_node("ScrollContainer/VBoxContainer/KnownPathSelection")
 	export_button = get_node("ExportArea/Button")
-	warning_label = get_node("ExportArea/Label")
+	warning_label = get_node("ExportArea/WarningLabel")
 	export_button.connect("pressed", Callable(self, "on_export_pressed"))
 	plugin_config = config
 	
@@ -37,7 +41,7 @@ func on_export_pressed():
 			path_string = input_new.text
 	
 	if DirAccess.dir_exists_absolute(path_string):
-		emit_signal("path_chosen", path_string)
+		emit_signal("path_chosen", path_string, json_button.toggle_mode)
 	else:
 		warning_label.text = "You're chosen directory does not seem to exist, please try again"
 		warning_label.visible = true

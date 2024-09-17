@@ -113,3 +113,72 @@ static func prune_string(string: String, start: String, end : String) -> String:
 	print(i_end)
 	string = string.substr(i_end).reverse()
 	return string.strip_edges()
+
+
+static func to_printable_str(input, max_line_length=50) -> String:
+	var return_string = ""
+	var regular_object_strings: Array[String] = []
+	match typeof(input):
+		TYPE_ARRAY:
+			var array_string = ""
+			return_string += "\nArray:\n"
+			return_string += "--".rpad(max_line_length, "-")
+			
+			var line_length = 0
+
+			for item in input:
+				if (typeof(item) == TYPE_ARRAY or typeof(item) == TYPE_DICTIONARY):
+					if regular_object_strings:
+						array_string += _format_to_lines(regular_object_strings)
+						regular_object_strings = []
+					array_string += to_printable_str(item) + "\n"
+				else:
+					regular_object_strings.append(str(item))
+			if regular_object_strings:
+						array_string += _format_to_lines(regular_object_strings)
+						regular_object_strings = []
+			
+			array_string = array_string.indent("   ")
+			return_string += array_string
+
+		TYPE_DICTIONARY:
+			var dict_string = ""
+			return_string += "Dictionary:\n"
+			return_string += "--".rpad(max_line_length, "-")
+
+			var line_length = 0
+
+			for key in input.keys():
+				var item = input[key]
+				if (typeof(item) == TYPE_ARRAY or typeof(item) == TYPE_DICTIONARY):
+					if regular_object_strings:
+						dict_string += _format_to_lines(regular_object_strings)
+						regular_object_strings = []
+					dict_string +='\n"' + key + '"' + ": " + to_printable_str(item) + "\n"
+				else:
+					regular_object_strings.append('"' + key + '"' + ": " + str(item))
+			if regular_object_strings:
+						dict_string += _format_to_lines(regular_object_strings)
+						regular_object_strings = []
+			
+			dict_string = dict_string.indent("   ")
+			return_string += dict_string
+	return_string += "\n" + "--".rpad(max_line_length, "-")
+
+	return return_string
+
+static func _format_to_lines(input_strings: Array[String], max_line_length=50, border_string=", ") -> String:
+	var new_lines = "\n"
+
+	var line_length = 0
+
+	for line in input_strings:
+		if line.length() + line_length + border_string.length() > max_line_length:
+			if new_lines.ends_with(border_string):
+				new_lines = new_lines.substr(0, new_lines.length() - border_string.length())
+			# create new line
+			new_lines += "\n" + line + border_string
+			line_length = line.length() + border_string.length()
+		else:
+			new_lines += line + border_string
+	return new_lines

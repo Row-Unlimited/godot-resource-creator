@@ -17,8 +17,9 @@ func initialize_input(property_dict: Dictionary):
 	input_warning = get_node("WarningContainer/WrongInputWarning")
 	input_node.connect("toggled", Callable(self, "on_toggled"))
 	
-	set_property_information(property_dict)
-	type_label.text = return_type_string(property["type"])
+	if property_dict:
+		set_property_information(property_dict)
+		type_label.text = return_type_string(property["type"])
 
 func attempt_submit(mute_warnings=false) -> Variant:
 	
@@ -35,5 +36,6 @@ func on_toggled(toggled_on):
 	toggle_status = toggled_on
 
 func receive_input(input):
-	input_node.toggle_mode = input
+	input_node.set_pressed_no_signal(input)
+	input_node._toggled(input)
 	toggle_status = input

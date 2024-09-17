@@ -1,5 +1,5 @@
 @tool
-extends Control
+extends CreationWindow
 ## UI Window that handles choosing which class to create an Object from
 
 var scroll_container: ScrollContainer
@@ -16,6 +16,7 @@ func _ready():
 	var json_string = file.get_as_text()
 	file.close()
 	resource_classes = JSON.parse_string(json_string)
+	window_type = WindowType.CLASS_CHOICE
 
 func create_class_buttons(class_objects: Array, return_callable: Callable):
 	var total_position = margin

@@ -53,6 +53,11 @@ horizontal_alignment = 1
 layout_mode = 2
 alignment = 1
 
+[node name="JSONButton" type="CheckButton" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Save as JSON"
+alignment = 1
+
 [node name="ExportArea" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
@@ -64,9 +69,10 @@ grow_horizontal = 2
 grow_vertical = 0
 alignment = 1
 
-[node name="Label" type="Label" parent="ExportArea"]
+[node name="WarningLabel" type="Label" parent="ExportArea"]
 visible = false
 layout_mode = 2
+text = "You have not chosen a path please try again"
 label_settings = ExtResource("1_bb1da")
 
 [node name="Button" type="Button" parent="ExportArea"]
