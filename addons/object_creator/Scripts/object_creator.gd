@@ -13,7 +13,8 @@ var create_objectScreen = preload("res://addons/object_creator/Scenes/create_obj
 var path_choiceScreen = preload("res://addons/object_creator/Scenes/path_choice.tscn")
 var navigator
 var settings_button
-var current_window: Control
+var current_window: CreationWindow
+var window_sessions: Array
 var ui_node: Control
 
 var is_settings_menu = false
@@ -48,6 +49,8 @@ func _ready():
 ## if not it will search through the entire project structure for classes
 ## if there is one single possible class it calls the creation screen else it calls the class choice window
 func start_creation_process():
+	window_sessions = []
+
 	plugin_config = ResourceLoader.load(PLUGIN_CONFIG_PATH, "", ResourceLoader.CACHE_MODE_IGNORE)
 	if is_defaultCallableActive:
 		navigator_callable = Callable(self, "handle_navigator")
@@ -86,7 +89,7 @@ func finish_creation_process():
 	plugin_config.sort_arrays()
 	for cObject in plugin_config.classObjects:
 		print(cObject.name_class + " " + cObject.path)
-	ResourceSaver.save(plugin_config, PLUGIN_CONFIG_PATH, )
+	#ResourceSaver.save(plugin_config, PLUGIN_CONFIG_PATH, )
 	reset_process()
 
 func reset_process():
@@ -137,14 +140,19 @@ func call_create_object_window(cObject: ClassObject, menu_type=CreateObject.Crea
 			if external_creationHandler != null:
 				current_window.connect("object_created", Callable(external_creationHandler, external_handlingMethodName))
 
-func open_new_window(windowRoot: Control):
+func open_new_window(new_window: Control):	
 	if current_window != null:
 		ui_node.remove_child(current_window)
-	current_window = windowRoot
-	ui_node.add_child(windowRoot)
+		if current_window.window_type == CreationWindow.WindowType.CREATE_OBJECT:
+			window_sessions.append(current_window.save_session())
+	current_window = new_window
+	ui_node.add_child(new_window)
 
 func navigate_back():
-	print("hellop")
+	if window_sessions:
+		var last_session_dict: Dictionary = window_sessions.pop_back()
+		call_create_object_window(last_session_dict["class_object"])
+		current_window.load_session(last_session_dict)
 	pass
 
 #endregion
@@ -164,7 +172,7 @@ func on_object_created_integrated_path(object):
 	path = plugin_config.set_exportPath
 	finish_creation_process()
 
-func on_path_chosen(path_string: String):
+func on_path_chosen(path_string: String, is_json: bool):
 	path = path_string
 	finish_creation_process()
 

@@ -35,6 +35,7 @@ func initialize_input(property_dict: Dictionary):
 	property = property_dict
 	set_up_nodes()
 	name_label.text = property_dict["name"]
+	input_type = property_dict["type"]
 
 func set_up_nodes():
 	add_element_section = get_node("AddElementSection")
@@ -59,7 +60,7 @@ func check_typed_dict():
 
 # TODO: add key_type: Variant.Type,
 ## Adds a new element to a Dictionary Input
-func add_element( value_type: Variant.Type, def_input = null):
+func add_element( value_type: Variant.Type, def_key="", def_input = null):
 	var is_vector = false
 	var new_scene: PackedScene
 
@@ -101,11 +102,14 @@ func add_element( value_type: Variant.Type, def_input = null):
 	# Sets the child position so we can move it with the arrow up and down buttons
 	new_input_node.position_child = actual_position
 	new_input_node.initialize_input(new_input_manager)
+	new_input_manager.initialize_input({})
 	
 	# connect remove button
 	new_input_node.connect("remove_node", Callable(self, "_on_remove_node"))
-	if def_input != null:
-		new_input_manager.receive_input(def_input)
+	if def_key and not (def_key in get_all_keys()):
+		if def_input:
+			new_input_manager.receive_input(def_input)
+		new_input_node.key_line_edit.text = def_key
 
 
 func _on_add_element_button_pressed() -> void:
@@ -173,9 +177,10 @@ func _on_remove_node(node: MultiElementContainer):
 	input_managers.remove_at(input_managers.find(node.input))
 	remove_child(node)
 
-func receive_input(input):
-	for element in input:
-		add_element(typeof(element), element)
+func receive_input(input: Dictionary):
+	for key in input.keys():
+		var item_value = input[key]
+		add_element(typeof(item_value), key, item_value)
 
 ## disables certain types so the select button can't choose them anymore
 ## [param include_types_only] makes it so only the values in types are enabled and all others are disabled
@@ -194,3 +199,13 @@ func disable_select_type_button(types: Array, include_types_only = false):
 func make_name_input(is_dict=false):
 	# empty function since the MultiElementContainer needs to be set with that, which happens one step above
 	pass
+
+func get_all_keys() -> Array[String]:
+	var key_list: Array[String] = [] as Array[String]
+	
+	for container in element_containers:
+		var key_input = container.key_line_edit.text
+		if key_input:
+			key_list.append(key_input)
+
+	return key_list

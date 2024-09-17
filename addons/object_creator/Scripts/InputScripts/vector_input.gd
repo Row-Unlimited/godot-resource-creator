@@ -51,7 +51,6 @@ func receive_input(input):
 		if(typeof(input) > 6):
 			input_node.z_input.text = str(input.z)
 			if(typeof(input) > 10):
-				print(input)
 				input_node.wInput.text = str(input.w)
 	else:
 		assert(false, "Error: you are trying to input a non vector object to a vector input")
