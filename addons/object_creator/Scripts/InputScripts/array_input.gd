@@ -33,6 +33,7 @@ func initialize_input(property_dict: Dictionary):
 	property = property_dict
 	set_up_nodes()
 	name_label.text = property_dict["name"]
+	input_type = property_dict["type"]
 
 func set_up_nodes():
 	add_element_section = get_node("AddElementSection")
@@ -70,7 +71,6 @@ func check_typed_array():
 func add_element(element_type: Variant.Type, def_input=null):
 	var is_vector = false
 	var new_scene: PackedScene
-	print(element_type)
 	match element_type:
 		TYPE_NIL:
 			return
@@ -101,6 +101,7 @@ func add_element(element_type: Variant.Type, def_input=null):
 	# Sets the child position so we can move it with the arrow up and down buttons
 	new_input_node.position_child = actual_position
 	new_input_node.initialize_input(new_input_manager)
+	new_input_manager.initialize_input({})
 	
 	# connect remove and move buttons
 	new_input_node.connect("move_node", Callable(self, "_on_move_node"))
@@ -136,7 +137,7 @@ func attempt_submit(mute_warnings=false) -> Variant:
 func submit_status_dict():
 	var value_list = [] # value of the status_dict; Contains all input nodes status_dicts
 	for input_manager in input_managers:
-		value_list += input_manager.submit_status_dict()
+		value_list.append(input_manager.submit_status_dict())
 	
 	# if it's a property it has a name, if it's a sub_element like in an array it is empty
 	var property_name = property["name"] if property else "" 

@@ -1,6 +1,6 @@
 @tool
 class_name CreateObject
-extends Control
+extends CreationWindow
 ## UI Window which creates custom input boxes for each property of the chosen class
 ## Checks if Inputs are correct by calling attempt_submit method in the InputManager objects
 
@@ -18,6 +18,8 @@ var property_list: Array
 var accept_empty_inputs
 
 var SKIPPED_PROPERTIES =["resource_local_to_scene", "resource_path", "resource_name", "resource_scene_unique_id"]
+var VECTOR_TYPES = [TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I, TYPE_VECTOR4, TYPE_VECTOR4I]
+
 
 var menu_type = CreateMenuType.NORMAL
 enum CreateMenuType {
@@ -29,6 +31,9 @@ const type_to_output_signal = ["object_created", "settings_changed"]
 
 signal object_created(object)
 signal settings_changed(plugin_config_object)
+
+func _ready() -> void:
+	window_type = WindowType.CREATE_OBJECT
 
 ## Creates the create_object menu UI and Logic[br]
 ## takes the class from the class_object and gets the property list[br]
@@ -52,7 +57,6 @@ func initialize_UI(cObject: ClassObject, create_menu_type: CreateMenuType = Crea
 
 	# Create UI for every single Input
 	for property: Dictionary in property_list:
-		print(property)
 		var property_name = property["name"]
 
 		var property_input_path = determine_input_type(property)
@@ -107,6 +111,8 @@ func determine_input_type(property: Dictionary) -> String:
 func on_submit_pressed():
 	var temp_object: Object = load(class_object.path).new()
 	var missing_inputNodes: Array
+
+	save_session()
 
 	# so we dynamically swap signals, so we can use this to export for settings for example
 	var output_signal = type_to_output_signal[menu_type]
@@ -172,13 +178,46 @@ func add_breakline():
 ##			- Dictionaries will be safed as actual dicts, and the values will be dicts analogous to the arrays [br]
 ##			- Vectors will be safed as strings of the format: [br]
 ##				VECTOR::<value>,<value>,<value>,<value>::
-func save_status_to_dict():
-	var save_dict: Dictionary = {}
+func save_session():
+	var save_dict: Dictionary = {"name": class_object.name_class, "class_path": class_object.path}
+	var properties_dict = {}
 	
 	for input_node: InputManager in input_nodes:
 		var status_dict = input_node.submit_status_dict()
 		if status_dict != null:
 			var status_dict_key =status_dict["name"]
-			save_dict[status_dict_key] = status_dict
+			properties_dict[status_dict_key] = status_dict
+	
+	save_dict["properties"] = properties_dict
+	save_dict["class_object"] = class_object
 
-	print(save_dict)
+	session_dict = save_dict
+	return save_dict.duplicate()
+
+func load_session(session_dict: Dictionary):
+	var properties_dict = session_dict["properties"]
+	for input_node in input_nodes:
+		var input_name = input_node.property["name"]
+		if input_name in properties_dict.keys():
+			var parsed_property_dict = parse_property_dict_custom(properties_dict[input_name])
+			input_node.receive_input(parsed_property_dict["value"])
+
+## parses back our session dict so the input managers can use it as input
+func parse_property_dict_custom(property_dict: Dictionary):
+		var prop_type = property_dict["type"]
+		var prop_value = property_dict["value"]
+		
+		match prop_type:
+			TYPE_BOOL:
+				prop_value = true if prop_value == "BOOL_TRUE" else false
+			TYPE_ARRAY:
+				for i in prop_value.size():
+					prop_value[i] = parse_property_dict_custom(prop_value[i])["value"]
+			TYPE_DICTIONARY:
+				for key in prop_value.keys():
+					prop_value[key] = parse_property_dict_custom(prop_value[key])["value"]
+			var other_type:
+				if other_type in VECTOR_TYPES:
+					prop_value = Helper.string_to_vector(prop_value)
+		property_dict["value"] = prop_value
+		return property_dict

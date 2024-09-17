@@ -7,7 +7,8 @@ extends Node
 func _ready() -> void:
 	#test_helper_compare()
 	#test_helper_update()
-	test_crap()
+	#test_crap()
+	test_better_print()
 
 func test_crap():
 	var strings = ["(12, 2, 3, 0)", "(12, 0.0001)", "(12.00003, 4.980)", "(0, 2.3, 4)"]
@@ -37,6 +38,10 @@ func test_helper_compare():
 	print(Helper.compare_arrays(a1, a3)) # false
 	
 
+func test_better_print():
+	var test = [1, 2, 3, ["aldsjflkasjdfjdksalf", "lajdslfjldj"], "aldsjflkdjfjdf", 288888888888888]
+	var test_dict_print = {"test": 1, "hello": "ljasdlkfjaldsfljfd", "array": test, "dict": {"alsdjfkldjfkjjf": "alsdjflkdjfkjdf", "heyho": 90876}}
+	print(Helper.to_printable_str(test_dict_print))
 
 
 class TestClass:
