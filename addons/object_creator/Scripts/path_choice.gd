@@ -7,12 +7,16 @@ var input_known: OptionButton
 var export_button: Button
 var warning_label: Label
 var plugin_config: PluginConfig
-@onready var json_button = $ScrollContainer/VBoxContainer/JSONButton
+var json_button: CheckButton
+
+var should_save_json: bool
 
 signal path_chosen(path: String, is_json: bool)
 
 func _ready() -> void:
 	window_type = WindowType.PATH_CHOICE
+	json_button = $ScrollContainer/VBoxContainer/JSONButton
+	json_button.connect("toggled", Callable(self, "_on_json_button_toggled"))
 
 func initialize_UI(config: PluginConfig):
 	input_new = get_node("ScrollContainer/VBoxContainer/AddPathInput")
@@ -39,9 +43,12 @@ func on_export_pressed():
 			return
 		else:
 			path_string = input_new.text
-	
+
 	if DirAccess.dir_exists_absolute(path_string):
-		emit_signal("path_chosen", path_string, json_button.toggle_mode)
+		emit_signal("path_chosen", path_string, should_save_json)
 	else:
 		warning_label.text = "You're chosen directory does not seem to exist, please try again"
 		warning_label.visible = true
+
+func _on_json_button_toggled(is_json: bool):
+	should_save_json = is_json
