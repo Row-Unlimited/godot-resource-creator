@@ -11,9 +11,10 @@ func set_up_nodes():
 
 
 func initialize_input(property_dict: Dictionary):
-	set_up_nodes()
-	set_property_information(property_dict)
-	style_input()
+	if property_dict:
+		set_up_nodes()
+		set_property_information(property_dict)
+		style_input()
 
 func attempt_submit(mute_warnings=false) -> Variant:
 	var return_value = null
