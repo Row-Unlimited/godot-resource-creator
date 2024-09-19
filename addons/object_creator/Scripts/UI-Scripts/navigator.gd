@@ -91,6 +91,8 @@ func handle_resize():
 	UIControl.scale = Vector2(scale_percentX, scale_percentY)
 
 func style_navigator():
+	if owner != get_tree().edited_scene_root:
+		return
 	var color_rect = get_node("ColorRect")
 	var root = EditorInterface.get_base_control()
 	var accent_color = root.get_theme_color("accent_color", "Editor")

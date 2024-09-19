@@ -5,16 +5,24 @@ extends Node
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	pass
 	#test_helper_compare()
 	#test_helper_update()
 	#test_crap()
-	test_better_print()
+	#test_better_print()
+	#test_json()
 
 func test_crap():
 	var strings = ["(12, 2, 3, 0)", "(12, 0.0001)", "(12.00003, 4.980)", "(0, 2.3, 4)"]
 	for string in strings:
 		print(Helper.string_to_vector(string))
 	pass
+
+func test_json():
+	var object: TestScript = TestScript.new()
+	object.testArray = ["1", 34]
+	print(Helper.to_printable_str(Helper.object_to_dict(object)))
+
 
 func test_helper_update():
 	var test_object_1 = TestClass.new()
