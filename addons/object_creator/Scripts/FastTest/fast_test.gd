@@ -23,7 +23,6 @@ func test_json():
 	object.testArray = ["1", 34]
 	print(Helper.to_printable_str(Helper.object_to_dict(object)))
 
-
 func test_helper_update():
 	var test_object_1 = TestClass.new()
 	var test_object_2 = TestClass.new()

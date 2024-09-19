@@ -27,7 +27,6 @@ var use_resourceFormat = false
 
 var final_object
 var path: String
-var should_save_json: bool
 
 #region integration_variables
 var external_creationHandler: Object = null
@@ -84,9 +83,14 @@ func start_creation_process():
 
 ## wraps up the object creation process by exporting the created objects
 ## per default it just exports the object and is done, but this can be modified for integration
-func finish_creation_process():
+func finish_creation_process(should_save_json=false):
+	# TODO: accomodate multiple objects at once 
+	#(might have to move this functionality to other class for this)
 	emit_signal("creation_finished", final_object, path, use_resourceFormat)
-	exporter.export_files(path, [final_object])
+	if should_save_json:
+		exporter.export_to_json(path, [final_object])
+	else:
+		exporter.export_files(path, [final_object])
 	plugin_config.update_user_class_information(object_class)
 	plugin_config.sort_arrays()
 	for cObject in plugin_config.classObjects:
@@ -178,8 +182,7 @@ func on_object_created_integrated_path(object):
 
 func on_path_chosen(path_string: String, is_json: bool):
 	path = path_string
-	should_save_json = is_json
-	finish_creation_process()
+	finish_creation_process(is_json)
 
 func _on_settings_button_pressed():
 	if not is_settings_menu:

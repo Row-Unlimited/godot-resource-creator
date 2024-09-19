@@ -207,8 +207,8 @@ static func object_to_dict(obj: Object):
 	if class_name_line:
 		return_dict["class_name"] = class_name_line
 
-	var file_name = get_last_path_parts(obj.get_script().resource_path, 1).pop_back()
-	return_dict["script_name"] = file_name.substr(0, file_name.length() - 3)
+	
+	return_dict["script_name"] = get_object_script_name(obj)
 	for property in obj_properties:
 		# TODO: implement saving of sub_objects
 		var prop_name = property["name"]
@@ -216,3 +216,7 @@ static func object_to_dict(obj: Object):
 		if prop_value:
 			return_dict[prop_name] = prop_value 
 	return return_dict
+
+static func get_object_script_name(obj):
+	var file_name = get_last_path_parts(obj.get_script().resource_path, 1).pop_back()
+	return file_name.substr(0, file_name.length() - 3)
