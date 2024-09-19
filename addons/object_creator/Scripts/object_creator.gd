@@ -27,6 +27,7 @@ var use_resourceFormat = false
 
 var final_object
 var path: String
+var should_save_json: bool
 
 #region integration_variables
 var external_creationHandler: Object = null
@@ -43,6 +44,7 @@ func _ready():
 	navigator = get_node("Navigator")
 	settings_button = get_node("Settings-Button")
 	exporter = get_node("Exporter")
+	start_creation_process()
 
 ## checks the status of the plugin
 ## if the plugin is integrated it will directly only include named classes
@@ -80,7 +82,7 @@ func start_creation_process():
 	else:
 		call_create_object_window(object_class)
 
-## wraps up the object creation process.
+## wraps up the object creation process by exporting the created objects
 ## per default it just exports the object and is done, but this can be modified for integration
 func finish_creation_process():
 	emit_signal("creation_finished", final_object, path, use_resourceFormat)
@@ -98,6 +100,7 @@ func reset_process():
 		current_window = null
 	start_creation_process()
 	final_object = null
+	is_settings_menu = false
 
 func set_external_creation_handler(object: Object, methodName: String):
 	if object != null and not methodName.is_empty():
@@ -153,7 +156,8 @@ func navigate_back():
 		var last_session_dict: Dictionary = window_sessions.pop_back()
 		call_create_object_window(last_session_dict["class_object"])
 		current_window.load_session(last_session_dict)
-	pass
+	else:
+		reset_process()
 
 #endregion
 
@@ -174,6 +178,7 @@ func on_object_created_integrated_path(object):
 
 func on_path_chosen(path_string: String, is_json: bool):
 	path = path_string
+	should_save_json = is_json
 	finish_creation_process()
 
 func _on_settings_button_pressed():

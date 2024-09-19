@@ -105,13 +105,14 @@ static func filter_lines(single_string: String, filter_terms : Array[String]) ->
 	return filtered_lines
 	
 
-static func prune_string(string: String, start: String, end : String) -> String:
+static func prune_string(string: String, start: String, end: String="") -> String:
 	var i_start = string.find(start) + start.length() if start in string else 0
 	string = string.substr(i_start)
-	string = string.reverse()
-	var i_end = string.find(end) + end.length() if end in string else 0
-	print(i_end)
-	string = string.substr(i_end).reverse()
+	
+	if end:
+		string = string.reverse()
+		var i_end = string.find(end) + end.length() if end in string else 0
+		string = string.substr(i_end).reverse()
 	return string.strip_edges()
 
 
@@ -182,3 +183,36 @@ static func _format_to_lines(input_strings: Array[String], max_line_length=50, b
 		else:
 			new_lines += line + border_string
 	return new_lines
+
+
+## splits up a path and returns the last n parts
+static func get_last_path_parts(path: String, number_parts: int, is_reverse=false):
+	var path_parts = []
+	for part in path.split("/"):
+		path_parts.append_array(part.split("\\"))
+	path_parts.reverse()
+	path_parts = path_parts.slice(0, number_parts)
+	path_parts.reverse()
+	return path_parts
+
+## turns a custom object into a dictionary for json serialization
+## adds class_name key if one was defined and script_name key to distinguish the dictionaries
+static func object_to_dict(obj: Object):
+	var obj_properties: Array[Dictionary] = obj.get_property_list()
+
+	var return_dict: Dictionary = {}
+
+	var class_name_line = obj.get_script().get_global_name()
+	
+	if class_name_line:
+		return_dict["class_name"] = class_name_line
+
+	var file_name = get_last_path_parts(obj.get_script().resource_path, 1).pop_back()
+	return_dict["script_name"] = file_name.substr(0, file_name.length() - 3)
+	for property in obj_properties:
+		# TODO: implement saving of sub_objects
+		var prop_name = property["name"]
+		var prop_value = obj.get(prop_name) 
+		if prop_value:
+			return_dict[prop_name] = prop_value 
+	return return_dict
