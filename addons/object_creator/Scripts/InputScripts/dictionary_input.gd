@@ -170,7 +170,6 @@ func _on_minimize_pressed():
 		is_minimized = false
 	else:
 		is_minimized = true
-	pass 
 
 ## Removes InputNode from the Dictionary UI
 func _on_remove_node(node: MultiElementContainer):
