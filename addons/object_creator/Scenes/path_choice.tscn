@@ -14,6 +14,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_b0q4g")
+metadata/_edit_vertical_guides_ = [-167.0]
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 1

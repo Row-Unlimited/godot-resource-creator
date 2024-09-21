@@ -29,8 +29,6 @@ func attempt_submit(mute_warnings=false) -> Variant:
 		Variant.Type.TYPE_STRING:
 			if not temp_value.is_empty():
 				return_value = temp_value
-		Variant.Type.TYPE_NODE_PATH:
-			pass
 
 	# if accept_empty_input setting is activated empty values will be turned into the default
 	if temp_value.is_empty() and accept_empty_inputs:

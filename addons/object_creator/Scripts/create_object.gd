@@ -31,6 +31,8 @@ const type_to_output_signal = ["object_created", "settings_changed"]
 
 signal object_created(object)
 signal settings_changed(plugin_config_object)
+## used when user clicks on an object input, should open a new object menu
+signal create_sub_object_clicked(sub_class_object)
 
 func _ready() -> void:
 	window_type = WindowType.CREATE_OBJECT

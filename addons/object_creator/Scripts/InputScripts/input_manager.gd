@@ -97,7 +97,6 @@ func show_input_warning(mute_warnings=false):
 	if mute_warnings:
 		return
 	input_warning.visible = true
-	pass
 
 func return_empty_by_type():
 	match input_type:
