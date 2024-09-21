@@ -66,8 +66,9 @@ func check_typed_array():
 	else:
 		# TODO  find solution
 		assert(false, "unsupported type in typed array")
-		
-# TODO: fix that vectors can be added
+
+## adds a new element to the input UI
+## loads the correct InputManager and puts it into an MultiElementContainer		
 func add_element(element_type: Variant.Type, def_input=null):
 	var is_vector = false
 	var new_scene: PackedScene

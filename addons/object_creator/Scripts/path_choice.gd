@@ -7,7 +7,7 @@ var input_known: OptionButton
 var export_button: Button
 var warning_label: Label
 var plugin_config: PluginConfig
-var json_button: CheckButton
+var json_button: CheckButton ## button that checks whether user wants to export as json dict or object
 
 var should_save_json: bool
 

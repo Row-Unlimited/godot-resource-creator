@@ -68,7 +68,6 @@ func start_creation_process():
 				object_class = classes.front()
 			_:
 				possible_classObjects = classes
-		pass
 	
 	if is_classChoiceNeeded:
 		possible_classObjects = class_loader.return_possible_classes()
@@ -93,11 +92,10 @@ func finish_creation_process(should_save_json=false):
 		exporter.export_files(path, [final_object])
 	plugin_config.update_user_class_information(object_class)
 	plugin_config.sort_arrays()
-	for cObject in plugin_config.classObjects:
-		print(cObject.name_class + " " + cObject.path)
-	#ResourceSaver.save(plugin_config, PLUGIN_CONFIG_PATH, )
+	# TODO: add code to save the user statistics
 	reset_process()
 
+## resets the current creation process and all linked variables
 func reset_process():
 	if current_window != null:
 		ui_node.remove_child(current_window)
@@ -106,11 +104,13 @@ func reset_process():
 	final_object = null
 	is_settings_menu = false
 
+## custom integration function
 func set_external_creation_handler(object: Object, methodName: String):
 	if object != null and not methodName.is_empty():
 		external_creationHandler = object
 		external_handlingMethodName = methodName
 
+## custom integration function
 func set_navigator_callable(callable: Callable):
 	navigator_callable = callable
 
