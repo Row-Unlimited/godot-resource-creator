@@ -11,6 +11,7 @@ func _ready() -> void:
 	#test_crap()
 	#test_better_print()
 	#test_json()
+	#test_tab_bar()
 
 func test_crap():
 	var strings = ["(12, 2, 3, 0)", "(12, 0.0001)", "(12.00003, 4.980)", "(0, 2.3, 4)"]
@@ -35,6 +36,18 @@ func test_helper_update():
 	test_object_1.print_me()
 	print("--------------------------------")
 	test_object_2.print_me()
+
+func test_tab_bar():
+	var tab_bar = TabBar.new()
+	for i in 5:
+		tab_bar.add_tab(str(i))
+	
+	for i in 10:
+		tab_bar.move_tab(randi_range(0,4), 0)
+		var order = "order is: "
+		for j in 5:
+			order += tab_bar.get_tab_title(j) + " at position " + str(j) + ", "
+		print(order)
 
 func test_helper_compare():
 	var a1 = [1,"2",3.]
