@@ -1,13 +1,15 @@
 [gd_resource type="Resource" script_class="PluginConfig" load_steps=2 format=3 uid="uid://ddvfw5k524ibm"]
 
-[ext_resource type="Script" path="res://addons/object_creator/plugin_config.gd" id="1_myur8"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/plugin_config.gd" id="1_myur8"]
 
 [resource]
 script = ExtResource("1_myur8")
-usedExportPaths = []
+used_exportPaths = []
 isIntegrated = false
-integratedClassPaths = []
+integrated_classPaths = Array[String]([])
 classObjects = []
-setExportPath = ""
-disableNavigator = false
-ignoredDirectories = [".git", ".godot", "object_creator"]
+set_exportPath = ""
+disable_navigator = false
+ignored_directories = Array[String]([".git", ".godot", "object_creator"])
+is_main_dock = false
+accept_empty_inputs = true

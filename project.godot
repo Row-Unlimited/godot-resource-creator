@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Godot-object-creator"
 run/main_scene="res://addons/object_creator/Scenes/startup_scene.tscn"
-config/features=PackedStringArray("4.2", "C#", "Forward Plus")
+config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [dotnet]
@@ -22,3 +22,13 @@ project/assembly_name="Godot-object-creator"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/object_creator/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://addons/object_creator/Assets/": "green",
+"res://addons/object_creator/Scenes/": "blue",
+"res://addons/object_creator/Scripts/": "red",
+"res://scripts/": "gray",
+"res://test-file-folder/": "gray"
+}

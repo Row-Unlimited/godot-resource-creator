@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b4n0vpir1kcup"]
 
-[ext_resource type="Script" path="res://addons/object_creator/InputScripts/default_input.gd" id="1_bd2hn"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/default_input.gd" id="1_bd2hn"]
 
 [node name="DefaultInput" type="VBoxContainer"]
 anchors_preset = -1
