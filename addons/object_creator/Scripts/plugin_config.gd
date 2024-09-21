@@ -12,6 +12,11 @@ extends Resource
 @export var is_main_dock : bool = false
 @export var accept_empty_inputs : bool = true
 
+#region subobject settings
+## default puts sub_objects into the same folder as the parent_object
+## defines if a new folder for subobjects should be created
+@export var is_folder_hierarchical: bool = false
+#endregion
 
 func contains(cObject: ClassObject) -> ClassObject:
 	for classObject: ClassObject in classObjects:
