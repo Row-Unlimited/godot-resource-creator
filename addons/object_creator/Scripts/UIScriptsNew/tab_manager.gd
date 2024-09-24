@@ -16,8 +16,8 @@ var hover_target: int
 
 func _ready() -> void:
 	tab_bar = get_node("TabBar")
-	tab_screen = get_node("TabScreen")
-	tab_bar.connect("tab_changed", Callable(self, "change_tab_screen"))
+	tab_screen = get_node("MainScreen")
+	tab_bar.connect("tab_selected", Callable(self, "change_tab_screen"))
 	# signal is for closing tabs
 	tab_bar.connect("tab_hovered", Callable(self, "_on_tab_hovered"))
 
@@ -41,10 +41,16 @@ func change_tab_screen(index: int):
 		assert(false, "no id for this index")
 	else:
 		var tab_node = get_tab_node(tab_id)
-		if tab_screen.get_children():
-			var current_node = tab_screen.get_child(0)
-			tab_screen.remove_child(current_node)
-		tab_screen.add_child(tab_node)
+		tab_screen.set_active_node(tab_node)
+		#if tab_node in tab_screen.get_children():
+			#tab_node.visible = true 
+		#else:
+			#tab_screen.add_child(tab_node)
+		#
+		#for child in tab_screen.get_children():
+			##child.visible = false
+			#pass
+		
 
 
 func _input(event: InputEvent) -> void:

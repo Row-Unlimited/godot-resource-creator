@@ -53,14 +53,15 @@ static func compare_arrays(arr1: Array, arr2: Array, ignore_order=true):
 
 ## prints the name of all variables and their current values of an object[br]
 ## [param skipped_properties]: will skip certain variables if their names are the same
-static func print_object_values(obj: Object, skipped_properties=[]):
+static func print_object_values(obj: Object, ignore_null_values=true, skipped_properties=[]):
 	var properties = obj.get_property_list()
 	for property in properties:
-		var property_name = property["name"]
-		if property_name in skipped_properties:
+		var prop_name = property["name"]
+		var prop_value = obj.get(prop_name)
+		if prop_name in skipped_properties or (ignore_null_values and not prop_value):
 			continue
 		else:
-			var value_string = property_name + ": " + str(obj.get(property_name))
+			var value_string = prop_name + ": " + str(obj.get(prop_name))
 			print(value_string)
 			print("--".rpad(value_string.length(), "-"))
 
@@ -220,3 +221,29 @@ static func object_to_dict(obj: Object):
 static func get_object_script_name(obj):
 	var file_name = get_last_path_parts(obj.get_script().resource_path, 1).pop_back()
 	return file_name.substr(0, file_name.length() - 3)
+
+## returns the file ending of a path
+static func get_file_ending(path: String):
+	var file_name = get_last_path_parts(path, 1).pop_back()
+	if "." in file_name:
+		return file_name.substr(file_name.rfind(".") + 1)
+	else:
+		return ""
+
+
+ ## recursive function that searches from the given directory for all files that end with fileType
+static func search_filetypes_in_directory(fileType: String, directory: String, ignored_directories=[]) -> Array:
+	var filePathArray = []
+	var current_directory = DirAccess.open(directory)
+	var directory_paths = current_directory.get_directories()
+	var filePaths = current_directory.get_files()
+	
+	for path in filePaths:
+		if path.ends_with(fileType):
+			filePathArray.append(directory + "/" + path)
+	
+	for path in directory_paths:
+		if not Helper.check_string_contains_array(ignored_directories, path):
+			filePathArray.append_array(search_filetypes_in_directory(fileType, directory + "/" + path, ignored_directories))
+	
+	return filePathArray
