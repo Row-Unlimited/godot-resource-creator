@@ -1,8 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://dp37abkh7wgph"]
+[gd_scene load_steps=9 format=3 uid="uid://dp37abkh7wgph"]
 
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/creation_manager.gd" id="1_6is2m"]
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/custom_tab_bar.gd" id="1_xid3r"]
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/tab_manager.gd" id="2_cx134"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/UIScriptsNew/tab_manager.gd" id="2_cx134"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/UIScriptsNew/screen_manager.gd" id="4_13l1c"]
+[ext_resource type="PackedScene" uid="uid://cjrjsmw62bo4a" path="res://addons/object_creator/Scenes/overview_menu.tscn" id="5_k30fj"]
+[ext_resource type="Shader" path="res://addons/object_creator/Assets/image-lighten.gdshader" id="6_5m0cy"]
+[ext_resource type="Texture2D" uid="uid://s63n8ht61j33" path="res://addons/object_creator/Assets/settings-button-small.png" id="6_7i13x"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/Settings/settings_button.gd" id="7_ra1gh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2k06y"]
+shader = ExtResource("6_5m0cy")
+shader_parameter/active = null
 
 [node name="MainScene" type="Control"]
 layout_mode = 3
@@ -15,7 +23,7 @@ script = ExtResource("1_6is2m")
 
 [node name="TabManager" type="Control" parent="."]
 layout_mode = 1
-anchor_left = 0.05
+anchor_left = 0.049
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("2_cx134")
@@ -24,14 +32,62 @@ script = ExtResource("2_cx134")
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
-anchor_bottom = 0.05
+anchor_bottom = 0.07
 grow_horizontal = 2
-script = ExtResource("1_xid3r")
+grow_vertical = 0
 
-[node name="TabScreen" type="Control" parent="TabManager"]
+[node name="TabBarColor" type="ColorRect" parent="TabManager/TabBar"]
+show_behind_parent = true
 layout_mode = 1
-anchor_top = 0.05
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.751982, 0.330453, 1)
+
+[node name="MainScreen" type="Control" parent="TabManager"]
+layout_mode = 1
+anchor_top = 0.1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_13l1c")
+
+[node name="OverviewMenu" parent="TabManager/MainScreen" instance=ExtResource("5_k30fj")]
+layout_mode = 1
+
+[node name="MenuSideBar" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.05
+anchor_bottom = 1.0
+grow_vertical = 2
+color = Color(0.0529179, 2.89988e-05, 0.211386, 1)
+
+[node name="SettingsButton" type="TextureButton" parent="MenuSideBar"]
+material = SubResource("ShaderMaterial_2k06y")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.925
+anchor_right = 0.5
+anchor_bottom = 0.98
+grow_horizontal = 2
+grow_vertical = 0
+texture_normal = ExtResource("6_7i13x")
+script = ExtResource("7_ra1gh")
+
+[node name="ObjectOverviewButton" type="Button" parent="MenuSideBar"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.05
+anchor_right = 0.9
+anchor_bottom = 0.3
+grow_horizontal = 2
+grow_vertical = 2
+text = "Object Overview"
+autowrap_mode = 3
