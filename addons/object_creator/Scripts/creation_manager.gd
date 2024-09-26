@@ -16,15 +16,20 @@ var tab_manager: TabManager
 var class_loader: ClassLoader
 
 var class_tree: TreeClassView
-var tree_mapping_dict: Dictionary
+var export_tree: TreeExportView
+var class_tree_mapping: Dictionary
 
 var main_screen
 var overview_menu: Control
 var menu_side_bar: Control
 
+var created_object_dicts: Array[Dictionary]
+var object_counter = 0
+
+var default_export_path
+
 func _ready() -> void:
 	tab_manager = get_node("TabManager")
-	tab_manager.create_new_tab("test other tab", class_choice_screen.instantiate())
 
 	main_screen = get_node("TabManager/MainScreen")
 	overview_menu = get_node("TabManager/MainScreen/OverviewMenu")
@@ -43,10 +48,14 @@ func _ready() -> void:
 
 
 
-func create_new_object(class_object: ClassObject):
+func create_new_creation_screen(class_object: ClassObject, menu_type=CreateObject.CreateMenuType.NORMAL):
 	var new_create_window = create_object_screen.instantiate()
 	new_create_window.initialize_UI(class_object)
-	tab_manager.create_new_tab("test_tab", new_create_window)
+	tab_manager.create_new_tab(class_object.name_class, new_create_window)
+	new_create_window.connect("object_created", Callable(self, "_on_object_created"))
+	if menu_type != CreateObject.CreateMenuType.NORMAL:
+		new_create_window.connect("settings_changed", Callable(self, "_on_settings_changed"))
+
 
 ## deletes object process by ID
 func delete_object_process(object_id: int):
@@ -69,20 +78,29 @@ func set_up_class_tree():
 			var obj_id = "objID" + str(class_counter)
 			var obj_dict = {"name": obj.name_class, "id": obj_id, "class_object": obj, "file_ending": file_ending}
 			parent_class_dict["gd"][obj_parent_name] = [obj_dict] if (not obj_parent_name in parent_class_dict["gd"].keys()) else parent_class_dict["gd"][obj_parent_name] + [obj_dict]
-			tree_mapping_dict[obj_id] = obj
+			class_tree_mapping[obj_id] = obj
 		else:
 			# TODO: implement for csharp
 			pass
 	class_tree.set_up_class_view(parent_class_dict)
 
 func _on_tree_refresh_clicked():
-	tree_mapping_dict.clear()
+	class_tree_mapping.clear()
 	class_tree.reset_tree()
 	set_up_class_tree()
 
 func _on_add_item_clicked(class_id):
-	create_new_object(tree_mapping_dict[class_id])
+	create_new_creation_screen(class_tree_mapping[class_id])
 	pass
 
 func _on_overview_button_pressed():
 	main_screen.set_active_node(overview_menu)
+
+
+func _on_object_created(object: Resource, object_wrapper: ClassObject):
+	Helper.print_object_values(object)
+	object_counter += 1
+	pass
+
+func _on_settings_changed(plugin_config_object: PluginConfig):
+	pass

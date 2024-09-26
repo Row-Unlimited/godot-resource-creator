@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/creation_manager.gd" id="1_6is2m"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UIScriptsNew/tab_manager.gd" id="2_cx134"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UIScriptsNew/screen_manager.gd" id="4_13l1c"]
-[ext_resource type="PackedScene" uid="uid://cjrjsmw62bo4a" path="res://addons/object_creator/Scenes/overview_menu.tscn" id="5_k30fj"]
+[ext_resource type="PackedScene" uid="uid://cjrjsmw62bo4a" path="res://addons/object_creator/Scenes/MainMenuUI/overview_menu.tscn" id="5_k30fj"]
 [ext_resource type="Shader" path="res://addons/object_creator/Assets/image-lighten.gdshader" id="6_5m0cy"]
 [ext_resource type="Texture2D" uid="uid://s63n8ht61j33" path="res://addons/object_creator/Assets/settings-button-small.png" id="6_7i13x"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/Settings/settings_button.gd" id="7_ra1gh"]

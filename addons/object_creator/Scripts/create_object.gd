@@ -41,7 +41,7 @@ func _ready() -> void:
 ## takes the class from the class_object and gets the property list[br]
 ## then it filters out all the properties that are skipped or non-export vars
 ## and creates an Input Manager for every not filtered Property according to their Type
-func initialize_UI(cObject: ClassObject, create_menu_type: CreateMenuType = CreateMenuType.NORMAL):
+func initialize_UI(cObject, create_menu_type: CreateMenuType = CreateMenuType.NORMAL):
 	class_object = cObject
 	# create object of the class from the script path and get the property list
 	property_list = load(class_object.path).new().get_property_list()
