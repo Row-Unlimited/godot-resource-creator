@@ -22,7 +22,6 @@ func _create_base_nodes():
 	new_item.add_button(0, load("res://addons/object_creator/Assets/refresh.png"))
 	new_item.set_metadata(0, "BASE_ITEM")
 	root_item = new_item
-	pass
 
 func set_up_class_view(class_name_dict):
 	var gd_dict = class_name_dict["gd"]
