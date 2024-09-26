@@ -12,15 +12,15 @@ var vector_type
 var variable_number: int
 var input_array: Array
 
-func _ready():
+	
+
+func create_vector_UI(type: Variant.Type):
 	x_input = $X
 	input_array.append(x_input)
 	y_input = $Y
 	input_array.append(y_input)
 	z_input = $Z
 	wInput = $W
-
-func create_vector_UI(type: Variant.Type):
 	vector_type = type
 	match vector_type:
 		Variant.Type.TYPE_VECTOR2:

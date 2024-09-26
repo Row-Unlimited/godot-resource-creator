@@ -37,4 +37,4 @@ alignment = 1
 [node name="CreateObject" type="Button" parent="SubmitBox"]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Create Object"
+text = "Save Object"
