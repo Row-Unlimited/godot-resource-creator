@@ -12,15 +12,16 @@ extends Resource
 @export var is_main_dock : bool = false
 @export var accept_empty_inputs : bool = true
 
+
 #region subobject settings
 ## default puts sub_objects into the same folder as the parent_object
 ## defines if a new folder for subobjects should be created
 @export var is_folder_hierarchical: bool = false
 #endregion
 
-func contains(cObject: ClassObject) -> ClassObject:
-	for classObject: ClassObject in classObjects:
-		if classObject.className == cObject.className:
+func contains(object_wrapper: ObjectWrapper) -> ObjectWrapper:
+	for classObject: ObjectWrapper in classObjects:
+		if classObject.className == object_wrapper.className:
 			return classObject
 	return null
 
@@ -32,10 +33,10 @@ func update_user_path_information(path: String):
 	var new_tuple = PathTuple.new(path)
 	used_exportPaths.append(new_tuple)
 
-func update_user_class_information(classObjectNew: ClassObject):
-	for cObject: ClassObject in classObjects:
-		if cObject.path == classObjectNew.path:
-			cObject.times_used += 1
+func update_user_class_information(classObjectNew: ObjectWrapper):
+	for object_wrapper: ObjectWrapper in classObjects:
+		if object_wrapper.path == classObjectNew.path:
+			object_wrapper.times_used += 1
 			return
 	classObjects.append(classObjectNew)
 
@@ -48,7 +49,7 @@ func return_higher_path(a: PathTuple, b: PathTuple):
 		return true
 	return false
 
-func return_higher_class(a: ClassObject, b: ClassObject):
+func return_higher_class(a: ObjectWrapper, b: ObjectWrapper):
 	if a.times_used >= b.times_used:
 		return true
 	return false

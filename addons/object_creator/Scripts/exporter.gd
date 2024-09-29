@@ -4,6 +4,22 @@ extends Node
 
 const PLUGIN_CONFIG_PATH = "res://addons/object_creator/PluginConfig.tres"
 
+func export_wrappers(wrappers: Array[ObjectWrapper]):
+	var path_group_dict = {}
+	# sorts wrappers into groups depending on the path
+	for wrapper in wrappers:
+		var path = wrapper.export_path
+		if path in path_group_dict.keys():
+			path_group_dict[path] = path_group_dict[path] + [wrapper]
+		else:
+			path_group_dict[path] = [wrapper]
+	
+	# exports the wrappers, path by path
+	for key in path_group_dict.keys():
+		var path_group = path_group_dict[key]
+		path_group = path_group.map(func(wrapper): return wrapper.obj) # turns wrapper into the objects
+		export_files(key, path_group)
+
 ## creates new Exporter object which will then immediately export the object(s) to the chosen path
 func export_files(path: String, export_objects : Array):
 	var file_names = []
@@ -12,7 +28,6 @@ func export_files(path: String, export_objects : Array):
 	
 	for i in file_names.size():
 		var file = ResourceSaver.save(export_objects[i], path + file_names[i])
-
 
 func export_to_json(path: String, export_objects: Array):
 	var file_names = []
