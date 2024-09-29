@@ -21,7 +21,7 @@ var is_settings_menu = false
 
 var is_classChoiceNeeded = true;
 var possible_classObjects: Array
-var object_class: ClassObject = null
+var object_class: ObjectWrapper = null
 
 var use_resourceFormat = false
 
@@ -126,19 +126,19 @@ func handle_navigator(is_reset: bool):
 func call_class_choice_window(classes: Array):
 	var classObjects: Array
 	var classObject
-	for cObject in classes:
-		classObject = plugin_config.contains(cObject)
+	for object_wrapper in classes:
+		classObject = plugin_config.contains(object_wrapper)
 		if classObject == null:
-			classObjects.append(cObject)
+			classObjects.append(object_wrapper)
 			
 		else:
 			classObjects.append(classObject)
 	open_new_window(class_choiceScreen.instantiate())
 	current_window.create_class_buttons(classObjects, Callable(self, "on_class_chosen"))
 
-func call_create_object_window(cObject: ClassObject, menu_type=CreateObject.CreateMenuType.NORMAL):
+func call_create_object_window(object_wrapper: ObjectWrapper, menu_type=CreateObject.CreateMenuType.NORMAL):
 	open_new_window(create_objectScreen.instantiate())
-	current_window.initialize_UI(cObject, menu_type)
+	current_window.initialize_UI(object_wrapper, menu_type)
 	current_window.connect("settings_changed", Callable(exporter, "save_settings_file"))
 	if plugin_config.set_exportPath.is_empty():
 		current_window.connect("object_created", Callable(self, "on_object_created_default"))
@@ -158,7 +158,7 @@ func open_new_window(new_window: Control):
 func navigate_back():
 	if window_sessions:
 		var last_session_dict: Dictionary = window_sessions.pop_back()
-		call_create_object_window(last_session_dict["class_object"])
+		call_create_object_window(last_session_dict["object_wrapper"])
 		current_window.load_session(last_session_dict)
 	else:
 		reset_process()
@@ -166,8 +166,8 @@ func navigate_back():
 #endregion
 
 #region signal functions
-func on_class_chosen(cObject):
-	object_class = cObject
+func on_class_chosen(object_wrapper):
+	object_class = object_wrapper
 	call_create_object_window(object_class)
 
 func on_object_created_default(object):
@@ -186,7 +186,7 @@ func on_path_chosen(path_string: String, is_json: bool):
 
 func _on_settings_button_pressed():
 	if not is_settings_menu:
-		var settings_object: ClassObject = ClassObject.new(SETTINGS_CLASS_PATH, "PluginConfig", plugin_config)
+		var settings_object: ObjectWrapper = ObjectWrapper.new(SETTINGS_CLASS_PATH, "PluginConfig", plugin_config)
 		call_create_object_window(settings_object, CreateObject.CreateMenuType.SETTINGS)
 		is_settings_menu = true
 	else:

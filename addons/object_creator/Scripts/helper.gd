@@ -8,6 +8,18 @@ static func check_string_contains_array(stringArray: Array, checkString: String)
 			return true
 	return false
 
+## only works for now if class has a constructor with no or only optional parameters
+static func duplicate_object(obj: Object):
+	var new_obj = obj.get_script().new()
+	var properties = obj.get_property_list()
+
+	for prop_dict in properties:
+		var prop_name = prop_dict["name"]
+		var prop_value = obj.get(prop_name)
+		new_obj.set(prop_name, prop_value)
+	
+	return new_obj
+
 ## updates one objects values with another objects ones[br]
 ## [param skipped_properties]: will skip certain variables if their names match[br]
 ## [param ignore_propery_overflow]: 	if set to true the func will ignore it if the update_object has variables

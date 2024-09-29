@@ -15,7 +15,7 @@ func check_for_integration() -> bool:
 func return_integrated_classes() -> Array:
 	var ClassArray = []
 	for path in plugin_config.integrated_classPaths:
-		ClassArray.append(ClassObject.new(path, Helper.get_last_path_parts(path, 1)[0]))
+		ClassArray.append(ObjectWrapper.new(path, Helper.get_last_path_parts(path, 1)[0]))
 	
 	return ClassArray
 
@@ -29,7 +29,7 @@ func return_possible_classes() -> Array:
 	
 	for path in filePaths:
 		var name = Helper.get_last_path_parts(path, 1)[0]
-		temp_classes.append(ClassObject.new(path, name))
+		temp_classes.append(ObjectWrapper.new(path, name))
 	
 	# maybe add functionality that checks each class for a certain prerequisite
 	class_array = temp_classes

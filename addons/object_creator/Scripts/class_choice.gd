@@ -18,16 +18,16 @@ func _ready():
 	resource_classes = JSON.parse_string(json_string)
 	window_type = WindowType.CLASS_CHOICE
 
-func create_class_buttons(class_objects: Array, return_callable: Callable):
+func create_class_buttons(object_wrappers: Array, return_callable: Callable):
 	var total_position = margin
-	for object: ClassObject in class_objects:
+	for object: ObjectWrapper in object_wrappers:
 		if check_class_requirements(object):
 			var new_button = button_scene.instantiate()
-			new_button.class_object = object
+			new_button.object_wrapper = object
 			new_button.connect("class_chosen", return_callable)
 			flow_container.add_child(new_button)
 
-func check_class_requirements(object: ClassObject) -> bool:
+func check_class_requirements(object: ObjectWrapper) -> bool:
 	var class_script: String = load(object.path).source_code
 	var is_resource_class = false
 	for string in resource_classes:

@@ -1,13 +1,13 @@
 @tool
 extends Button
 
-var class_object: ClassObject:
+var object_wrapper: ObjectWrapper:
 	set(value):
-		class_object = value
-		if class_object.name_class != null:
-			text = class_object.name_class
+		object_wrapper = value
+		if object_wrapper.name_class != null:
+			text = object_wrapper.name_class
 
-signal class_chosen(cObject: ClassObject)
+signal class_chosen(object_wrapper: ObjectWrapper)
 
 func _pressed():
-	emit_signal("class_chosen", class_object)
+	emit_signal("class_chosen", object_wrapper)

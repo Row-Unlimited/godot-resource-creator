@@ -12,7 +12,7 @@ var headline = preload("res://addons/object_creator/Scenes/UI Addon Scenes/headl
 var input_root_node: VBoxContainer
 var submit_button: Button
 var input_nodes: Array
-var class_object: ClassObject
+var object_wrapper: ObjectWrapper
 var property_list: Array
 
 var accept_empty_inputs
@@ -32,19 +32,19 @@ const type_to_output_signal = ["object_created", "settings_changed"]
 signal object_created(object)
 signal settings_changed(plugin_config_object)
 ## used when user clicks on an object input, should open a new object menu
-signal create_sub_object_clicked(sub_class_object)
+signal create_sub_object_clicked(sub_object_wrapper)
 
 func _ready() -> void:
 	window_type = WindowType.CREATE_OBJECT
 
 ## Creates the create_object menu UI and Logic[br]
-## takes the class from the class_object and gets the property list[br]
+## takes the class from the object_wrapper and gets the property list[br]
 ## then it filters out all the properties that are skipped or non-export vars
 ## and creates an Input Manager for every not filtered Property according to their Type
-func initialize_UI(cObject, create_menu_type: CreateMenuType = CreateMenuType.NORMAL):
-	class_object = cObject
+func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenuType.NORMAL):
+	self.object_wrapper = object_wrapper
 	# create object of the class from the script path and get the property list
-	property_list = load(class_object.path).new().get_property_list()
+	property_list = load(object_wrapper.path).new().get_property_list()
 	input_root_node = get_node("ScrollContainer/VBoxContainer")
 	submit_button = get_node("SubmitBox/CreateObject")
 	submit_button.connect("pressed", Callable(self, "on_submit_pressed"))
@@ -53,7 +53,7 @@ func initialize_UI(cObject, create_menu_type: CreateMenuType = CreateMenuType.NO
 	menu_set_up(create_menu_type)
 
 	# filters out variables that are not export variables
-	var export_var_lines = Helper.filter_lines(load(class_object.path).new().get_script().source_code, ["@export var"])
+	var export_var_lines = Helper.filter_lines(load(object_wrapper.path).new().get_script().source_code, ["@export var"])
 	var prune_lambda = func(x): return Helper.prune_string(x, "var", ":")
 	export_var_lines = export_var_lines.map(prune_lambda)
 
@@ -75,8 +75,8 @@ func initialize_UI(cObject, create_menu_type: CreateMenuType = CreateMenuType.NO
 
 			input_nodes.append(new_input)
 
-			if cObject.premade_object:
-				var object_pre_value = cObject.premade_object.get(property_name)
+			if object_wrapper.obj:
+				var object_pre_value = object_wrapper.obj.get(property_name)
 				if typeof(object_pre_value) == property["type"] :
 					new_input.receive_input(object_pre_value)
 			
@@ -111,7 +111,7 @@ func determine_input_type(property: Dictionary) -> String:
 ## Handles the submit of the Object on the upper-most level
 ## Calls for all inputManager to submit their values and then it creates it into one big object
 func on_submit_pressed():
-	var temp_object: Object = load(class_object.path).new()
+	var temp_object: Object = load(object_wrapper.path).new()
 	var missing_inputNodes: Array
 
 	save_session()
@@ -128,7 +128,8 @@ func on_submit_pressed():
 			missing_inputNodes.append(input_node)
 
 	if missing_inputNodes.is_empty():
-		emit_signal(output_signal, temp_object)
+		object_wrapper.obj = temp_object
+		emit_signal(output_signal, object_wrapper)
 	else:
 		for inputManager: InputManager in missing_inputNodes:
 			inputManager.show_input_warning(true)
@@ -149,7 +150,7 @@ func menu_set_up(create_menu_type: CreateMenuType):
 
 ## sets up default variables for create_object menu
 func create_default_menu():
-	add_headline(class_object.name_class)
+	add_headline(object_wrapper.name_class)
 
 ## sets up special variables for the settings create_object menu
 func create_settings_menu():
@@ -181,7 +182,7 @@ func add_breakline():
 ##			- Vectors will be safed as strings of the format: [br]
 ##				VECTOR::<value>,<value>,<value>,<value>::
 func save_session():
-	var save_dict: Dictionary = {"name": class_object.name_class, "class_path": class_object.path}
+	var save_dict: Dictionary = {"name": object_wrapper.name_class, "class_path": object_wrapper.path}
 	var properties_dict = {}
 	
 	for input_node: InputManager in input_nodes:
@@ -191,7 +192,7 @@ func save_session():
 			properties_dict[status_dict_key] = status_dict
 	
 	save_dict["properties"] = properties_dict
-	save_dict["class_object"] = class_object
+	save_dict["object_wrapper"] = object_wrapper
 
 	session_dict = save_dict
 	return save_dict.duplicate()
