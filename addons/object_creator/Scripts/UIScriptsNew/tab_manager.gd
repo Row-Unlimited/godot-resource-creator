@@ -32,8 +32,7 @@ func create_new_tab(tab_name, tab_node: Control = null) -> int:
 	return tab_counter
 
 func close_tab(id: int):
-	
-	pass
+	print("close id: ", id)
 
 func change_tab_screen(index: int):
 	var tab_id = get_tab_id(index)
@@ -56,6 +55,8 @@ func change_tab_screen(index: int):
 func _input(event: InputEvent) -> void:
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
 		var mouse_position = get_viewport().get_mouse_position() - self.get_rect().position
+		if not tab_bar.tab_count:
+			return
 		var tab_rect = tab_bar.get_tab_rect(hover_target)
 		if tab_rect.has_point(mouse_position):
 			close_tab(get_tab_id(hover_target))
