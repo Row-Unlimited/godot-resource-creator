@@ -34,6 +34,9 @@ func _create_base_nodes():
 	root_item = new_item
 
 func add_new_object(object_wrapper, path_editable = true):
+	if get_item_by_id(object_wrapper.id):
+		return
+
 	var parent_item = get_item_by_id(object_wrapper.parent_wrapper.id) if object_wrapper.parent_wrapper else root_item
 
 	var new_item = parent_item.create_child()

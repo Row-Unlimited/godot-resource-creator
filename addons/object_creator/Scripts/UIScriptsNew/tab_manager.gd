@@ -2,13 +2,15 @@
 class_name TabManager
 extends Control
 
+signal tab_closed(obj_id)
+
 var tab_bar: TabBar
 var tab_screen: Control
 
 ## counts each created tab, to create unique IDs for every tab
 var tab_counter = 0
-## dict that maps ids to index
-var tab_id_mapping = {}
+## dict that maps ids to index and node. [br] Id is the key
+var tab_id_mapping: Dictionary = {}
 
 ## Where the user is hovering over. -1 if they are hovering above nothing
 var hover_target: int
@@ -21,22 +23,32 @@ func _ready() -> void:
 	# signal is for closing tabs
 	tab_bar.connect("tab_hovered", Callable(self, "_on_tab_hovered"))
 
-func create_new_tab(tab_name, tab_node: Control = null) -> int:
+func create_new_tab(tab_name, tab_node: Control = null, tab_id = "") -> String:
 	tab_counter += 1
 	var tab_index = tab_bar.tab_count
-
-	tab_id_mapping[tab_counter] = {"index": tab_index, "tab_node": tab_node}
+	tab_id = tab_id if tab_id else str(tab_counter)
+	tab_id_mapping[tab_id] = {"index": tab_index, "tab_node": tab_node}
 	
 	tab_bar.add_tab(tab_name)
-	tab_bar.set_tab_metadata(tab_index, {"ID": tab_counter})
-	return tab_counter
+	tab_bar.set_tab_metadata(tab_index, {"ID": tab_id})
+	return tab_id
 
-func close_tab(id: int):
-	print("close id: ", id)
+## closes a tab and then changes the UI, decreases the indicies after and emits a signal
+func close_tab(id):
+	var tab_index = get_tab_index(id)
+	tab_bar.remove_tab(tab_index)
+	if tab_index - 1 >= 0:
+		tab_screen.remove_node(get_tab_node(id), get_tab_node(get_tab_id(tab_index - 1)))
+	else:
+		tab_screen.remove_node(get_tab_node(id))
+	
+	decrease_index_after(tab_index)
+
+	emit_signal("tab_closed", id)
 
 func change_tab_screen(index: int):
 	var tab_id = get_tab_id(index)
-	if tab_id == -1:
+	if not tab_id:
 		assert(false, "no id for this index")
 	else:
 		var tab_node = get_tab_node(tab_id)
@@ -51,6 +63,15 @@ func change_tab_screen(index: int):
 			#pass
 		
 
+func delete_object(id):
+	tab_id_mapping.erase(id)
+
+## decreases the index of all current tabs after the index[br]
+## is used when a tab is deleted so all tabs after that tab get the correct index
+func decrease_index_after(index):
+	for key in tab_id_mapping.keys():
+		if tab_id_mapping[key]["index"] > index:
+			tab_id_mapping[key]["index"] -= 1
 
 func _input(event: InputEvent) -> void:
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
@@ -65,12 +86,12 @@ func get_tab_id(index: int):
 	for key in tab_id_mapping.keys():
 		if tab_id_mapping[key]["index"] == index:
 			return key
-	return -1
+	return ""
 
-func get_tab_index(id: int):
+func get_tab_index(id: String):
 	return tab_id_mapping[id]["index"]
 
-func get_tab_node(id: int):
+func get_tab_node(id: String):
 	return tab_id_mapping[id]["tab_node"]
 
 func _on_tab_hovered(index: int):
