@@ -17,9 +17,11 @@ For Integration information look [here](Integration.md)
 - [ ] Improve UX by sorting classes or paths by how often they were created etc.
 - [ ] Add Integration functionality
 
-## Current Issues
-- [x] Add proper Settings menu for Config
-- [ ] Add new Parent Class and better navigation to create multiple objects before exporting
-- [ ] Proper Main Dock integration
-- [ ] Add Sub Resource Creation
-- [ ] Make it so create_object instances are saved automatically so that one can leave/re-enter an object creation screen
+## Immediate Goals
+
+- Implement Closing tabs
+- Implement Editing created objects
+- Implement sub-object creation
+- Re-Implement Settings Menu
+- Improve UI/UX
+- Implement plugin Themes

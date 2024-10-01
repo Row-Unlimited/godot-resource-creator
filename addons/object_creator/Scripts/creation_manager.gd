@@ -40,8 +40,10 @@ func _ready() -> void:
 
 	# set up base UI variables
 	tab_manager = get_node("TabManager")
+	tab_manager.connect("tab_closed", Callable(self, "_on_tab_closed"))
 	main_screen = get_node("TabManager/MainScreen")
 	overview_menu = get_node("TabManager/MainScreen/OverviewMenu")
+	main_screen.default_node = overview_menu
 	menu_side_bar = get_node("MenuSideBar")
 	menu_side_bar.get_node("ObjectOverviewButton").connect("pressed", Callable(self, "_on_overview_button_pressed"))
 
@@ -62,15 +64,14 @@ func _ready() -> void:
 	config_set_up()
 
 
-
-
 func create_new_creation_screen(object_wrapper: ObjectWrapper, menu_type=CreateObject.CreateMenuType.NORMAL):
-	object_wrapper = Helper.duplicate_object(object_wrapper)
-	object_counter += 1
-	object_wrapper.id = str("obj", object_counter)
+	if not object_wrapper.id:
+		object_wrapper = Helper.duplicate_object(object_wrapper)
+		object_counter += 1
+		object_wrapper.id = str("obj", object_counter)
 	var new_create_window = create_object_screen.instantiate()
 	new_create_window.initialize_UI(object_wrapper)
-	tab_manager.create_new_tab(object_wrapper.name_class, new_create_window)
+	tab_manager.create_new_tab(object_wrapper.name_class, new_create_window, object_wrapper.id)
 	new_create_window.connect("object_created", Callable(self, "_on_object_created"))
 	if menu_type != CreateObject.CreateMenuType.NORMAL:
 		new_create_window.connect("settings_changed", Callable(self, "_on_settings_changed"))
@@ -107,6 +108,11 @@ func config_set_up():
 	plugin_config = load("res://addons/object_creator/PluginConfig.tres")
 	default_export_path = plugin_config.set_exportPath if plugin_config.set_exportPath else default_export_path
 
+
+func get_wrapper(id):
+	var wrapper = created_object_wrappers.filter(func(x): return x.id == id)
+	return wrapper[0] if wrapper else null
+
 #region signal_functions
 
 func _on_tree_refresh_clicked():
@@ -121,12 +127,20 @@ func _on_add_item_clicked(class_id):
 func _on_overview_button_pressed():
 	main_screen.set_active_node(overview_menu)
 
+func _on_tab_closed(id):
+	var wrapper = get_wrapper(id)
+	if wrapper:
+		pass
+	else:
+		tab_manager.delete_object(id)
+
 
 func _on_object_created(object_wrapper: ObjectWrapper):
 	object_wrapper.export_path = default_export_path if object_wrapper.export_path.is_empty() else object_wrapper.export_path
 	export_tree.add_new_object(object_wrapper)
 	main_screen.set_active_node(overview_menu)
 	created_object_wrappers.append(object_wrapper)
+	tab_manager.close_tab(object_wrapper.id)
 
 func _on_export_activated(path_dict: Dictionary):
 	for wrapper in created_object_wrappers:
@@ -140,5 +154,6 @@ func _on_settings_changed(plugin_config_object: PluginConfig):
 	pass
 
 func _on_obj_edit_clicked(obj_id):
-	print("edit ", str(obj_id))
+	var wrapper = get_wrapper(obj_id)
+	create_new_creation_screen(wrapper)
 #endregion
