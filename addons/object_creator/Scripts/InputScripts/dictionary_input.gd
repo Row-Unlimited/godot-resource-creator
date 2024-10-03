@@ -32,10 +32,11 @@ var input_scenes = {
 
 ## gets called first and is used to initialize values
 func initialize_input(property_dict: Dictionary):
-	property = property_dict
-	set_up_nodes()
-	name_label.text = property_dict["name"]
-	input_type = property_dict["type"]
+	if property_dict:
+		property = property_dict
+		set_up_nodes()
+		name_label.text = property_dict["name"]
+		input_type = property_dict["type"]
 
 func set_up_nodes():
 	add_element_section = get_node("AddElementSection")
@@ -48,11 +49,13 @@ func set_up_nodes():
 	# connect buttons
 	get_node("AddElementSection/AddElementButton").connect("pressed", Callable(self, "_on_add_element_button_pressed"))
 	get_node("AddElementSection/ElementTypeButton").connect("item_selected", Callable(self, "_on_type_button_selected"))
-	
 
 	for type in SUPPORTED_TYPES:
 		element_type_button.add_item(type)
 	check_typed_dict()
+
+	# select first type per default
+	_on_type_button_selected(0)
 
 ## will be added once typed_dicts are added
 func check_typed_dict():
@@ -112,13 +115,6 @@ func add_element( value_type: Variant.Type, def_key="", def_input = null):
 		new_input_node.key_line_edit.text = def_key
 
 
-func _on_add_element_button_pressed() -> void:
-	add_element(selected_type)
-
-
-func _on_type_button_selected(index):
-	selected_type = element_type_button.return_type_by_index(index)
-
 func attempt_submit(mute_warnings=false) -> Variant:
 	var missing_input_nodes = []
 	var return_dict = {}
@@ -161,21 +157,6 @@ func submit_status_dict():
 	var status_dict = {"value" : value_list, "type" : input_type, "name" : property_name}
 	return status_dict
 
-## Minimizes Dictionary for better UX
-func _on_minimize_pressed():
-	for node: Node in get_children():
-		if node.name != "AddElementSection" and node.name != "Warning":
-			node.visible = is_minimized
-	if is_minimized:
-		is_minimized = false
-	else:
-		is_minimized = true
-
-## Removes InputNode from the Dictionary UI
-func _on_remove_node(node: MultiElementContainer):
-	input_managers.remove_at(input_managers.find(node.input))
-	remove_child(node)
-
 func receive_input(input: Dictionary):
 	for key in input.keys():
 		var item_value = input[key]
@@ -208,3 +189,27 @@ func get_all_keys() -> Array[String]:
 			key_list.append(key_input)
 
 	return key_list
+
+#region signal_methods
+func _on_add_element_button_pressed() -> void:
+	add_element(selected_type)
+
+
+func _on_type_button_selected(index):
+	selected_type = element_type_button.return_type_by_index(index)
+
+## Minimizes Dictionary for better UX
+func _on_minimize_pressed():
+	for node: Node in get_children():
+		if node.name != "AddElementSection" and node.name != "Warning":
+			node.visible = is_minimized
+	if is_minimized:
+		is_minimized = false
+	else:
+		is_minimized = true
+
+## Removes InputNode from the Dictionary UI
+func _on_remove_node(node: MultiElementContainer):
+	input_managers.remove_at(input_managers.find(node.input))
+	remove_child(node)
+#endregion
