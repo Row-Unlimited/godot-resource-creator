@@ -101,6 +101,8 @@ func determine_input_type(property: Dictionary) -> String:
 			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/dictionary_input.tscn"
 		TYPE_ARRAY:
 			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/array_input.tscn"
+		TYPE_OBJECT:
+			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/object_input.tscn"
 		_:
 			if vector_types.has(property["type"]):
 				scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
@@ -150,7 +152,7 @@ func menu_set_up(create_menu_type: CreateMenuType):
 
 ## sets up default variables for create_object menu
 func create_default_menu():
-	add_headline(object_wrapper.name_class)
+	add_headline(object_wrapper.file_class_name)
 
 ## sets up special variables for the settings create_object menu
 func create_settings_menu():
@@ -182,7 +184,7 @@ func add_breakline():
 ##			- Vectors will be safed as strings of the format: [br]
 ##				VECTOR::<value>,<value>,<value>,<value>::
 func save_session():
-	var save_dict: Dictionary = {"name": object_wrapper.name_class, "class_path": object_wrapper.path}
+	var save_dict: Dictionary = {"name": object_wrapper.file_class_name, "class_path": object_wrapper.path}
 	var properties_dict = {}
 	
 	for input_node: InputManager in input_nodes:
