@@ -3,9 +3,11 @@ class_name TreeExportView
 extends Tree
 
 signal edit_item_clicked(item_id)
+signal reset_clicked
 
 enum ButtonType {
-	EDIT
+	EDIT,
+	REFRESH
 }
 
 var root_item: TreeItem
@@ -42,13 +44,23 @@ func add_new_object(object_wrapper, path_editable = true):
 	var new_item = parent_item.create_child()
 	Helper.print_object_values(object_wrapper)
 	new_item.set_metadata(0, object_wrapper.id)
-	new_item.set_text(0, object_wrapper.name_class)
+	new_item.set_text(0, object_wrapper.file_class_name)
 	new_item.set_text(1, object_wrapper.export_path)
 	
 	new_item.add_button(1, load("res://addons/object_creator/Assets/edit_button.png"))
 	new_item.set_metadata(1, ButtonType.EDIT)
 
 	tree_items.append(new_item)
+
+func reset_export_view(wrappers: Array[ObjectWrapper]):
+	for item in tree_items:
+		item.free()
+	tree_items.clear()
+	edit_path_item = null
+
+	for wrapper in wrappers:
+		add_new_object(wrapper)
+
 
 ## creates dict that links wrapper id to an export path
 ## does not check if a path exists or is correct
@@ -74,6 +86,8 @@ func _handle_button_press(item, column, id, mouse_button_index):
 		ButtonType.EDIT:
 			item.set_editable(1, true)
 			edit_path_item = item
+		ButtonType.REFRESH:
+			emit_signal("reset_clicked")
 
 ## sets the color of all items with id in [param item_ids] to [param color] [br]
 ## [param change_others_default] makes it so that all ids that are not in [param item_ids]

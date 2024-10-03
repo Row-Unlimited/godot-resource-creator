@@ -19,6 +19,11 @@ extends Resource
 @export var is_folder_hierarchical: bool = false
 #endregion
 
+## config users can create to define precisely how they want the creation to be handled [br]
+## can be used to:[br] - define default property values [br] - exclude classes as sub_classes [br]
+### - lock properties
+@export var creation_config: Dictionary
+
 func contains(object_wrapper: ObjectWrapper) -> ObjectWrapper:
 	for classObject: ObjectWrapper in classObjects:
 		if classObject.className == object_wrapper.className:

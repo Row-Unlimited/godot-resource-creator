@@ -59,19 +59,18 @@ func _ready() -> void:
 	# set up export_tree which gives an overview over created objects and lets you edit paths/objects
 	export_tree = overview_menu.get_node("ExportMenu/ExportTree")
 	export_tree.connect("edit_item_clicked", Callable(self, "_on_obj_edit_clicked"))
+	export_tree.connect("reset_clicked", Callable(self, "_on_export_reset_clicked"))
+
 
 	# sets up the config and user settings
 	config_set_up()
 
 
 func create_new_creation_screen(object_wrapper: ObjectWrapper, menu_type=CreateObject.CreateMenuType.NORMAL):
-	if not object_wrapper.id:
-		object_wrapper = Helper.duplicate_object(object_wrapper)
-		object_counter += 1
-		object_wrapper.id = str("obj", object_counter)
+	object_wrapper = set_up_new_wrapper(object_wrapper)
 	var new_create_window = create_object_screen.instantiate()
 	new_create_window.initialize_UI(object_wrapper)
-	tab_manager.create_new_tab(object_wrapper.name_class, new_create_window, object_wrapper.id)
+	tab_manager.create_new_tab(object_wrapper.file_class_name, new_create_window, object_wrapper.id)
 	new_create_window.connect("object_created", Callable(self, "_on_object_created"))
 	if menu_type != CreateObject.CreateMenuType.NORMAL:
 		new_create_window.connect("settings_changed", Callable(self, "_on_settings_changed"))
@@ -96,7 +95,7 @@ func set_up_class_tree():
 			var filtered_code = Helper.filter_lines(obj_script.source_code, ["extends"])
 			var obj_parent_name = Helper.prune_string(filtered_code[0], "extends")
 			var obj_id = "objID" + str(class_counter)
-			var obj_dict = {"name": obj.name_class, "id": obj_id, "object_wrapper": obj, "file_ending": file_ending}
+			var obj_dict = {"name": obj.file_class_name, "id": obj_id, "object_wrapper": obj, "file_ending": file_ending}
 			parent_class_dict["gd"][obj_parent_name] = [obj_dict] if (not obj_parent_name in parent_class_dict["gd"].keys()) else parent_class_dict["gd"][obj_parent_name] + [obj_dict]
 			class_tree_mapping[obj_id] = obj
 		else:
@@ -112,6 +111,20 @@ func config_set_up():
 func get_wrapper(id):
 	var wrapper = created_object_wrappers.filter(func(x): return x.id == id)
 	return wrapper[0] if wrapper else null
+
+func set_up_new_wrapper(wrapper: ObjectWrapper):
+	if not wrapper.id:
+		wrapper = Helper.duplicate_object(wrapper)
+		object_counter += 1
+		wrapper.id = str("obj", object_counter)
+	# maybe usefull else case for integration cases
+	return wrapper
+
+func remove_wrapper(id):
+	tab_manager.close_tab(id)
+	created_object_wrappers = created_object_wrappers.filter(func(x): return x.id != id)
+	export_tree.reset_export_view(created_object_wrappers)
+
 
 #region signal_functions
 
@@ -150,10 +163,19 @@ func _on_export_activated(path_dict: Dictionary):
 			assert(false, "Not all wrappers are in the export path_dict")
 	exporter.export_wrappers(created_object_wrappers)
 
+func _on_export_reset_clicked():
+	export_tree.reset_export_view(created_object_wrappers)
+
 func _on_settings_changed(plugin_config_object: PluginConfig):
 	pass
 
 func _on_obj_edit_clicked(obj_id):
 	var wrapper = get_wrapper(obj_id)
 	create_new_creation_screen(wrapper)
+
+## is called by a signal when in the ObjectInput class the ChooseClassButton is pressed sucessfully.
+func _on_sub_resource_class_chosen(input_manager: ObjectInput, wrapper: ObjectWrapper):
+	wrapper = set_up_new_wrapper(wrapper)
+	remove_wrapper(input_manager.chosen_wrapper.id)
+	input_manager.chosen_wrapper = wrapper
 #endregion

@@ -35,6 +35,8 @@ func create_new_tab(tab_name, tab_node: Control = null, tab_id = "") -> String:
 
 ## closes a tab and then changes the UI, decreases the indicies after and emits a signal
 func close_tab(id):
+	if not id in tab_id_mapping.keys():
+		return
 	var tab_index = get_tab_index(id)
 	tab_bar.remove_tab(tab_index)
 	if tab_index - 1 >= 0:

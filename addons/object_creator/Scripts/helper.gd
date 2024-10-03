@@ -2,6 +2,12 @@
 class_name Helper
 extends Object
 
+static func array_to_string(arr: Array) -> String:
+	var return_string = ""
+	for string in arr:
+		return_string += string
+	return return_string
+
 static func check_string_contains_array(stringArray: Array, checkString: String):
 	for string: String in stringArray:
 		if checkString.contains(string):
@@ -259,3 +265,9 @@ static func search_filetypes_in_directory(fileType: String, directory: String, i
 			filePathArray.append_array(search_filetypes_in_directory(fileType, directory + "/" + path, ignored_directories))
 	
 	return filePathArray
+
+static func file_name_to_class_name(file_name: String):
+	var name_parts = Array(file_name.split("_"))
+	name_parts = name_parts.map(func(x): x[0] = x[0].to_upper(); return x)
+	name_parts = name_parts.map(func(x): return x if not "." in x else x.split(".")[0])
+	return array_to_string(name_parts)
