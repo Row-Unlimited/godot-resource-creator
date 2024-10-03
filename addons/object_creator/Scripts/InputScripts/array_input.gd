@@ -30,10 +30,11 @@ const VECTOR_TYPES = [TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I, 
 
 ## gets called first and is used to initialize values
 func initialize_input(property_dict: Dictionary):
-	property = property_dict
-	set_up_nodes()
-	name_label.text = property_dict["name"]
-	input_type = property_dict["type"]
+	if property_dict:
+		property = property_dict
+		set_up_nodes()
+		name_label.text = property_dict["name"]
+		input_type = property_dict["type"]
 
 func set_up_nodes():
 	add_element_section = get_node("AddElementSection")
@@ -46,6 +47,9 @@ func set_up_nodes():
 		element_type_button.add_item(type)
 	if property:
 		check_typed_array()
+	
+	# select first type per default
+	_on_type_button_selected(0)
 
 
 func check_typed_array():
@@ -62,7 +66,7 @@ func check_typed_array():
 	if not type_arr:
 		return
 	if type_arr in SUPPORTED_TYPES:
-		disable_select_type_button([type_arr], true)
+		disable_select_type_button([type_arr], true, true)
 	else:
 		# TODO  find solution
 		assert(false, "unsupported type in typed array")
@@ -110,13 +114,6 @@ func add_element(element_type: Variant.Type, def_input=null):
 	if def_input != null:
 		new_input_manager.receive_input(def_input)
 
-func _on_add_element_pressed():
-	add_element(selected_type)
-
-
-func _on_type_button_selected(index):
-	selected_type = element_type_button.return_type_by_index(index)
-
 func attempt_submit(mute_warnings=false) -> Variant:
 	var missing_input_nodes = []
 	var return_array = []
@@ -144,6 +141,44 @@ func submit_status_dict():
 	var property_name = property["name"] if property else "" 
 	var status_dict = {"value" : value_list, "type" : input_type, "name" : property_name}
 	return status_dict
+
+## takes an array and fills the input with input fields for each array element
+func receive_input(input):
+	for element in input:
+		add_element(typeof(element), element)
+
+## disables certain types so the select button can't choose them anymore
+## [param include_types_only] makes it so only the values in types are enabled and all others are disabled
+func disable_select_type_button(types: Array, include_types_only = false, is_remove = false):
+	var remove_items = []
+	for i in element_type_button.item_count:
+		var should_be_disabled = element_type_button.get_item_text(i) in types
+		should_be_disabled = should_be_disabled if not include_types_only else not should_be_disabled
+		if is_remove and should_be_disabled:
+			remove_items.append(i)
+		else:
+			element_type_button.set_item_disabled(i, should_be_disabled)
+	
+	if remove_items:
+		remove_items.sort()
+		remove_items.reverse()
+		for index in remove_items:
+			element_type_button.remove_item(index)
+			
+	# now select a not disabled button
+	for i in element_type_button.item_count:
+		if element_type_button.is_item_disabled(i) == false:
+			element_type_button.select(i)
+			element_type_button.emit_signal("item_selected", i)
+			break
+
+#region signal_methods
+func _on_add_element_pressed():
+	add_element(selected_type)
+
+
+func _on_type_button_selected(index):
+	selected_type = element_type_button.return_type_by_index(index)
 
 ## Minimizes Arrays for better UX
 func _on_minimize_pressed():
@@ -181,22 +216,4 @@ func _on_move_node(node: MultiElementContainer, new_position: int):
 func _on_remove_node(node: MultiElementContainer):
 	input_managers.remove_at(input_managers.find(node.input))
 	remove_child(node)
-
-## takes an array and fills the input with input fields for each array element
-func receive_input(input):
-	for element in input:
-		add_element(typeof(element), element)
-
-## disables certain types so the select button can't choose them anymore
-## [param include_types_only] makes it so only the values in types are enabled and all others are disabled
-func disable_select_type_button(types: Array, include_types_only = false):
-	for i in element_type_button.item_count:
-		var should_be_disabled = element_type_button.get_item_text(i) in types
-		should_be_disabled = should_be_disabled if not include_types_only else not should_be_disabled
-		element_type_button.set_item_disabled(i, should_be_disabled)
-	# now select a not disabled button
-	for i in element_type_button.item_count:
-		if element_type_button.is_item_disabled(i) == false:
-			element_type_button.select(i)
-			element_type_button.emit_signal("item_selected", i)
-			break
+#endregion
