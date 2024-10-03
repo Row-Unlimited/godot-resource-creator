@@ -13,6 +13,8 @@ var input_warning
 var array_position: int # position if inputmanager is within an array
 var accept_empty_inputs : bool
 
+## set up function that is called by the CreateObject class [br]
+## is the first function that is called, before the ready func
 func initialize_input(property_dict: Dictionary):
 	property = property_dict
 

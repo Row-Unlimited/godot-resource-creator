@@ -19,7 +19,8 @@ func return_integrated_classes() -> Array:
 	
 	return ClassArray
 
-
+## returns ObjectWrapper objects for each creatable class in the project [br]
+## certain directories are/can-be excluded through the plugin_config
 func return_possible_classes() -> Array:
 	var class_array = []
 	var start_path = "res://"
@@ -35,3 +36,10 @@ func return_possible_classes() -> Array:
 	class_array = temp_classes
 	
 	return class_array
+
+## will replace integrated classes and use the creation_config in plugin_config
+func return_sub_classes() -> Array:
+	
+
+
+	return []
