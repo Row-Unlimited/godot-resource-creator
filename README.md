@@ -19,9 +19,8 @@ For Integration information look [here](Integration.md)
 
 ## Immediate Goals
 
-- Implement Closing tabs
-- Implement Editing created objects
 - Implement sub-object creation
+  - Change Accept empty and Input Manager Return values on submit (maybe with enum)
 - Re-Implement Settings Menu
 - Improve UI/UX
 - Implement plugin Themes

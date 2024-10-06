@@ -69,11 +69,16 @@ func _ready() -> void:
 func create_new_creation_screen(object_wrapper: ObjectWrapper, menu_type=CreateObject.CreateMenuType.NORMAL):
 	object_wrapper = set_up_new_wrapper(object_wrapper)
 	var new_create_window = create_object_screen.instantiate()
+	# give CreateObject callables to connect sub resource input managers to CreationManager
+	new_create_window.object_chosen_callable = Callable(self, "_on_sub_object_class_chosen")
+	new_create_window.object_edited_callable = Callable(self, "_on_sub_object_edit_clicked")
+	
 	new_create_window.initialize_UI(object_wrapper)
 	tab_manager.create_new_tab(object_wrapper.file_class_name, new_create_window, object_wrapper.id)
 	new_create_window.connect("object_created", Callable(self, "_on_object_created"))
 	if menu_type != CreateObject.CreateMenuType.NORMAL:
 		new_create_window.connect("settings_changed", Callable(self, "_on_settings_changed"))
+	return new_create_window
 
 
 ## deletes object process by ID
@@ -149,10 +154,11 @@ func _on_tab_closed(id):
 
 
 func _on_object_created(object_wrapper: ObjectWrapper):
-	object_wrapper.export_path = default_export_path if object_wrapper.export_path.is_empty() else object_wrapper.export_path
-	export_tree.add_new_object(object_wrapper)
-	main_screen.set_active_node(overview_menu)
-	created_object_wrappers.append(object_wrapper)
+	if object_wrapper.parent_wrapper == null:
+		object_wrapper.export_path = default_export_path if object_wrapper.export_path.is_empty() else object_wrapper.export_path
+		export_tree.add_new_object(object_wrapper)
+		main_screen.set_active_node(overview_menu)
+		created_object_wrappers.append(object_wrapper)
 	tab_manager.close_tab(object_wrapper.id)
 
 func _on_export_activated(path_dict: Dictionary):
@@ -174,8 +180,13 @@ func _on_obj_edit_clicked(obj_id):
 	create_new_creation_screen(wrapper)
 
 ## is called by a signal when in the ObjectInput class the ChooseClassButton is pressed sucessfully.
-func _on_sub_resource_class_chosen(input_manager: ObjectInput, wrapper: ObjectWrapper):
+func _on_sub_object_class_chosen(wrapper: ObjectWrapper, input_manager: ObjectInput):
 	wrapper = set_up_new_wrapper(wrapper)
 	remove_wrapper(input_manager.chosen_wrapper.id)
 	input_manager.chosen_wrapper = wrapper
+	print(wrapper.real_class_name)
+
+func _on_sub_object_edit_clicked(wrapper: ObjectWrapper, input_manager: ObjectInput):
+	if not tab_manager.open_tab_by_id(wrapper.id):
+		input_manager.object_create_screen = create_new_creation_screen(wrapper)
 #endregion

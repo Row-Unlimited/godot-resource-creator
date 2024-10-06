@@ -15,6 +15,10 @@ var input_nodes: Array
 var object_wrapper: ObjectWrapper
 var property_list: Array
 
+# these are given to CreateObject by CreationManager after instantiating
+var object_chosen_callable: Callable
+var object_edited_callable: Callable
+
 var accept_empty_inputs
 
 var SKIPPED_PROPERTIES =["resource_local_to_scene", "resource_path", "resource_name", "resource_scene_unique_id"]
@@ -42,6 +46,7 @@ func _ready() -> void:
 ## then it filters out all the properties that are skipped or non-export vars
 ## and creates an Input Manager for every not filtered Property according to their Type
 func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenuType.NORMAL):
+	# TODO: add button that appears if the object is a sub_object so you can easily navigate to the parent object
 	self.object_wrapper = object_wrapper
 	# create object of the class from the script path and get the property list
 	property_list = load(object_wrapper.path).new().get_property_list()
@@ -64,6 +69,12 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 		var property_input_path = determine_input_type(property)
 		if property_input_path != "" and not SKIPPED_PROPERTIES.has(property_name) and property_name in export_var_lines:
 			var new_input : InputManager = load(property_input_path).instantiate()
+
+			# connect sub resource signals to creation manager
+			if property["type"] == TYPE_OBJECT:
+				new_input.connect("edit_sub_object_clicked", object_edited_callable)
+				new_input.connect("choose_class_button_clicked", object_chosen_callable)
+				new_input.parent_wrapper = object_wrapper
 			
 			add_breakline()
 
@@ -132,10 +143,11 @@ func on_submit_pressed():
 	if missing_inputNodes.is_empty():
 		object_wrapper.obj = temp_object
 		emit_signal(output_signal, object_wrapper)
+		return object_wrapper
 	else:
 		for inputManager: InputManager in missing_inputNodes:
 			inputManager.show_input_warning(true)
-		return
+		return null
 
 ## function we use to customize the create_object menu so it can be used for settings or other purposes
 ## also implements settings for the creation process
