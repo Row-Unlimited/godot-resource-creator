@@ -63,7 +63,14 @@ func change_tab_screen(index: int):
 		#for child in tab_screen.get_children():
 			##child.visible = false
 			#pass
-		
+
+func open_tab_by_id(id) -> bool:
+	var index = get_tab_index(id)
+	if index != null:
+		change_tab_screen(index)
+		return true
+	else:
+		return false
 
 func delete_object(id):
 	tab_id_mapping.erase(id)
@@ -91,7 +98,10 @@ func get_tab_id(index: int):
 	return ""
 
 func get_tab_index(id: String):
-	return tab_id_mapping[id]["index"]
+	if id in tab_id_mapping.keys():
+		return tab_id_mapping[id]["index"]
+	else:
+		return null
 
 func get_tab_node(id: String):
 	return tab_id_mapping[id]["tab_node"]
