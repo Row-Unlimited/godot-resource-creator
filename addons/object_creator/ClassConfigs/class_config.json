@@ -1,0 +1,83 @@
+{
+    "class_name": "TestScript",
+    "class_path_name": "test_script.gd",
+    "script_type":"gd",
+    "resource_path": "res://scripts/gd-scripts/test_script.gd",
+
+    "CLASS_GENERAL_CONFIG": {
+        "accept_empty": true,
+        "change_empty_default": false
+    },
+
+    "TYPE_CONFIGS": {
+        "TYPE_INT":{
+            "range_max": 100,
+            "range_min": -100,
+            "change_empty_default": true,
+            "default_value": 0
+        }
+    },
+
+    "PROPERTY_CONFIGS": {
+
+        "test_int": {
+            "type": 2,
+            "range_max": 100,
+            "range_min": 0,
+            "accept_empty": false,
+            "change_empty_default": false,
+            "default_value": 3,
+            "disable_editing": true
+        },
+
+        "test_array": {
+            "type": 28,
+            "size_max": 10,
+            "size_min": 0,
+            "accept_empty": true,
+            "change_empty_default": false,
+            "default_value": ["this", "is an", "example"],
+            "disable_editing": true,
+            "SUB_ARRAY_CONFIG":{
+                "type": 4,
+                "size_max": 10,
+                "size_min": 1,
+                "accept_empty": true,
+                "change_empty_default": true,
+                "disable_editing": false
+            }
+        },
+
+        "test_vector": {
+            "type": 12,
+            "range_max": 100,
+            "range_min": 0,
+            "accept_empty": false,
+            "change_empty_default": false,
+            "default_value": 1,
+            "disable_editing": true,
+            "X_CONFIG": {
+                "range_max": 5,
+                "range_min": -5,
+                "disable_editing": false
+            },
+            "Y_CONFIG": {
+                "range_max": 50,
+                "range_min": -50,
+                "disable_editing": false
+            },
+            "Z_CONFIG": {
+                "default_value": 0,
+                "disable_editing": true
+            },
+            "W_CONFIG": {
+                "accept_empty": false,
+                "change_empty_default": true
+            }
+        },
+
+        "test_object": {
+            "type": 24
+        }
+    }
+}

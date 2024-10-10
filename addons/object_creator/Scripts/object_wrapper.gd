@@ -14,6 +14,8 @@ var parent_wrapper: ObjectWrapper
 var obj
 var real_class_name: String
 
+var class_config
+
 func _init(path: String = "", name: String = "", obj = null, times_used = 0):
 	self.path = path
 	file_class_name = name

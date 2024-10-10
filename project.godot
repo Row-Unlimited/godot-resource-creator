@@ -27,6 +27,7 @@ enabled=PackedStringArray("res://addons/object_creator/plugin.cfg")
 
 folder_colors={
 "res://addons/object_creator/Assets/": "green",
+"res://addons/object_creator/ClassConfigs/": "gray",
 "res://addons/object_creator/Scenes/": "blue",
 "res://addons/object_creator/Scripts/": "red",
 "res://scripts/": "gray",

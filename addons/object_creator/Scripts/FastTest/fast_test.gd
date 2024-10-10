@@ -14,9 +14,9 @@ func _ready() -> void:
 	#test_tab_bar()
 
 func test_crap():
-	var strings = ["(12, 2, 3, 0)", "(12, 0.0001)", "(12.00003, 4.980)", "(0, 2.3, 4)"]
+	var strings = ["(12, 2, 3, 0)", [0, 1, 2, 3], ["0", 2, 34, "123"]]
 	for string in strings:
-		print(Helper.string_to_vector(string))
+		print(Helper.custom_to_vector(string, true))
 	pass
 
 func test_json():

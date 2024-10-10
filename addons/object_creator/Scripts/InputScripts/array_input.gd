@@ -119,16 +119,16 @@ func attempt_submit(mute_warnings=false) -> Variant:
 	var return_array = []
 	for input_manager: InputManager in input_managers:
 		var input_value = input_manager.attempt_submit()
-		if input_value != null:
+		if not input_value in Enums.InputErrorType:
 			input_manager.hide_input_warning()
 			return_array.append(input_value)
 		else:
 			missing_input_nodes.append(input_manager)
+			# TODO: call input warning method with type
 	
 	if not missing_input_nodes.is_empty():
-		for input_manager: InputManager in missing_input_nodes:
-			input_manager.show_input_warning(true)
-		return null
+		# TODO: maybe add behavior that accepts certain empty fields or something
+		return Enums.InputErrorType.INVALID
 	
 	return return_array
 
