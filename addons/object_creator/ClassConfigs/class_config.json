@@ -30,18 +30,18 @@
             "disable_editing": true
         },
 
-        "test_array": {
+        "testArray": {
             "type": 28,
-            "size_max": 10,
-            "size_min": 0,
+            "range_max": 10,
+            "range_min": 0,
             "accept_empty": true,
             "change_empty_default": false,
             "default_value": ["this", "is an", "example"],
             "disable_editing": true,
             "SUB_ARRAY_CONFIG":{
                 "type": 4,
-                "size_max": 10,
-                "size_min": 1,
+                "range_max": 10,
+                "range_min": 1,
                 "accept_empty": true,
                 "change_empty_default": true,
                 "disable_editing": false

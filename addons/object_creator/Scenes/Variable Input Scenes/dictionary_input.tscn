@@ -46,5 +46,3 @@ layout_mode = 2
 text = "Not all Inputs are valid"
 label_settings = ExtResource("3_ptpvb")
 horizontal_alignment = 1
-
-[connection signal="pressed" from="AddElementSection/MinimizeButton" to="." method="_on_minimize_pressed"]

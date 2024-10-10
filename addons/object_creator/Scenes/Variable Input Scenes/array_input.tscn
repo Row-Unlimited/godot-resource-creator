@@ -46,7 +46,3 @@ layout_mode = 2
 text = "Not all Inputs are valid"
 label_settings = ExtResource("3_1eya5")
 horizontal_alignment = 1
-
-[connection signal="pressed" from="AddElementSection/MinimizeButton" to="." method="_on_minimize_pressed"]
-[connection signal="pressed" from="AddElementSection/AddElementButton" to="." method="_on_add_element_pressed"]
-[connection signal="item_selected" from="AddElementSection/ElementTypeButton" to="." method="_on_type_button_selected"]
