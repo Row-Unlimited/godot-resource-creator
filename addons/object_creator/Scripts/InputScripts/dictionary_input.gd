@@ -124,21 +124,21 @@ func attempt_submit(mute_warnings=false) -> Variant:
 		var new_key = container.key_line_edit.text
 		if new_key:
 			if new_key in return_dict.keys():
-				# TODO add proper behavior
+				# TODO: add show input warning for missing key
 				missing_input_nodes.append(input_manager)
 				assert(false, "ERROR: duplicate keys!")
 			var value = input_manager.attempt_submit()
-			if value:
+			if not value in Enums.InputErrorType:
 				input_manager.hide_input_warning()
 				return_dict[new_key] = value
 		else:
+			# TODO: call show input warnings in wrong input managers
 			missing_input_nodes.append(input_manager)
 	
 	if not missing_input_nodes.is_empty():
-		for input_manager: InputManager in missing_input_nodes:
-			input_manager.show_input_warning(true)
-		return null
-	return return_dict
+		return Enums.InputErrorType.INVALID
+	else:
+		return return_dict
 
 func submit_status_dict():
 	var value_list = {} # value of the status_dict; Contains all input nodes status_dicts

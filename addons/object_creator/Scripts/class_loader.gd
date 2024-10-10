@@ -22,20 +22,22 @@ func return_integrated_classes() -> Array:
 ## returns ObjectWrapper objects for each creatable class in the project [br]
 ## certain directories are/can-be excluded through the plugin_config
 func return_possible_classes() -> Array:
-	var class_array = []
+	var wrapper_array = []
 	var start_path = "res://"
 	var filePaths: Array = Helper.search_filetypes_in_directory(".gd", start_path, plugin_config.ignored_directories)
 	filePaths.append_array(Helper.search_filetypes_in_directory(".cs", start_path, plugin_config.ignored_directories))
-	var temp_classes = []
+	var temp_wrappers = []
 	
 	for path in filePaths:
 		var name = Helper.get_last_path_parts(path, 1)[0]
-		temp_classes.append(ObjectWrapper.new(path, name))
+		var new_wrapper = ObjectWrapper.new(path, name)
+		new_wrapper.class_config = plugin_config.get_config_by_path(path)
+		temp_wrappers.append(new_wrapper)
 	
 	# maybe add functionality that checks each class for a certain prerequisite
-	class_array = temp_classes
+	wrapper_array = temp_wrappers
 	
-	return class_array
+	return wrapper_array
 
 ## will replace integrated classes and use the creation_config in plugin_config
 func return_sub_classes() -> Array:

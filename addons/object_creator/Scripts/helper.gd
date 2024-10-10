@@ -26,6 +26,17 @@ static func duplicate_object(obj: Object):
 	
 	return new_obj
 
+static func intersect_arrays(arr1, arr2):
+	var arr2_dict = {}
+	for v in arr2:
+		arr2_dict[v] = true
+
+	var in_both_arrays = []
+	for v in arr1:
+		if arr2_dict.get(v, false):
+			in_both_arrays.append(v)
+	return in_both_arrays
+
 ## updates one objects values with another objects ones[br]
 ## [param skipped_properties]: will skip certain variables if their names match[br]
 ## [param ignore_propery_overflow]: 	if set to true the func will ignore it if the update_object has variables
@@ -95,22 +106,46 @@ static func remove_items_from_path(path: String, number_items : int):
 ## takes a String in the default form we receive when using the str() function on a string object [br]
 ## example: (1, 2, 3) [br]
 ## and returns a Vector2/3/4 [br]
-static func string_to_vector(vec_str : String):
-	var regex = RegEx.new()
-	regex.compile(r"(?<number>([1-9]+[0-9]*|0)\.*([0-9]*))[,\)]")
-	var numbers = []
-	for result in regex.search_all(vec_str):
-		numbers.append(result.get_string("number").to_float())
+static func custom_to_vector(vec_representation, as_int_vector = false):
+	var vec_array = []
+	# make the vector representation into an array
+	match typeof(vec_representation):
+		TYPE_STRING:
+			var regex = RegEx.new()
+			regex.compile(r"(?<number>(?:[1-9]+[0-9]*|0)\.*(?:[0-9]*))[,\)]")
+			if as_int_vector:
+				regex.compile(r"(?<=[\(\s])(?<number>(?:[1-9][0-9]*|0))(?=[,\)])")
+			var numbers = []
+			for result in regex.search_all(vec_representation):
+				numbers.append(result.get_string("number").to_float() if not as_int_vector else result.get_string("number").to_int())
+			vec_array = numbers
+		TYPE_ARRAY:
+			vec_representation = vec_representation.map(map_string_to_int_float)
+			for value in vec_representation:
+				if not typeof(value) in [TYPE_INT, TYPE_FLOAT]:
+					assert(false, "ERROR: NON INT/FLOAT TYPE VALUE IN VEC REPRESENTATION ARRAY")
+				elif as_int_vector and not typeof(value) in [TYPE_INT]:
+					assert(false, "ERROR: NON INT TYPE VALUE IN VEC REPRESENTATION ARRAY")
+			vec_array = vec_representation
 	
-	match numbers.size():
-		2:
-			return Vector2(numbers[0], numbers[1])
-		3:
-			return Vector3(numbers[0], numbers[1], numbers[2])
-		4:
-			return Vector4(numbers[0], numbers[1], numbers[2], numbers[3])
-		_:
-			return null
+	match vec_array.size():
+				2:
+					return Vector2(vec_array[0], vec_array[1]) if not as_int_vector else Vector2i(vec_array[0], vec_array[1])
+				3:
+					return Vector3(vec_array[0], vec_array[1], vec_array[2]) if not as_int_vector else Vector3i(vec_array[0], vec_array[1], vec_array[2])
+				4:
+					return Vector4(vec_array[0], vec_array[1], vec_array[2], vec_array[3]) if not as_int_vector else Vector4i(vec_array[0], vec_array[1], vec_array[2], vec_array[3])
+				_:
+					return null
+
+static func map_string_to_int_float(value):
+	if typeof(value) == TYPE_STRING:
+		if value.is_valid_int:
+			return value.to_int()
+		elif value.is_valid_float:
+			return value.to_float()
+	else:
+		return value
 
 static func filter_lines(single_string: String, filter_terms : Array[String]) -> Array[String]:
 	var filtered_lines = [] as Array[String]
@@ -236,6 +271,28 @@ static func object_to_dict(obj: Object):
 			return_dict[prop_name] = prop_value 
 	return return_dict
 
+static func apply_dict_values_object(obj: Object, value_dict: Dictionary):
+	var keys = value_dict.keys()
+	var prop_list = obj.get_property_list()
+	var prop_names = prop_list.map(func(x:Dictionary): return x["name"])
+	
+	keys = intersect_arrays(keys, prop_names)
+
+	for key in keys:
+		obj.set(key, value_dict[key])
+
+## puts all sub dicts of a dictionary in one dictionary side by side (if some dicts have the same name this does not work) [br]
+## with [param search_keys] you can change the behavior so the return dictionary only has the ROOT and all dicts that had one of the specified search keys
+static func flatten_sub_dicts(dict: Dictionary, search_keys = []):
+	var return_dict = {"ROOT": dict}
+	for key in dict.keys():
+		var value = dict[key]
+		if typeof(value) == TYPE_DICTIONARY:
+			if not search_keys or (key in search_keys):
+				return_dict[key] = value
+			return_dict.merge(flatten_sub_dicts(value, search_keys))
+	return return_dict
+
 static func get_object_script_name(obj):
 	var file_name = get_last_path_parts(obj.get_script().resource_path, 1).pop_back()
 	return file_name.substr(0, file_name.length() - 3)
@@ -263,6 +320,8 @@ static func search_filetypes_in_directory(fileType: String, directory: String, i
 	for path in directory_paths:
 		if not Helper.check_string_contains_array(ignored_directories, path):
 			filePathArray.append_array(search_filetypes_in_directory(fileType, directory + "/" + path, ignored_directories))
+	
+	filePathArray = filePathArray.map(func(x:String): return x.replace("res:///", "res://"))
 	
 	return filePathArray
 

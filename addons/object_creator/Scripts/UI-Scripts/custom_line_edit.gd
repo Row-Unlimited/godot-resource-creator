@@ -13,31 +13,35 @@ extends LineEdit
 func _ready():
 	connect("text_changed", Callable(self, "on_text_changed"))
 
-func retrieve_input() -> String:
+func retrieve_input():
+	if text.is_empty():
+		return Enums.InputErrorType.EMPTY
+
 	match input_type:
 		TYPE_INT:
 			if not text.is_valid_int():
-				return ""
+				return Enums.InputErrorType.TYPE_INVALID
 			else:
 				var number_string = int(text)
 				if activated_max and number_string > input_max:
-					return ""
+					return Enums.InputErrorType.RANGE_INVALID
 				if activated_min and number_string < input_min:
-					return ""
+					return Enums.InputErrorType.RANGE_INVALID
 				
 		TYPE_FLOAT:
 			if not text.is_valid_float():
-				return ""
+				return Enums.InputErrorType.TYPE_INVALID
 			else:
 				var number_string = float(text)
 				if activated_max and number_string > input_max:
-					return ""
+					return Enums.InputErrorType.RANGE_INVALID
 				if activated_min and number_string < input_min:
-					return ""
+					return Enums.InputErrorType.RANGE_INVALID
 	
+	# this one is not currently in use really
 	for item in excluded_values:
 		if text.contains(str(item)):
-			return ""
+			return Enums.InputErrorType.INVALID
 	
 	return text
 

@@ -4,7 +4,7 @@ extends InputManager
 const vector_enum_types = [5, 6, 9, 10, 12, 13]
 
 
-var isInt: bool
+var is_int: bool
 
 
 func set_up_nodes():
@@ -28,13 +28,8 @@ func initialize_input(property_dict: Dictionary):
 
 func attempt_submit(mute_warnings=false) -> Variant:
 	var return_value = null
-	var temp_value = input_node.return_input(accept_empty_inputs)
-	if not check_input_range(temp_value) or temp_value == null:
-		return_value = null
-		show_input_warning(true)
-	else:
-		return_value = temp_value
-	return return_value
+	return input_node.return_input()
+	# TODO: maybe do something if errors occur
 
 func submit_status_dict():
 	var value = "VECTOR::"+ str(input_node.return_input(true)) + "::"
