@@ -91,6 +91,8 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 				if typeof(object_pre_value) == property["type"] :
 					new_input.receive_input(object_pre_value)
 			
+			new_input.set_up_config_rules(object_wrapper.class_config)
+			
 
 func determine_input_type(property: Dictionary) -> String:
 	var vector_types = [TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I, TYPE_VECTOR4, TYPE_VECTOR4I]
@@ -134,11 +136,11 @@ func on_submit_pressed():
 	
 	for input_node: InputManager in input_nodes:
 		var input_value = input_node.attempt_submit()
-		if input_value != null:
+		if input_value in Enums.InputErrorType:
+			missing_inputNodes.append(input_node)
+		else:
 			temp_object.set(input_node.property["name"], input_value)
 			input_node.hide_input_warning()
-		else:
-			missing_inputNodes.append(input_node)
 
 	if missing_inputNodes.is_empty():
 		object_wrapper.obj = temp_object
@@ -235,6 +237,6 @@ func parse_property_dict_custom(property_dict: Dictionary):
 					prop_value[key] = parse_property_dict_custom(prop_value[key])["value"]
 			var other_type:
 				if other_type in VECTOR_TYPES:
-					prop_value = Helper.string_to_vector(prop_value)
+					prop_value = Helper.custom_to_vector(prop_value)
 		property_dict["value"] = prop_value
 		return property_dict

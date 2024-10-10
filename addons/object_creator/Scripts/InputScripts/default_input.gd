@@ -17,8 +17,9 @@ func initialize_input(property_dict: Dictionary):
 		style_input()
 
 func attempt_submit(mute_warnings=false) -> Variant:
-	var return_value = null
+	var return_value = Enums.InputErrorType.INVALID
 	var temp_value: String = input_node.text
+
 	match input_type:
 		Variant.Type.TYPE_INT:
 			if temp_value.is_valid_int():
@@ -29,14 +30,14 @@ func attempt_submit(mute_warnings=false) -> Variant:
 		Variant.Type.TYPE_STRING:
 			if not temp_value.is_empty():
 				return_value = temp_value
+	# check for the different cases and return an enum InputErrorType value for better warnings
+	if temp_value.is_empty():
+		return_value = Enums.InputErrorType.EMPTY
+	elif check_range_invalid(return_value):
+		return_value = Enums.InputErrorType.RANGE_INVALID
+	else:
+		return_value = Enums.InputErrorType.TYPE_INVALID
 
-	# if accept_empty_input setting is activated empty values will be turned into the default
-	if temp_value.is_empty() and accept_empty_inputs:
-		return_value = return_empty_by_type()
-
-	if not check_input_range(return_value) or return_value == null:
-		return_value = null
-		show_input_warning(true)
 	return return_value
 
 func submit_status_dict():
