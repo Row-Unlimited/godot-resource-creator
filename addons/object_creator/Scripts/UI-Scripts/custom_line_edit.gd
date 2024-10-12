@@ -15,7 +15,7 @@ func _ready():
 
 func retrieve_input():
 	if text.is_empty():
-		return Enums.InputErrorType.EMPTY
+		return ""
 
 	match input_type:
 		TYPE_INT:

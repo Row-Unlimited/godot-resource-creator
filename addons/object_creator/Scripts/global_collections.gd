@@ -1,0 +1,9 @@
+@tool
+class_name GlobalCollections
+extends Object
+
+const AcceptedTypes = [
+    TYPE_BOOL, TYPE_INT, TYPE_FLOAT, TYPE_STRING,
+    TYPE_OBJECT, TYPE_ARRAY, TYPE_DICTIONARY,
+    TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I, TYPE_VECTOR4, TYPE_VECTOR4I,
+    ]

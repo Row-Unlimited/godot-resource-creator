@@ -35,12 +35,16 @@ func attempt_submit(mute_warnings=false) -> Variant:
 	for container in element_containers:
 		var input_manager = container.input_manager 
 		var new_key = container.key_line_edit.text
+		var value = input_manager.attempt_submit()
+		
+		if value == Enums.InputResponse.IGNORE:
+			continue
+
 		if new_key:
 			if new_key in return_dict.keys():
 				# TODO: add show input warning for missing key
 				missing_input_nodes.append(input_manager)
 				assert(false, "ERROR: duplicate keys!")
-			var value = input_manager.attempt_submit()
 			if not value in Enums.InputErrorType:
 				input_manager.hide_input_warning()
 				return_dict[new_key] = value
@@ -48,8 +52,11 @@ func attempt_submit(mute_warnings=false) -> Variant:
 			# TODO: call show input warnings in wrong input managers
 			missing_input_nodes.append(input_manager)
 	
-	if not missing_input_nodes.is_empty():
+
+	if missing_input_nodes:
 		return Enums.InputErrorType.INVALID
+	elif return_dict.is_empty():
+		return return_empty_value()
 	else:
 		return return_dict
 
@@ -88,6 +95,11 @@ func get_all_keys() -> Array[String]:
 			key_list.append(key_input)
 
 	return key_list
+
+func set_input_disabled(is_disabled: bool):
+	super(is_disabled)
+	for container in element_containers:
+		container.key_line_edit.editable = is_disabled
 
 #region signal_methods
 

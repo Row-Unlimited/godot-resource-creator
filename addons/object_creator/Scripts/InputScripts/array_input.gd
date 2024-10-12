@@ -45,14 +45,19 @@ func attempt_submit(mute_warnings=false) -> Variant:
 		if not input_value in Enums.InputErrorType:
 			input_manager.hide_input_warning()
 			return_array.append(input_value)
+		elif input_value == Enums.InputResponse.IGNORE:
+			pass
 		else:
 			missing_input_nodes.append(input_manager)
 			# TODO: call input warning method with type
 	
-	if not missing_input_nodes.is_empty():
+	if missing_input_nodes:
 		# TODO: maybe add behavior that accepts certain empty fields or something
 		return Enums.InputErrorType.INVALID
 	
+	if return_array.is_empty():
+		return return_empty_value()
+
 	return return_array
 
 func submit_status_dict():
