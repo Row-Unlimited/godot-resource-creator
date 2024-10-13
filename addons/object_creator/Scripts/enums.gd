@@ -12,3 +12,7 @@ enum InputErrorType {
 	RANGE_INVALID,
 	MISSING_KEY,
 }
+
+enum InputResponse {
+	IGNORE
+}

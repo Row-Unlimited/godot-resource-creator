@@ -39,3 +39,6 @@ func receive_input(input):
 	input_node.set_pressed_no_signal(input)
 	input_node._toggled(input)
 	toggle_status = input
+
+func set_input_disabled(is_disabled: bool):
+	input_node.disabled = is_disabled
