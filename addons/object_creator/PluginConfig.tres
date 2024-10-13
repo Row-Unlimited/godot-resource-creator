@@ -13,4 +13,6 @@ disable_navigator = false
 ignored_directories = Array[String]([".git", ".godot", "object_creator"])
 is_main_dock = false
 accept_empty_inputs = true
+use_null_values_for_empty = false
 is_folder_hierarchical = false
+class_configs = []

@@ -32,7 +32,7 @@ func attempt_submit(mute_warnings=false) -> Variant:
 				return_value = temp_value
 	# check for the different cases and return an enum InputErrorType value for better warnings
 	if temp_value.is_empty():
-		return_value = Enums.InputErrorType.EMPTY
+		return_value = return_empty_value()
 	elif check_range_invalid(return_value):
 		return_value = Enums.InputErrorType.RANGE_INVALID
 	else:
@@ -51,4 +51,11 @@ func style_input():
 	type_label.text = return_type_string(property["type"])
 
 func receive_input(input):
-	input_node.text = str(input)
+	var acceptable_types = [TYPE_INT, TYPE_FLOAT, TYPE_STRING]
+	if typeof(input) in acceptable_types:
+		input_node.text = str(input)
+	else:
+		assert(false, "DEFAULTVALUE-ERROR: default_value type not of acceptable types: " + str(acceptable_types))
+
+func set_input_disabled(is_disabled: bool):
+	input_node.editable = not is_disabled

@@ -16,12 +16,13 @@ var accept_empty_inputs : bool
 #region config_variables
 ## range describes number range for int/float and size range for string/array/dictionary
 var config
-var range_max: int
-var range_min: int
+var range_max = null
+var range_min = null
 var accept_empty: bool
 var change_empty_default: bool
 var disable_editing: bool
 var default_value
+var hide_input: bool
 #endregion
 
 ## set up function that is called by the CreateObject class [br]
@@ -41,16 +42,26 @@ func submit_status_dict() -> Dictionary:
 
 func set_up_config_rules(config):
 	self.config = Helper.flatten_sub_dicts(config)
-	var config_order = ["CLASS_GENERAL_CONFIG", return_type_string(input_type, false)]
-	config_order = (config_order + [property["name"]]) if property else config_order
-	self.apply_config_rules(config_order)
+	var config_strings = ["CLASS_GENERAL_CONFIG", return_type_string(input_type, false)]
+	config_strings = config_strings + [property["name"]] if property else config_strings
+	config_strings = config_strings.filter(func(x): return x in self.config.keys())
+	var configs_ordered = []
+	for key in config_strings:
+		configs_ordered.append(self.config[key])
+	self.apply_config_rules(configs_ordered)
 
-## virtual function which each sub_class handles differently to apply the json config
-func apply_config_rules(config_order: Array):
-	for config_key in config_order:
-		if config_key in config.keys():
-			var dict = config[config_key]
-			Helper.apply_dict_values_object(self, dict)
+## function that handles the changing of values. [br] Can be modified in different InputManagers
+func apply_config_rules(configs_ordered: Array):
+	for config in configs_ordered:
+		Helper.apply_dict_values_object(self, config)
+	
+	set_input_disabled(disable_editing)
+	if default_value and typeof(default_value) in GlobalCollections.AcceptedTypes:
+		receive_input(default_value)
+	
+	if hide_input:
+		self.visible = false
+
 
 ## takes an input that fits the input type and checks whether it fits the range criteria
 ## not implemented yet
@@ -126,15 +137,6 @@ func show_input_warning(mute_warnings=false):
 		return
 	input_warning.visible = true
 
-func return_empty_by_type():
-	match input_type:
-		TYPE_INT:
-			return 0
-		TYPE_FLOAT:
-			return 0.
-		TYPE_STRING:
-			return ""
-
 func hide_input_warning():
 	input_warning.visible = false
 
@@ -142,3 +144,41 @@ func hide_input_warning():
 ## primarily useful when we're dealing with editing objects instead of creating them
 func receive_input(input):
 	pass
+
+## virtual function that dis-/enables the input [br]
+## mainly used during set up when the class config rules are applied
+func set_input_disabled(is_disabled: bool):
+	pass
+
+func return_empty_value():
+	if accept_empty:
+		if change_empty_default:
+			match input_type:
+				TYPE_INT:
+					return 0
+				TYPE_FLOAT:
+					return 0
+				TYPE_STRING:
+					return ""
+				TYPE_VECTOR2:
+					return Vector2(0,0)
+				TYPE_VECTOR2I:
+					return Vector2i(0,0)
+				TYPE_VECTOR3:
+					return Vector3(0,0,0)
+				TYPE_VECTOR3I:
+					return Vector3i(0,0,0)
+				TYPE_VECTOR4:
+					return Vector4(0,0,0,0)
+				TYPE_VECTOR4I:
+					return Vector4i(0,0,0,0)
+				TYPE_DICTIONARY:
+					return {}
+				TYPE_ARRAY:
+					return []
+				_:
+					return null
+		else:
+			return Enums.InputResponse.IGNORE
+	else:
+		return Enums.InputErrorType.EMPTY
