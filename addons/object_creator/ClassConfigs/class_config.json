@@ -31,7 +31,7 @@
 
     "test_array": {
       "type": 28,
-      "range_max": 10,
+      "range_max": 5,
       "range_min": 0,
       "accept_empty": true,
       "change_empty_default": false,

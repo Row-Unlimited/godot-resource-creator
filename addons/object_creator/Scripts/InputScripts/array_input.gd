@@ -101,5 +101,6 @@ func _on_move_node(node: MultiElementContainer, new_position: int):
 ## Removes InputNode from the Array UI
 func _on_remove_node(node: MultiElementContainer):
 	input_managers.remove_at(input_managers.find(node.input))
+	on_elements_changed_size()
 	remove_child(node)
 #endregion
