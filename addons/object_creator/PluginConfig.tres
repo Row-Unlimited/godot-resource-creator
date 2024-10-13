@@ -15,4 +15,80 @@ is_main_dock = false
 accept_empty_inputs = true
 use_null_values_for_empty = false
 is_folder_hierarchical = false
-class_configs = []
+class_configs = [{
+"CLASS_GENERAL_CONFIG": {
+"accept_empty": true,
+"change_empty_default": false
+},
+"PROPERTY_CONFIGS": {
+"test_array": {
+"SUB_ARRAY_CONFIG": {
+"accept_empty": true,
+"change_empty_default": true,
+"disable_editing": true,
+"range_max": 10.0,
+"range_min": 1.0,
+"type": 4.0
+},
+"accept_empty": true,
+"change_empty_default": false,
+"default_value": ["this", "is an", "example"],
+"disable_editing": false,
+"range_max": 10.0,
+"range_min": 0.0,
+"type": 28.0
+},
+"test_int": {
+"accept_empty": false,
+"change_empty_default": false,
+"default_value": 3.0,
+"disable_editing": true,
+"range_max": 100.0,
+"range_min": 0.0,
+"type": 2.0
+},
+"test_object": {
+"type": 24.0
+},
+"test_vector": {
+"W_CONFIG": {
+"accept_empty": false,
+"change_empty_default": true
+},
+"X_CONFIG": {
+"disable_editing": false,
+"range_max": 5.0,
+"range_min": -5.0
+},
+"Y_CONFIG": {
+"disable_editing": false,
+"range_max": 50.0,
+"range_min": -50.0
+},
+"Z_CONFIG": {
+"default_value": 0.0,
+"disable_editing": true
+},
+"accept_empty": false,
+"change_empty_default": false,
+"default_value": [1.0, 2.0, 3.0],
+"disable_editing": true,
+"hide_input": true,
+"range_max": 100.0,
+"range_min": 0.0,
+"type": 12.0
+}
+},
+"TYPE_CONFIGS": {
+"TYPE_INT": {
+"change_empty_default": true,
+"default_value": 0.0,
+"range_max": 100.0,
+"range_min": -100.0
+}
+},
+"class_name": "TestScript",
+"class_path_name": "test_script.gd",
+"resource_path": "res://scripts/gd-scripts/test_script.gd",
+"script_type": "gd"
+}]

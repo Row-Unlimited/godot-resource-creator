@@ -108,13 +108,18 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 	print(sub_config)
 	if sub_config:
 		new_input_manager.apply_config_rules([sub_config])
-	
+
+	on_elements_changed_size()
+
 	return_dict = {
 		"is_vector": is_vector,
 		"input_node": new_input_node,
 		"input_manager": new_input_manager
 		}
 	return return_dict
+
+func on_elements_changed_size():
+	add_element_button.disabled = input_managers.size() >= range_max
 
 ## disables certain types so the select button can't choose them anymore
 ## [param include_types_only] makes it so only the values in types are enabled and all others are disabled
