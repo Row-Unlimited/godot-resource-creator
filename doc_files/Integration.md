@@ -20,3 +20,8 @@ Integration mainly happens with the help of the PluginConfig.tres file in the pl
 - If you want to integrate the plugin into your own code and maybe want to handle the export process manually you can use the <strong> set_external_creation_handler </strong> method to set an object and method to connect the <strong> object_created </strong> signal to. <br>
   This signal hands over the created Object and allows manual handling of the creation process.
 - You can connect the navigator signal <strong> navigator_pressed </strong> to customize the navigator UI
+
+## Class Configs
+
+via ClassConfigs you can customize plugin behavior for every property/type in a certain class.  
+For more Information on ClassConfigs look [here](ClassConfig.md)

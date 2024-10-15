@@ -15,6 +15,16 @@
       "range_min": -100,
       "change_empty_default": true,
       "default_value": 0
+    },
+
+    "TYPE_OBJECT": {
+      "TestScript": {
+        "constructor_values": [0, "test_string", "VAR_NAME:test_variable"]
+      },
+
+      "res://scripts/gd-scripts/sub_resource_test.gd": {
+
+      }
     }
   },
 
