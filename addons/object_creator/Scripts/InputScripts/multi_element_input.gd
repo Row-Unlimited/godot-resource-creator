@@ -105,7 +105,6 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 	new_input_node.connect("remove_node", Callable(self, "_on_remove_node"))
 
 	new_input_manager.set_up_config_rules(config["ROOT"])
-	print(sub_config)
 	if sub_config:
 		new_input_manager.apply_config_rules([sub_config])
 
@@ -149,7 +148,6 @@ func disable_select_type_button(types: Array, include_types_only = false, is_rem
 func apply_config_rules(configs_ordered: Array):
 	# TODO: fix the remove button and maybe add config var that makes only the default elements not editable
 	var last_config = configs_ordered.back()
-	print(last_config)
 	sub_config = last_config["SUB_ARRAY_CONFIG"] if "SUB_ARRAY_CONFIG" in last_config.keys() else {}
 	super(configs_ordered)
 

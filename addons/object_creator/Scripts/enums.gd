@@ -11,6 +11,7 @@ enum InputErrorType {
 	TYPE_INVALID,
 	RANGE_INVALID,
 	MISSING_KEY,
+	OBJECT_INVALID,
 }
 
 enum InputResponse {

@@ -26,6 +26,8 @@ var select_index: int
 
 func initialize_input(property_dict: Dictionary):
 	property = property_dict
+	input_type = TYPE_OBJECT
+
 
 	# assign nodes variables
 	property_select = get_node("ClassSection/PropterySelect")
@@ -54,17 +56,24 @@ func initialize_input(property_dict: Dictionary):
 	_on_item_selected(0) # select first item by default so it doesn't just look selected without working
 
 func attempt_submit(mute_warnings=false):
+	var return_value = null
 	if object_create_screen:
-		var sub_wrapper = object_create_screen.on_submit_pressed()
-		return sub_wrapper
-	else:
-		return chosen_wrapper
+		return_value = object_create_screen.on_submit_pressed()
+	
+	if return_value == null or return_value in Enums.InputErrorType:
+		# TODO: implement actual response to return_value giving you an error
+		return_value = return_empty_value()
+
+	return return_value
 
 func submit_status_dict():
 		var status_dict
 		return status_dict
 
+func hide_input_warning():
+	pass
 
+#region signal_methods
 func _on_item_selected(index: int):
 	select_index = index
 	class_name_label.text = class_names[index]
@@ -87,3 +96,4 @@ func _on_clear_button_clicked():
 	chosen_wrapper = null
 	choose_class_button.disabled = false
 	property_select.disabled = false
+#endregion

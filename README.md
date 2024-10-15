@@ -19,6 +19,7 @@ For Integration information look [here](doc_files\Integration.md)
 
 ## Immediate Goals
 
+- Duplicate Object button in export menu
 - Implement sub-object creation
   - Change Accept empty and Input Manager Return values on submit (maybe with enum)
 - Re-Implement Settings Menu

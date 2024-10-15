@@ -136,10 +136,15 @@ func on_submit_pressed():
 	
 	for input_node: InputManager in input_nodes:
 		var input_value = input_node.attempt_submit()
+
+		if input_value is ObjectWrapper:
+			input_value = input_value.obj
+
 		if input_value in Enums.InputErrorType:
 			missing_inputNodes.append(input_node)
 		else:
-			temp_object.set(input_node.property["name"], input_value)
+			if not Helper.equal(input_value, Enums.InputResponse.IGNORE):
+				temp_object.set(input_node.property["name"], input_value)
 			input_node.hide_input_warning()
 
 	if missing_inputNodes.is_empty():
@@ -149,7 +154,7 @@ func on_submit_pressed():
 	else:
 		for inputManager: InputManager in missing_inputNodes:
 			inputManager.show_input_warning(true)
-		return null
+		return Enums.InputErrorType.OBJECT_INVALID
 
 ## function we use to customize the create_object menu so it can be used for settings or other purposes
 ## also implements settings for the creation process

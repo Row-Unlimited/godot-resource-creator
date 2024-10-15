@@ -62,8 +62,6 @@ func create_file_name(path: String, object: Object, is_json=false) -> String:
 func save_settings_file(config_object: PluginConfig):
 	var skipped_properties =["resource_local_to_scene", "resource_path", "resource_name"]
 	var current_config = load(PLUGIN_CONFIG_PATH)
-	Helper.print_object_values(current_config, skipped_properties)
 	Helper.update_object(current_config, config_object)
-	Helper.print_object_values(current_config, skipped_properties)
 	ResourceSaver.save(current_config, PLUGIN_CONFIG_PATH)
 	
