@@ -184,7 +184,6 @@ func _on_sub_object_class_chosen(wrapper: ObjectWrapper, input_manager: ObjectIn
 	wrapper = set_up_new_wrapper(wrapper)
 	remove_wrapper(input_manager.chosen_wrapper.id)
 	input_manager.chosen_wrapper = wrapper
-	print(wrapper.real_class_name)
 
 func _on_sub_object_edit_clicked(wrapper: ObjectWrapper, input_manager: ObjectInput):
 	if not tab_manager.open_tab_by_id(wrapper.id):

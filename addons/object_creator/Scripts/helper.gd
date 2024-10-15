@@ -2,6 +2,9 @@
 class_name Helper
 extends Object
 
+static func equal(a, b):
+	return typeof(a) == typeof(b) and a == b
+
 static func array_to_string(arr: Array) -> String:
 	var return_string = ""
 	for string in arr:

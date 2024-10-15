@@ -18,11 +18,11 @@ var accept_empty_inputs : bool
 var config
 var range_max = null
 var range_min = null
-var accept_empty: bool
-var change_empty_default: bool
-var disable_editing: bool
+var accept_empty: bool = true
+var change_empty_default: bool = false
+var disable_editing: bool = false
 var default_value
-var hide_input: bool
+var hide_input: bool = false
 #endregion
 
 ## set up function that is called by the CreateObject class [br]
@@ -41,6 +41,8 @@ func submit_status_dict() -> Dictionary:
 	return {}
 
 func set_up_config_rules(config):
+	if not config:
+		return
 	self.config = Helper.flatten_sub_dicts(config)
 	var config_strings = ["CLASS_GENERAL_CONFIG", return_type_string(input_type, false)]
 	config_strings = config_strings + [property["name"]] if property else config_strings

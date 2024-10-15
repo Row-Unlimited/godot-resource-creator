@@ -42,7 +42,6 @@ func add_new_object(object_wrapper, path_editable = true):
 	var parent_item = get_item_by_id(object_wrapper.parent_wrapper.id) if object_wrapper.parent_wrapper else root_item
 
 	var new_item = parent_item.create_child()
-	Helper.print_object_values(object_wrapper)
 	new_item.set_metadata(0, object_wrapper.id)
 	new_item.set_text(0, object_wrapper.file_class_name)
 	new_item.set_text(1, object_wrapper.export_path)
