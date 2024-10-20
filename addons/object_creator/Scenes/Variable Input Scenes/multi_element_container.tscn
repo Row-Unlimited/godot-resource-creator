@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/multi_element_container.gd" id="1_d8801"]
 [ext_resource type="PackedScene" uid="uid://b45y4htt48hlq" path="res://addons/object_creator/Scenes/break_line_array.tscn" id="2_2g3rl"]
-[ext_resource type="Texture2D" uid="uid://cya8l0htpkrnn" path="res://addons/object_creator/Assets/Arrow-Up.png" id="2_8ajga"]
-[ext_resource type="Texture2D" uid="uid://b3b6pivlgk6nc" path="res://addons/object_creator/Assets/Arrow-Down.png" id="3_knb70"]
-[ext_resource type="Texture2D" uid="uid://cw164j5sq8t7c" path="res://addons/object_creator/Assets/Cross.png" id="4_h1ket"]
+[ext_resource type="Texture2D" uid="uid://cya8l0htpkrnn" path="res://addons/object_creator/Assets/textures/textures/Arrow-Up.png" id="2_8ajga"]
+[ext_resource type="Texture2D" uid="uid://b3b6pivlgk6nc" path="res://addons/object_creator/Assets/textures/textures/Arrow-Down.png" id="3_knb70"]
+[ext_resource type="Texture2D" uid="uid://cw164j5sq8t7c" path="res://addons/object_creator/Assets/textures/textures/Cross.png" id="4_h1ket"]
 
 [node name="ArrayElementInput" type="VBoxContainer"]
 anchors_preset = 15

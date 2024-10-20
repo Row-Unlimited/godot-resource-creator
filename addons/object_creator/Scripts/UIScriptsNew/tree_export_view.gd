@@ -31,7 +31,7 @@ func _ready() -> void:
 func _create_base_nodes():
 	var new_item = self.create_item()
 	new_item.set_text(0, "Created Objects:")
-	new_item.add_button(1, load("res://addons/object_creator/Assets/refresh.png"))
+	new_item.add_button(1, load("res://addons/object_creator/Assets/textures/refresh.png"))
 	new_item.set_metadata(0, "BASE_ITEM")
 	root_item = new_item
 
@@ -46,7 +46,7 @@ func add_new_object(object_wrapper, path_editable = true):
 	new_item.set_text(0, object_wrapper.file_class_name)
 	new_item.set_text(1, object_wrapper.export_path)
 	
-	new_item.add_button(1, load("res://addons/object_creator/Assets/edit_button.png"))
+	new_item.add_button(1, load("res://addons/object_creator/Assets/textures/edit_button.png"))
 	new_item.set_metadata(1, ButtonType.EDIT)
 
 	tree_items.append(new_item)

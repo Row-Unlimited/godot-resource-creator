@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://gb3gy73jngq6"]
 
-[ext_resource type="Texture2D" uid="uid://cw164j5sq8t7c" path="res://addons/object_creator/Assets/Cross.png" id="1_ip54l"]
-[ext_resource type="Texture2D" uid="uid://bfxbi2wgbkutp" path="res://addons/object_creator/Assets/checkmark.png" id="2_m3di5"]
+[ext_resource type="Texture2D" uid="uid://cw164j5sq8t7c" path="res://addons/object_creator/Assets/textures/textures/Cross.png" id="1_ip54l"]
+[ext_resource type="Texture2D" uid="uid://bfxbi2wgbkutp" path="res://addons/object_creator/Assets/textures/textures/checkmark.png" id="2_m3di5"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/object_input.gd" id="2_r24lb"]
 
 [node name="ResourceInput" type="VBoxContainer"]
