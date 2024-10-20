@@ -20,7 +20,7 @@ func _ready() -> void:
 func _create_base_nodes():
 	var new_item = self.create_item()
 	new_item.set_text(0, "Creatable classes overview")
-	new_item.add_button(0, load("res://addons/object_creator/Assets/refresh.png"))
+	new_item.add_button(0, load("res://addons/object_creator/Assets/textures/refresh.png"))
 	new_item.set_metadata(0, "BASE_ITEM")
 	root_item = new_item
 
@@ -54,7 +54,7 @@ func _set_up_view_for_type(class_name_dict: Dictionary, script_type_item):
 			var new_item = create_item(new_category)
 			new_item.set_text(0, obj_dict["name"])
 			new_item.set_metadata(0, obj_dict["id"])
-			new_item.add_button(0, load("res://addons/object_creator/Assets/Plus.png"))
+			new_item.add_button(0, load("res://addons/object_creator/Assets/textures/Plus.png"))
 
 
 func _on_button_clicked(item, column, id, mouse_button_index):

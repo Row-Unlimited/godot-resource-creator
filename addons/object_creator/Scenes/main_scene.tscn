@@ -1,14 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://dp37abkh7wgph"]
+[gd_scene load_steps=12 format=3 uid="uid://dp37abkh7wgph"]
 
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/creation_manager.gd" id="1_6is2m"]
+[ext_resource type="Theme" uid="uid://du8tldypjrsog" path="res://addons/object_creator/Assets/ThemeAssets/BaseTheme/base_theme.tres" id="1_uhibf"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UIScriptsNew/tab_manager.gd" id="2_cx134"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UIScriptsNew/screen_manager.gd" id="4_13l1c"]
 [ext_resource type="PackedScene" uid="uid://cjrjsmw62bo4a" path="res://addons/object_creator/Scenes/MainMenuUI/overview_menu.tscn" id="5_k30fj"]
 [ext_resource type="Shader" path="res://addons/object_creator/Assets/image-lighten.gdshader" id="6_5m0cy"]
-[ext_resource type="Texture2D" uid="uid://s63n8ht61j33" path="res://addons/object_creator/Assets/settings-button-small.png" id="6_7i13x"]
+[ext_resource type="Texture2D" uid="uid://s63n8ht61j33" path="res://addons/object_creator/Assets/textures/settings-button-small.png" id="6_7i13x"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/Settings/settings_button.gd" id="7_ra1gh"]
-[ext_resource type="Texture2D" uid="uid://uj6y2seqm8ba" path="res://addons/object_creator/Assets/home-icon.png" id="8_fgsov"]
-[ext_resource type="Texture2D" uid="uid://ba82sqmg0g2yb" path="res://addons/object_creator/Assets/home-icon-normal.png" id="8_sgjep"]
+[ext_resource type="Texture2D" uid="uid://uj6y2seqm8ba" path="res://addons/object_creator/Assets/textures/home-icon.png" id="8_fgsov"]
+[ext_resource type="Texture2D" uid="uid://ba82sqmg0g2yb" path="res://addons/object_creator/Assets/textures/home-icon-normal.png" id="8_sgjep"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2k06y"]
 shader = ExtResource("6_5m0cy")
@@ -21,7 +22,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_uhibf")
 script = ExtResource("1_6is2m")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="TabManager" type="Control" parent="."]
 layout_mode = 1

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cw164j5sq8t7c"
-path="res://.godot/imported/Cross.png-a34bf80330e883c93725ec2639f35631.ctex"
+uid="uid://s6vcbnq6kmai"
+path="res://.godot/imported/settings-button.png-0633bd7524e9dbc9fb0752a1a0bd0488.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/object_creator/Assets/Cross.png"
-dest_files=["res://.godot/imported/Cross.png-a34bf80330e883c93725ec2639f35631.ctex"]
+source_file="res://addons/object_creator/Assets/textures/settings-button.png"
+dest_files=["res://.godot/imported/settings-button.png-0633bd7524e9dbc9fb0752a1a0bd0488.ctex"]
 
 [params]
 

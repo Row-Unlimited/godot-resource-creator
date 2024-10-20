@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bfxbi2wgbkutp"
-path="res://.godot/imported/checkmark.png-6ab1abb03a6a4cf60db9ec3b9d1620cb.ctex"
+uid="uid://bdw7hcm5m5co2"
+path="res://.godot/imported/edit_button.png-a063efd23add42afd92acfc02a09731c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/object_creator/Assets/checkmark.png"
-dest_files=["res://.godot/imported/checkmark.png-6ab1abb03a6a4cf60db9ec3b9d1620cb.ctex"]
+source_file="res://addons/object_creator/Assets/textures/edit_button.png"
+dest_files=["res://.godot/imported/edit_button.png-a063efd23add42afd92acfc02a09731c.ctex"]
 
 [params]
 

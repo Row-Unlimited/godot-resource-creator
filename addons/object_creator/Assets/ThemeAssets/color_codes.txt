@@ -1,0 +1,21 @@
+base:
+    button:
+        dark: 4700de
+        light: cd8500
+        hover_fg:8a5800
+        hover_bg:6558ff
+        disabled_font:
+        disabled_bg: 3f3e67
+        focused_border: ffd7a8
+    
+    lineEdit:
+        dark: 210073
+        light: 9c6400
+        font: ffc174
+        border: 714700
+        shadow_focus: ffdaa291
+        readOnly_bg: 110e29
+        readOnly_font: 9c6400a8
+    
+    Panel:
+        background_dark: 080016
