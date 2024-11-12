@@ -16,6 +16,12 @@ var add_element_section: HBoxContainer
 var selected_type: Variant.Type = Variant.Type.TYPE_NIL
 var input_managers: Array
 
+var indent_level = 1 : 
+	set(value):
+		indent_level = value
+		if add_element_section:
+			add_element_section.indent_level = value
+
 var input_scenes = {
 	"default": preload("res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"),
 	"bool": preload("res://addons/object_creator/Scenes/Variable Input Scenes/bool_input.tscn"),
@@ -64,6 +70,7 @@ func check_typed():
 func add_element(element_type: Variant.Type, def_input=null):
 	pass
 
+## called by array/dict scripts to create the scene
 func create_scene_by_type(type: Variant.Type) -> Dictionary:
 	var return_dict = {}
 	var is_vector = false
@@ -92,6 +99,10 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 	var new_input_manager = new_scene.instantiate()
 	input_managers.append(new_input_manager)
 	new_input_manager.input_type = type
+
+	#apply indent UI
+	if type == TYPE_ARRAY or type == TYPE_DICTIONARY:
+		new_input_manager.indent_level = indent_level + 1
 	
 	add_child(new_input_node) # add MultiElementContainer as new child
 
@@ -103,10 +114,10 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 	new_input_manager.initialize_input({})
 
 	new_input_node.connect("remove_node", Callable(self, "_on_remove_node"))
-
-	new_input_manager.set_up_config_rules(config["ROOT"])
-	if sub_config:
-		new_input_manager.apply_config_rules([sub_config])
+	if config:
+		new_input_manager.set_up_config_rules(config["ROOT"])
+		if sub_config:
+			new_input_manager.apply_config_rules([sub_config])
 
 	on_elements_changed_size()
 
@@ -118,7 +129,8 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 	return return_dict
 
 func on_elements_changed_size():
-	add_element_button.disabled = input_managers.size() >= range_max
+	if range_max:
+		add_element_button.disabled = input_managers.size() >= range_max
 
 ## disables certain types so the select button can't choose them anymore
 ## [param include_types_only] makes it so only the values in types are enabled and all others are disabled

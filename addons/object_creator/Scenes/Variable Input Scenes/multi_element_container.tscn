@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://c4nafikdyelds"]
+[gd_scene load_steps=7 format=3 uid="uid://c4nafikdyelds"]
 
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/multi_element_container.gd" id="1_d8801"]
 [ext_resource type="PackedScene" uid="uid://b45y4htt48hlq" path="res://addons/object_creator/Scenes/break_line_array.tscn" id="2_2g3rl"]
-[ext_resource type="Texture2D" uid="uid://cya8l0htpkrnn" path="res://addons/object_creator/Assets/textures/textures/Arrow-Up.png" id="2_8ajga"]
-[ext_resource type="Texture2D" uid="uid://b3b6pivlgk6nc" path="res://addons/object_creator/Assets/textures/textures/Arrow-Down.png" id="3_knb70"]
-[ext_resource type="Texture2D" uid="uid://cw164j5sq8t7c" path="res://addons/object_creator/Assets/textures/textures/Cross.png" id="4_h1ket"]
+[ext_resource type="Texture2D" uid="uid://cya8l0htpkrnn" path="res://addons/object_creator/Assets/textures/Arrow-Up.png" id="2_8ajga"]
+[ext_resource type="Texture2D" uid="uid://b3b6pivlgk6nc" path="res://addons/object_creator/Assets/textures/Arrow-Down.png" id="3_knb70"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/input_indent_hbox.gd" id="3_s1fe5"]
+[ext_resource type="Texture2D" uid="uid://cw164j5sq8t7c" path="res://addons/object_creator/Assets/textures/Cross.png" id="4_h1ket"]
 
 [node name="ArrayElementInput" type="VBoxContainer"]
 anchors_preset = 15
@@ -20,20 +21,29 @@ layout_mode = 2
 [node name="ButtonContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
 alignment = 2
+script = ExtResource("3_s1fe5")
+
+[node name="Margin" type="MarginContainer" parent="ButtonContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
 
 [node name="MoveUpButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
 icon = ExtResource("2_8ajga")
 
 [node name="MoveDownButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
 icon = ExtResource("3_knb70")
 
 [node name="RemoveButton" type="Button" parent="ButtonContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.1
 icon = ExtResource("4_h1ket")
 
 [connection signal="pressed" from="ButtonContainer/MoveUpButton" to="." method="_on_move_up_pressed"]

@@ -64,4 +64,4 @@ func apply_config_rules(configs_ordered: Array):
 func set_input_disabled(is_disabled: bool, target_specifier: Array = []):
 	for i in input_node.input_array.size():
 		if i in target_specifier or target_specifier.is_empty():
-			input_node.input_array[i].editable = is_disabled
+			input_node.input_array[i].editable = not is_disabled
