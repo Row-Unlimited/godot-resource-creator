@@ -20,6 +20,7 @@ For Integration information look [here](doc_files\Integration.md)
 ## Immediate Goals
 
 - Duplicate Object button in export menu
+- Implement SubResource input so only classes that fit the actual type can be selected
 - Implement sub-object creation
 - Re-Implement Settings Menu
 - Improve UI/UX

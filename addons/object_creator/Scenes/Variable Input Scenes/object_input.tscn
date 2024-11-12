@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://gb3gy73jngq6"]
 
-[ext_resource type="Texture2D" uid="uid://cw164j5sq8t7c" path="res://addons/object_creator/Assets/textures/textures/Cross.png" id="1_ip54l"]
-[ext_resource type="Texture2D" uid="uid://bfxbi2wgbkutp" path="res://addons/object_creator/Assets/textures/textures/checkmark.png" id="2_m3di5"]
+[ext_resource type="Texture2D" uid="uid://cw164j5sq8t7c" path="res://addons/object_creator/Assets/textures/Cross.png" id="1_ip54l"]
+[ext_resource type="Texture2D" uid="uid://bfxbi2wgbkutp" path="res://addons/object_creator/Assets/textures/checkmark.png" id="2_m3di5"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/object_input.gd" id="2_r24lb"]
 
 [node name="ResourceInput" type="VBoxContainer"]
@@ -21,19 +21,37 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-size_flags_stretch_ratio = 0.9
+size_flags_stretch_ratio = 0.8
 text = "PropertyName"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Margin2" type="MarginContainer" parent="ClassSection"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_stretch_ratio = 0.2
+
+[node name="PropertyType" type="Label" parent="ClassSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.6
+text = "Object"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Margin" type="MarginContainer" parent="ClassSection"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_stretch_ratio = 0.2
+
 [node name="PropterySelect" type="OptionButton" parent="ClassSection"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.9
 
 [node name="ChooseClassButton" type="TextureButton" parent="ClassSection"]
+custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.3
 texture_normal = ExtResource("2_m3di5")
 ignore_texture_size = true
@@ -45,29 +63,44 @@ size_flags_vertical = 3
 alignment = 1
 
 [node name="IndentSpace" type="MarginContainer" parent="EditSection"]
+custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.6
+size_flags_stretch_ratio = 0.8
+
+[node name="Margin2" type="MarginContainer" parent="EditSection"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_stretch_ratio = 0.2
+
+[node name="Margin" type="MarginContainer" parent="EditSection/Margin2"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_stretch_ratio = 0.2
 
 [node name="ClassName" type="Label" parent="EditSection"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-size_flags_stretch_ratio = 1.2
+size_flags_stretch_ratio = 0.6
 text = "ClassName"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Margin" type="MarginContainer" parent="EditSection"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_stretch_ratio = 0.2
+
 [node name="EditButton" type="Button" parent="EditSection"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.2
 text = "Edit"
 
 [node name="ClearButton" type="TextureButton" parent="EditSection"]
+custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.5
+size_flags_stretch_ratio = 0.3
 texture_normal = ExtResource("1_ip54l")
 ignore_texture_size = true
 stretch_mode = 5

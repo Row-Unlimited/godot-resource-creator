@@ -43,8 +43,9 @@ func add_key_lineEdit():
 	key_line_edit = LineEdit.new()
 	key_line_edit.placeholder_text = "Key"
 	button_container.add_child(key_line_edit)
-	button_container.move_child(key_line_edit, 0)
-	key_line_edit.size_flags_horizontal = Control.SIZE_EXPAND
+	button_container.move_custom(key_line_edit, 0)
+	key_line_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	key_line_edit.size_flags_stretch_ratio = 1
 
 ## removes the move buttons since we don't need them for dictionaries
 func remove_move_buttons():

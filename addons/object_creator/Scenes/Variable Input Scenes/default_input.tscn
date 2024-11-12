@@ -22,12 +22,24 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 size_flags_stretch_ratio = 2.0
+vertical_alignment = 1
+
+[node name="Margin2" type="MarginContainer" parent="InputContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_stretch_ratio = 0.2
 
 [node name="PropertyType" type="Label" parent="InputContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "unsupported"
+vertical_alignment = 1
+
+[node name="Margin" type="MarginContainer" parent="InputContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_stretch_ratio = 0.2
 
 [node name="Input" type="LineEdit" parent="InputContainer"]
 layout_mode = 2
