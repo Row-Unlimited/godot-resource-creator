@@ -122,6 +122,7 @@ func set_up_new_wrapper(wrapper: ObjectWrapper):
 		wrapper = Helper.duplicate_object(wrapper)
 		object_counter += 1
 		wrapper.id = str("obj", object_counter)
+	
 	# maybe usefull else case for integration cases
 	return wrapper
 
@@ -181,9 +182,11 @@ func _on_obj_edit_clicked(obj_id):
 
 ## is called by a signal when in the ObjectInput class the ChooseClassButton is pressed sucessfully.
 func _on_sub_object_class_chosen(wrapper: ObjectWrapper, input_manager: ObjectInput):
-	wrapper = set_up_new_wrapper(wrapper)
+	var new_wrapper = set_up_new_wrapper(wrapper)
+	if wrapper.obj:
+		new_wrapper.obj = wrapper.obj
 	remove_wrapper(input_manager.chosen_wrapper.id)
-	input_manager.chosen_wrapper = wrapper
+	input_manager.chosen_wrapper = new_wrapper
 
 func _on_sub_object_edit_clicked(wrapper: ObjectWrapper, input_manager: ObjectInput):
 	if not tab_manager.open_tab_by_id(wrapper.id):

@@ -85,7 +85,6 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 			new_input.initialize_input(property)
 
 			input_nodes.append(new_input)
-
 			if object_wrapper.obj:
 				var object_pre_value = object_wrapper.obj.get(property_name)
 				if typeof(object_pre_value) == property["type"] :
@@ -108,8 +107,6 @@ func determine_input_type(property: Dictionary) -> String:
 			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"
 		TYPE_NODE_PATH:
 			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"
-		TYPE_CALLABLE:
-			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/callable_input.tscn"
 		TYPE_DICTIONARY:
 			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/dictionary_input.tscn"
 		TYPE_ARRAY:

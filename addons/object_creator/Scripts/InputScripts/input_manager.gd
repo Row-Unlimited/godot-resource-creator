@@ -69,17 +69,17 @@ func apply_config_rules(configs_ordered: Array):
 ## not implemented yet
 func check_range_invalid(input: Variant) -> bool:
 	if typeof(input) != input_type:
-		return false
+		return true
 	# TODO: add functionality that makes it possible to set custom ranges
 	match typeof(input):
 		TYPE_BOOL:
-			return true
+			pass
 		TYPE_INT:
-			return true
+			pass
 		TYPE_FLOAT:
-			return true
+			pass
 		TYPE_STRING:
-			return true
+			pass
 		TYPE_VECTOR2:
 			pass
 		TYPE_NODE_PATH:
@@ -91,7 +91,7 @@ func check_range_invalid(input: Variant) -> bool:
 		TYPE_ARRAY:
 			pass
 	
-	return true
+	return false
 
 func return_type_string(type: Variant.Type, is_default = true) -> String:
 	match type:

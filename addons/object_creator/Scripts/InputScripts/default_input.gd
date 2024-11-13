@@ -35,8 +35,6 @@ func attempt_submit(mute_warnings=false) -> Variant:
 		return_value = return_empty_value()
 	elif check_range_invalid(return_value):
 		return_value = Enums.InputErrorType.RANGE_INVALID
-	else:
-		return_value = Enums.InputErrorType.TYPE_INVALID
 
 	return return_value
 
@@ -64,9 +62,9 @@ func check_range_invalid(input: Variant) -> bool:
 	var return_bool = false
 	match input_type:
 		TYPE_INT:
-			return_bool = (range_max == null or range_max >= input) and (range_min == null or range_min <= input)
+			return_bool = not ((range_max == null or range_max >= input) and (range_min == null or range_min <= input))
 		TYPE_FLOAT:
-			return_bool = (range_max == null or range_max >= input) and (range_min == null or range_min <= input)
+			return_bool = not ((range_max == null or range_max >= input) and (range_min == null or range_min <= input))
 		TYPE_STRING:
-			return_bool = (range_max == null or range_max >= input.length()) and (range_min == null or range_min <= input.length())
+			return_bool = not ((range_max == null or range_max >= input.length()) and (range_min == null or range_min <= input.length()))
 	return return_bool

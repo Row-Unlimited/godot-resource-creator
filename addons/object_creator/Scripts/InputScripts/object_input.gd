@@ -84,6 +84,22 @@ func attempt_submit(mute_warnings=false):
 
 	return return_value
 
+## receives an input for the create_object screen
+## when editing, the input is the created object not a wrapper
+func receive_input(input):
+	if typeof(input) == TYPE_OBJECT:
+		var input_class_name = input.get_script().get_global_name()
+		if input_class_name in class_names:
+			for i in property_select.item_count:
+				if property_select.get_item_text(i) == input_class_name:
+					property_select.select(i)
+					select_index = i
+					select_index_to_wrapper[i].obj = input
+					_on_choose_class_button_clicked()
+					
+	else:
+		assert(false, "ERROR: NON OBJECT CANNOT BE RECEIVED AS INPUT FOR OBJECT INPUT")
+
 func submit_status_dict():
 		var status_dict
 		return status_dict
