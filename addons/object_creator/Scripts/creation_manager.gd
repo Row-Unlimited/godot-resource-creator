@@ -118,7 +118,7 @@ func get_wrapper(id):
 	return wrapper[0] if wrapper else null
 
 func set_up_new_wrapper(wrapper: ObjectWrapper):
-	if not wrapper.id:
+	if not wrapper.id and not get_wrapper(wrapper.id) in created_object_wrappers:
 		wrapper = Helper.duplicate_object(wrapper)
 		object_counter += 1
 		wrapper.id = str("obj", object_counter)
@@ -157,9 +157,9 @@ func _on_tab_closed(id):
 func _on_object_created(object_wrapper: ObjectWrapper):
 	if object_wrapper.parent_wrapper == null:
 		object_wrapper.export_path = default_export_path if object_wrapper.export_path.is_empty() else object_wrapper.export_path
-		export_tree.add_new_object(object_wrapper)
-		main_screen.set_active_node(overview_menu)
-		created_object_wrappers.append(object_wrapper)
+	created_object_wrappers.append(object_wrapper)
+	export_tree.add_new_object(object_wrapper)
+	main_screen.set_active_node(overview_menu)
 	tab_manager.close_tab(object_wrapper.id)
 
 func _on_export_activated(path_dict: Dictionary):
@@ -182,10 +182,15 @@ func _on_obj_edit_clicked(obj_id):
 
 ## is called by a signal when in the ObjectInput class the ChooseClassButton is pressed sucessfully.
 func _on_sub_object_class_chosen(wrapper: ObjectWrapper, input_manager: ObjectInput):
+	if wrapper.id and get_wrapper(wrapper.id) in created_object_wrappers:
+		input_manager.chosen_wrapper = wrapper
+		return
+	
 	var new_wrapper = set_up_new_wrapper(wrapper)
 	if wrapper.obj:
 		new_wrapper.obj = wrapper.obj
-	remove_wrapper(input_manager.chosen_wrapper.id)
+	if input_manager.chosen_wrapper.id:
+		remove_wrapper(input_manager.chosen_wrapper.id)
 	input_manager.chosen_wrapper = new_wrapper
 
 func _on_sub_object_edit_clicked(wrapper: ObjectWrapper, input_manager: ObjectInput):

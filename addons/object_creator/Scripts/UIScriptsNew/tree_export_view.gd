@@ -17,6 +17,8 @@ var tree_items: Array[TreeItem]
 ## the item whose path is currently being edited
 var edit_path_item: TreeItem
 
+var child_wrappers: Array = []
+
 #region UiVars
 var default_color = Color(1, 1, 1)
 #endregion
@@ -40,16 +42,25 @@ func add_new_object(object_wrapper, path_editable = true):
 		return
 
 	var parent_item = get_item_by_id(object_wrapper.parent_wrapper.id) if object_wrapper.parent_wrapper else root_item
+	# save the object_wrapper of the child object until the parent item is saved
+	if parent_item == null:
+		child_wrappers.append(object_wrapper)
+		return
 
 	var new_item = parent_item.create_child()
 	new_item.set_metadata(0, object_wrapper.id)
 	new_item.set_text(0, object_wrapper.file_class_name)
 	new_item.set_text(1, object_wrapper.export_path)
 	
-	new_item.add_button(1, load("res://addons/object_creator/Assets/textures/edit_button.png"))
-	new_item.set_metadata(1, ButtonType.EDIT)
+	if path_editable:
+		new_item.add_button(1, load("res://addons/object_creator/Assets/textures/edit_button.png"))
+		new_item.set_metadata(1, ButtonType.EDIT)
 
 	tree_items.append(new_item)
+
+	var children = child_wrappers.filter(func(x): return x.parent_wrapper.id == object_wrapper.id)
+	for child in children:
+		add_new_object(child, false)
 
 func reset_export_view(wrappers: Array[ObjectWrapper]):
 	for item in tree_items:

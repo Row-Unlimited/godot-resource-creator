@@ -15,6 +15,9 @@ var tab_id_mapping: Dictionary = {}
 ## Where the user is hovering over. -1 if they are hovering above nothing
 var hover_target: int
 
+## to make sure users don't accidentally close multiple tabs
+var tab_just_closed = false
+
 
 func _ready() -> void:
 	tab_bar = get_node("TabBar")
@@ -45,6 +48,7 @@ func close_tab(id):
 		tab_screen.remove_node(get_tab_node(id))
 	
 	decrease_index_after(tab_index)
+	tab_id_mapping.erase(id)
 
 	emit_signal("tab_closed", id)
 
@@ -88,8 +92,11 @@ func _input(event: InputEvent) -> void:
 		if not tab_bar.tab_count:
 			return
 		var tab_rect = tab_bar.get_tab_rect(hover_target)
-		if tab_rect.has_point(mouse_position):
+		if tab_rect.has_point(mouse_position) and tab_just_closed == false:
 			close_tab(get_tab_id(hover_target))
+			tab_just_closed = true
+	else:
+		tab_just_closed = false
 
 func get_tab_id(index: int):
 	for key in tab_id_mapping.keys():
