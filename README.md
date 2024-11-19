@@ -20,7 +20,7 @@ For Integration information look [here](doc_files/Integration.md)
 ## Immediate Goals
 
 - Implement sub-object creation
-- Implement proper range function
 - Re-Implement Settings Menu
-- Improve UI/UX
-- Implement plugin Themes
+- Implement Type compatibility with enums
+- Improve Config Functionality (constructor vars, reduce types for dict/arr)
+- Implement Button in the export menu that can be used to duplicate already created resources

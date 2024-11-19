@@ -49,16 +49,16 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 	# TODO: add button that appears if the object is a sub_object so you can easily navigate to the parent object
 	self.object_wrapper = object_wrapper
 	# create object of the class from the script path and get the property list
-	property_list = load(object_wrapper.path).new().get_property_list()
+	var class_script: Script = load(object_wrapper.path)
+	property_list = class_script.get_script_property_list()
 	input_root_node = get_node("ScrollContainer/VBoxContainer")
 	submit_button = get_node("SubmitBox/CreateObject")
 	submit_button.connect("pressed", Callable(self, "on_submit_pressed"))
 	
 	# sets up the window settings, so whether it is a special menu or whether it should accept empty inputs
 	menu_set_up(create_menu_type)
-
 	# filters out variables that are not export variables
-	var export_var_lines = Helper.filter_lines(load(object_wrapper.path).new().get_script().source_code, ["@export var"])
+	var export_var_lines = Helper.filter_lines(class_script.source_code, ["@export var"])
 	var prune_lambda = func(x): return Helper.prune_string(x, "var", ":")
 	export_var_lines = export_var_lines.map(prune_lambda)
 
@@ -123,33 +123,41 @@ func determine_input_type(property: Dictionary) -> String:
 ## Handles the submit of the Object on the upper-most level
 ## Calls for all inputManager to submit their values and then it creates it into one big object
 func on_submit_pressed():
-	var temp_object: Object = load(object_wrapper.path).new()
-	var missing_inputNodes: Array
 
-	save_session()
+	var properties: Dictionary
+	for property in property_list:
+		properties[property["name"]] = property
+
+	var input_error_nodes: Array
 
 	# so we dynamically swap signals, so we can use this to export for settings for example
 	var output_signal = type_to_output_signal[menu_type]
-	
-	for input_node: InputManager in input_nodes:
-		var input_value = input_node.attempt_submit()
 
+	for input_node: InputManager in input_nodes:
+		var input_value 
+		if input_node.final_value != null:
+			input_value = input_node.final_value
+		else:
+			input_value = input_node.attempt_submit()
+		# if the output is an object wrapper only insert the obj into the actual property
 		if input_value is ObjectWrapper:
 			input_value = input_value.obj
-
+		
 		if input_value in Enums.InputErrorType:
-			missing_inputNodes.append(input_node)
+			input_error_nodes.append(input_node)
 		else:
 			if not Helper.equal(input_value, Enums.InputResponse.IGNORE):
-				temp_object.set(input_node.property["name"], input_value)
+				var prop_name = input_node.property["name"]
+				properties[prop_name]["value"] = input_value
 			input_node.hide_input_warning()
 
-	if missing_inputNodes.is_empty():
-		object_wrapper.obj = temp_object
+	if input_error_nodes.is_empty():
+		# TODO: fix error where empty strings have no "value" key in their property
+		var return_object = object_wrapper.create_object(properties) # potential async issue if object wrapper assigns new object to itself
 		emit_signal(output_signal, object_wrapper)
 		return object_wrapper
 	else:
-		for inputManager: InputManager in missing_inputNodes:
+		for inputManager: InputManager in input_error_nodes:
 			inputManager.show_input_warning(true)
 		return Enums.InputErrorType.OBJECT_INVALID
 

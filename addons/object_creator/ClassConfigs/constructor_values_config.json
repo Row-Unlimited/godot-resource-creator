@@ -1,0 +1,19 @@
+{
+    "class_name": "ConstructorTest",
+    "class_path_name": "constructor_test.gd",
+    "script_type": "gd",
+    "resource_path": "res://scripts/gd-scripts/constructor_test.gd",
+    "constructor_values": [0, "VAR_NAME:test_int", [0, 1, 2]],
+  
+    "CLASS_GENERAL_CONFIG": {
+      "accept_empty": true,
+      "change_empty_default": true
+    },
+    
+    "PROPERTY_CONFIGS": {
+      "test_int": {
+        "final_value": 5
+      }
+    }
+  }
+  

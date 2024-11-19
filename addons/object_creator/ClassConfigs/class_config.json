@@ -3,6 +3,7 @@
   "class_path_name": "test_script.gd",
   "script_type": "gd",
   "resource_path": "res://scripts/gd-scripts/test_script.gd",
+  
 
   "CLASS_GENERAL_CONFIG": {
     "accept_empty": true,

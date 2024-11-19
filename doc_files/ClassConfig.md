@@ -53,9 +53,20 @@ Here a table listing all different Rules you can set and what they do:
 
 |Rule Name|Explanation|Default Value|Exceptions further information|
 |-----|-----|-----|-----|
-|range_max/range_min|sets the max/min range of the input|null|for int/float this describes the numerical Range <br> However for Array/Dictionaries/String this describes the size/length|
-|accept_empty| defines whether the plugin will allow this input to remain empty|true|Per default this will result in the property simply not being changed in the object. If the script has a default value defined, it will apply|
-|change_empty_default|if set to true, empty values will be changed to the types default value: <br> - int/float => 0 <br> - String => "" <br> - bool => false <br> - Array => [] <br> - Dictionary => {}|false|for this to apply accept_empty must be true|
-|default_value|sets a default value for the property|unfilled|if default value doesn't match the type it will simply be ignored|
-|disable_editing|will make it impossible to edit this property in the plugin|false|For Arrays/Dictionaries this will not disable the editing of the sub_items. For this you need to define "SUB_ARRAY_CONFIG"|
-|hide_input|if true this will hide the property in the plugin view|false| useful together with disable_editing or default_value |
+|```range_max/range_min```|sets the max/min range of the input|null|for int/float this describes the numerical Range <br> However for Array/Dictionaries/String this describes the size/length|
+|```accept_empty```| defines whether the plugin will allow this input to remain empty|true|Per default this will result in the property simply not being changed in the object. If the script has a default value defined, it will apply|
+|```change_empty_default```|if set to true, empty values will be changed to the types default value: <br> - int/float => 0 <br> - String => "" <br> - bool => false <br> - Array => [] <br> - Dictionary => {}|false|for this to apply accept_empty must be true|
+|```default_value```|sets a default value for the property|unfilled|if default value doesn't match the type it will simply be ignored|
+|```disable_editing```|will make it impossible to edit this property in the plugin|false|For Arrays/Dictionaries this will not disable the editing of the sub_items. For this you need to define **"SUB_ARRAY_CONFIG"**|
+|```hide_input```|if true this will hide the property in the plugin view|false| useful together with disable_editing or default_value |
+|```final_value```|overrides the value of the property and sets it to the value defined here.|unfilled|It is advisable to hide/disable a property when setting this rule, since the value you type will be overridden anyway. For objects or more complex values you can also use the ```"VAR_NAME:property_name"``` notation.|
+
+## Other Information
+
+### VAR_NAME notation
+In some cases you might want to assign a value you chose for one property to other properties as well. And since copy-pasting it might be annoying, you can use this to set a **final_value** or one of the **constructor_values**.  
+
+By writing ```"VAR_NAME:property_name"``` you can assign the value of a certain property within the current object to another property.
+This is the most useful for the **final_value** rule, you can also use it for the **default_value** rule, however since default values are assigned the moment the object creation instance is created for this to work you need to set a default_value rule for the property you want to take the value from.
+
+If there is no value or the value is not of the correct type, it will simply give a null value.

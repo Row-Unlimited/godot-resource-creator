@@ -30,8 +30,12 @@ func return_possible_classes() -> Array:
 	
 	for path in filePaths:
 		var name = Helper.get_last_path_parts(path, 1)[0]
-		var new_wrapper = ObjectWrapper.new(path, name)
-		new_wrapper.class_config = plugin_config.get_config_by_path(path)
+		var wrapper_config = plugin_config.get_config_by_path(path)
+		var new_wrapper = ObjectWrapper.new(path, name, null, 0, wrapper_config)
+		if new_wrapper.constr_invalid:
+			Helper.throw_error("No constructor values given in config for class " + new_wrapper.real_class_name + " with constructor")
+			continue
+
 		temp_wrappers.append(new_wrapper)
 	
 	# maybe add functionality that checks each class for a certain prerequisite

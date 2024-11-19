@@ -23,6 +23,7 @@ var change_empty_default: bool = false
 var disable_editing: bool = false
 var default_value
 var hide_input: bool = false
+var final_value = null
 #endregion
 
 ## set up function that is called by the CreateObject class [br]

@@ -11,9 +11,9 @@ static func array_to_string(arr: Array) -> String:
 		return_string += string
 	return return_string
 
-static func check_string_contains_array(stringArray: Array, checkString: String):
-	for string: String in stringArray:
-		if checkString.contains(string):
+static func check_string_contains_array(string_array: Array, check_string: String):
+	for string: String in string_array:
+		if check_string.contains(string):
 			return true
 	return false
 
@@ -252,6 +252,35 @@ static func get_last_path_parts(path: String, number_parts: int, is_reverse=fals
 	path_parts.reverse()
 	return path_parts
 
+## enhances the get-script_method_list function method, by checking for each arg,
+## if it has a default value, through [b]is_optional[/b] key. [br]
+## [param script] takes a script instance [br]
+## [param func_name] takes the name of the function that should be checked and returned
+static func return_func_arg_optionality(script: Script, func_name: String):
+	var method_list = script.get_script_method_list()
+	var method_names = method_list.map(func(x): return x["name"])
+	var args = []
+	if func_name in method_names:
+		args = method_list.filter(func(x): return x["name"] == func_name)[0]["args"]
+	
+	var regex = RegEx.new()
+	regex.compile(r"func\s+\w+\(([^\n]*)\)[^\n\):]*:\n")
+	
+	var declare_line = script.source_code
+	declare_line = regex.search(declare_line)
+	if declare_line:
+		declare_line = declare_line.get_string(1)
+	
+	var arg_lines
+	var arg_names = args.map(func(x):return x["name"])
+	if declare_line:
+		arg_lines = Array(declare_line.split(","))
+		arg_lines = arg_lines.filter(func(x): return check_string_contains_array(arg_names, x))
+
+	for i in args.size():
+		args[i]["is_optional"] = "=" in arg_lines[i]
+	return args
+
 ## turns a custom object into a dictionary for json serialization
 ## adds class_name key if one was defined and script_name key to distinguish the dictionaries
 static func object_to_dict(obj: Object):
@@ -283,6 +312,14 @@ static func apply_dict_values_object(obj: Object, value_dict: Dictionary):
 
 	for key in keys:
 		obj.set(key, value_dict[key])
+
+## Goes through dictionary and removes all entries where the callable [param condition] returns false
+static func filter_dict(dict: Dictionary, condition: Callable):
+	for key in dict.keys():
+		var filter_applies = not condition.call(dict[key])
+		if  filter_applies:
+			dict.erase(key)
+	return dict
 
 ## puts all sub dicts of a dictionary in one dictionary side by side (if some dicts have the same name this does not work) [br]
 ## with [param search_keys] you can change the behavior so the return dictionary only has the ROOT and all dicts that had one of the specified search keys
@@ -333,3 +370,35 @@ static func file_name_to_class_name(file_name: String):
 	name_parts = name_parts.map(func(x): x[0] = x[0].to_upper(); return x)
 	name_parts = name_parts.map(func(x): return x if not "." in x else x.split(".")[0])
 	return array_to_string(name_parts)
+
+static func print_collection(collection, name="Collection", add_separator=false, sep_max = 100):
+	var type_collection = typeof(collection)
+	if type_collection != TYPE_ARRAY and type_collection != TYPE_DICTIONARY:
+		assert(false, "ERROR: ONLY ACCEPTS DICT/ARRAY VALUES")
+		return
+	
+	var print_str: String = name + ":\n"
+	var max_size = name.length() + 2
+	var indent_size = max_size
+	var keys = collection.keys() if type_collection == TYPE_DICTIONARY else null
+	for i in collection.size():
+		var indent = keys[i] if keys else " "
+		indent = indent.rpad(indent_size, " ")
+		var value = collection[keys[i]] if keys else collection[i]
+		var value_line = "  " + indent + str(value) + "\n"
+		if value_line.length() > max_size:
+			max_size = value_line.length()
+		print_str += value_line
+
+	max_size = min(max_size, sep_max)
+
+	if add_separator:
+		print_str = "\n".lpad(max_size, "-") + print_str + "\n".lpad(max_size, "-")
+
+	print(print_str)
+
+static func throw_error(message: String, cancel_run: bool = false):
+	message = "OBJECT_CREATOR_ERROR: " + message
+	push_error(message)
+	if cancel_run:
+		assert(false, message)
