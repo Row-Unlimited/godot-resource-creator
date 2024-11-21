@@ -25,6 +25,7 @@ func _create_base_nodes():
 	root_item = new_item
 
 func set_up_class_view(class_name_dict):
+	# TODO: maybe rearrange it so sub_classes are directly under the class they inherit from
 	var gd_dict = class_name_dict["gd"]
 	var cs_dict = class_name_dict["cs"]
 	if gd_dict.keys():

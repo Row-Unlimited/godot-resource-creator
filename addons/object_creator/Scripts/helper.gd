@@ -365,6 +365,15 @@ static func search_filetypes_in_directory(fileType: String, directory: String, i
 	
 	return filePathArray
 
+## takes a [param class_name_check] to find all scripts with class_name that inherit from this script [br]
+## returns an array of class_names
+## [param search_directory] defines where the search starts [br]
+## [param included_names] defines class_names that you already know are inheriting from this script
+static func find_all_inheriting_classes(class_name_check: String,search_directory: String = "res://", included_names: Array = []) -> Array:
+
+	return []
+	pass
+
 static func file_name_to_class_name(file_name: String):
 	var name_parts = Array(file_name.split("_"))
 	name_parts = name_parts.map(func(x): x[0] = x[0].to_upper(); return x)

@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3 uid="uid://r0pbmd8naqy2"]
+
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/enum_input.gd" id="1_r2feb"]
+[ext_resource type="LabelSettings" uid="uid://c7ay5h8tbaidb" path="res://addons/object_creator/Assets/input_warning.tres" id="2_k4iol"]
+
+[node name="EnumInput" type="VBoxContainer"]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.2
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_r2feb")
+
+[node name="InputContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="PropertyName" type="Label" parent="InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 2.0
+vertical_alignment = 1
+
+[node name="Margin2" type="MarginContainer" parent="InputContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_stretch_ratio = 0.2
+
+[node name="PropertyType" type="Label" parent="InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Margin" type="MarginContainer" parent="InputContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_stretch_ratio = 0.2
+
+[node name="Input" type="OptionButton" parent="InputContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="WarningContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="WrongInputWarning" type="Label" parent="WarningContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Invalid String for Resource creation"
+label_settings = ExtResource("2_k4iol")
+horizontal_alignment = 1

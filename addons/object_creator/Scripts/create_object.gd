@@ -100,7 +100,11 @@ func determine_input_type(property: Dictionary) -> String:
 		TYPE_BOOL:
 			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/bool_input.tscn"
 		TYPE_INT:
-			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"
+			if property["class_name"]:
+				print(property)
+				scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/enum_input.tscn"
+			else:
+				scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"
 		TYPE_FLOAT:
 			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"
 		TYPE_STRING:

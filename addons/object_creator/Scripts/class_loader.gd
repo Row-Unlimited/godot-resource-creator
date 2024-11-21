@@ -30,6 +30,11 @@ func return_possible_classes() -> Array:
 	
 	for path in filePaths:
 		var name = Helper.get_last_path_parts(path, 1)[0]
+
+		var new_script = load(path)
+		if new_script.get_instance_base_type() != "Resource":
+			continue
+
 		var wrapper_config = plugin_config.get_config_by_path(path)
 		var new_wrapper = ObjectWrapper.new(path, name, null, 0, wrapper_config)
 		if new_wrapper.constr_invalid:
