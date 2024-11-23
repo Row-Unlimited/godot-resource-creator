@@ -88,7 +88,7 @@ func decrease_index_after(index):
 
 func _input(event: InputEvent) -> void:
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
-		var mouse_position = get_viewport().get_mouse_position() - self.get_rect().position
+		var mouse_position = get_local_mouse_position() - self.get_rect().position
 		if not tab_bar.tab_count:
 			return
 		var tab_rect = tab_bar.get_tab_rect(hover_target)

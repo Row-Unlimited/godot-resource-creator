@@ -307,11 +307,20 @@ static func apply_dict_values_object(obj: Object, value_dict: Dictionary):
 	var keys = value_dict.keys()
 	var prop_list = obj.get_property_list()
 	var prop_names = prop_list.map(func(x:Dictionary): return x["name"])
-	
+
 	keys = intersect_arrays(keys, prop_names)
 
 	for key in keys:
-		obj.set(key, value_dict[key])
+		var prop_type = typeof(obj.get(key))
+		var new_value = value_dict[key]
+		if prop_type in [TYPE_ARRAY]:
+			var base_array = obj.get(key)
+			base_array.assign(new_value)
+			new_value = base_array
+
+		obj.set(key, new_value)
+	
+	return obj
 
 ## Goes through dictionary and removes all entries where the callable [param condition] returns false
 static func filter_dict(dict: Dictionary, condition: Callable):

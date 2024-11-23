@@ -24,6 +24,9 @@ var main_screen: ScreenManager
 var overview_menu: OverviewMenu
 var menu_side_bar: Control
 
+var settings_button: TextureButton
+var settings_menu: ObjectWrapper
+
 var created_object_wrappers: Array[ObjectWrapper]
 var object_counter = 0
 
@@ -46,6 +49,7 @@ func _ready() -> void:
 	main_screen.default_node = overview_menu
 	menu_side_bar = get_node("MenuSideBar")
 	menu_side_bar.get_node("ObjectOverviewButton").connect("pressed", Callable(self, "_on_overview_button_pressed"))
+	menu_side_bar.get_node("SettingsButton").activate_button(Callable(self, "_on_settings_button_pressed"))
 
 	# sets up signals for the overview_menu, for exporting
 	overview_menu.connect("export_activated", Callable(self, "_on_export_activated"))
@@ -73,7 +77,7 @@ func create_new_creation_screen(object_wrapper: ObjectWrapper, menu_type=CreateO
 	new_create_window.object_chosen_callable = Callable(self, "_on_sub_object_class_chosen")
 	new_create_window.object_edited_callable = Callable(self, "_on_sub_object_edit_clicked")
 	
-	new_create_window.initialize_UI(object_wrapper)
+	new_create_window.initialize_UI(object_wrapper, menu_type)
 	tab_manager.create_new_tab(object_wrapper.file_class_name, new_create_window, object_wrapper.id)
 	new_create_window.connect("object_created", Callable(self, "_on_object_created"))
 	if menu_type != CreateObject.CreateMenuType.NORMAL:
@@ -134,6 +138,25 @@ func remove_wrapper(id):
 
 #region signal_functions
 
+func _on_settings_button_pressed():
+	if not settings_menu:
+		var settings_object: ObjectWrapper = ObjectWrapper.new(SETTINGS_CLASS_PATH, "PluginConfig", plugin_config)
+		settings_object = create_new_creation_screen(settings_object, CreateObject.CreateMenuType.SETTINGS).object_wrapper
+		settings_menu = settings_object
+	else:
+		tab_manager.open_tab_by_id(settings_menu.id)
+
+func _on_settings_changed(plugin_config_object: Object):
+	var plugin_config_new = plugin_config_object
+	if plugin_config_object is ObjectWrapper:
+		plugin_config_new = plugin_config_object.obj
+	
+	if plugin_config_new is PluginConfig:
+		plugin_config = plugin_config_new
+		ResourceSaver.save(plugin_config_new, PLUGIN_CONFIG_PATH)
+		main_screen.set_active_node(overview_menu)
+		tab_manager.close_tab(plugin_config_object.id)
+
 func _on_tree_refresh_clicked():
 	class_tree_mapping.clear()
 	class_tree.reset_tree()
@@ -172,9 +195,6 @@ func _on_export_activated(path_dict: Dictionary):
 
 func _on_export_reset_clicked():
 	export_tree.reset_export_view(created_object_wrappers)
-
-func _on_settings_changed(plugin_config_object: PluginConfig):
-	pass
 
 func _on_obj_edit_clicked(obj_id):
 	var wrapper = get_wrapper(obj_id)

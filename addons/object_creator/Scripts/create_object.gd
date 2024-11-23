@@ -157,9 +157,9 @@ func on_submit_pressed():
 
 	if input_error_nodes.is_empty():
 		# TODO: fix error where empty strings have no "value" key in their property
-		var return_object = object_wrapper.create_object(properties) # potential async issue if object wrapper assigns new object to itself
-		emit_signal(output_signal, object_wrapper)
-		return object_wrapper
+		var return_wrapper = object_wrapper.create_object(properties) # potential async issue if object wrapper assigns new object to itself
+		emit_signal(output_signal, return_wrapper)
+		return return_wrapper
 	else:
 		for inputManager: InputManager in input_error_nodes:
 			inputManager.show_input_warning(true)

@@ -24,7 +24,7 @@ extends Resource
 ## config users can create to define precisely how they want the creation to be handled [br]
 ## can be used to:[br] - define default property values [br] - exclude classes as sub_classes [br]
 ### - lock properties
-@export var class_configs: Array
+var class_configs: Array
 
 
 

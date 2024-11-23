@@ -13,7 +13,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2k06y"]
 shader = ExtResource("6_5m0cy")
-shader_parameter/active = null
+shader_parameter/active = false
 
 [node name="MainScene2" type="Control"]
 layout_mode = 3

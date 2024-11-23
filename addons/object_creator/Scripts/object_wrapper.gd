@@ -67,4 +67,5 @@ func create_object(properties: Dictionary):
 				value_dict[key] = null
 
 	obj = obj_script.callv("new", constructor_args)
-	Helper.apply_dict_values_object(obj, value_dict)
+	obj = Helper.apply_dict_values_object(obj, value_dict)
+	return self

@@ -19,8 +19,8 @@ For Integration information look [here](doc_files/Integration.md)
 
 ## Immediate Goals
 
-- Implement sub-object creation
 - Re-Implement Settings Menu
-- Implement Type compatibility with enums
-- Improve Config Functionality (constructor vars, reduce types for dict/arr)
+- Fix bug where closing tabs with middle mouse button doesn't work when the actual plugin not the scene is running
+- Improve Config Functionality (reduce types for dict/arr)
 - Implement Button in the export menu that can be used to duplicate already created resources
+- Implement Button in export menu that can delete objects
