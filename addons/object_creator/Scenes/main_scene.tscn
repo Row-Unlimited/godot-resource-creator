@@ -49,6 +49,7 @@ anchor_right = 1.0
 anchor_bottom = 0.07
 grow_horizontal = 2
 grow_vertical = 0
+deselect_enabled = true
 
 [node name="TabBarColor" type="ColorRect" parent="TabManager/TabBar"]
 show_behind_parent = true

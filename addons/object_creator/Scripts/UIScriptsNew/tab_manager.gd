@@ -5,7 +5,9 @@ extends Control
 signal tab_closed(obj_id)
 
 var tab_bar: TabBar
-var tab_screen: Control
+var tab_screen: ScreenManager
+
+var current_node_id
 
 ## counts each created tab, to create unique IDs for every tab
 var tab_counter = 0
@@ -15,9 +17,6 @@ var tab_id_mapping: Dictionary = {}
 ## Where the user is hovering over. -1 if they are hovering above nothing
 var hover_target: int
 
-## to make sure users don't accidentally close multiple tabs
-var tab_just_closed = false
-
 
 func _ready() -> void:
 	tab_bar = get_node("TabBar")
@@ -25,6 +24,8 @@ func _ready() -> void:
 	tab_bar.connect("tab_selected", Callable(self, "change_tab_screen"))
 	# signal is for closing tabs
 	tab_bar.connect("tab_hovered", Callable(self, "_on_tab_hovered"))
+	
+	tab_bar.deselect_enabled = true
 
 func create_new_tab(tab_name, tab_node: Control = null, tab_id = "") -> String:
 	tab_counter += 1
@@ -34,6 +35,7 @@ func create_new_tab(tab_name, tab_node: Control = null, tab_id = "") -> String:
 	
 	tab_bar.add_tab(tab_name)
 	tab_bar.set_tab_metadata(tab_index, {"ID": tab_id})
+
 	return tab_id
 
 ## closes a tab and then changes the UI, decreases the indicies after and emits a signal
@@ -42,36 +44,50 @@ func close_tab(id):
 		return
 	var tab_index = get_tab_index(id)
 	tab_bar.remove_tab(tab_index)
+
+	var replace_node
+
 	if tab_index - 1 >= 0:
-		tab_screen.remove_node(get_tab_node(id), get_tab_node(get_tab_id(tab_index - 1)))
+		replace_node = get_tab_node(get_tab_id(tab_index - 1))
+	elif get_tab_id(tab_index + 1):
+		replace_node = get_tab_node(get_tab_id(tab_index + 1))
 	else:
-		tab_screen.remove_node(get_tab_node(id))
+		replace_node = tab_screen.default_node
+
+	tab_screen.remove_node(get_tab_node(id), replace_node)
+	
 	
 	decrease_index_after(tab_index)
+	hover_target = -1
 	tab_id_mapping.erase(id)
 
 	emit_signal("tab_closed", id)
 
+func get_hover_index(mouse_pos: Vector2):
+	var tab_size = tab_bar.tab_count
+	if hover_target > tab_size and hover_target >= 0 and tab_bar.get_tab_rect(hover_target).has_point(mouse_pos):
+		return hover_target
+	else:
+		for i in tab_bar.tab_count:
+			if tab_bar.get_tab_rect(i).has_point(mouse_pos):
+				return i
+	return -1
+
 func change_tab_screen(index: int):
+	if index < 0:
+		return
 	var tab_id = get_tab_id(index)
 	if not tab_id:
 		assert(false, "no id for this index")
 	else:
 		var tab_node = get_tab_node(tab_id)
 		tab_screen.set_active_node(tab_node)
-		#if tab_node in tab_screen.get_children():
-			#tab_node.visible = true 
-		#else:
-			#tab_screen.add_child(tab_node)
-		#
-		#for child in tab_screen.get_children():
-			##child.visible = false
-			#pass
+		current_node_id = tab_id
 
 func open_tab_by_id(id) -> bool:
 	var index = get_tab_index(id)
 	if index != null:
-		change_tab_screen(index)
+		select_tab(index)
 		return true
 	else:
 		return false
@@ -86,17 +102,27 @@ func decrease_index_after(index):
 		if tab_id_mapping[key]["index"] > index:
 			tab_id_mapping[key]["index"] -= 1
 
+func select_tab(index: int = -1):
+	if tab_bar.tab_count <= 0:
+		return
+	else:
+		tab_bar.current_tab = index if index > -1 else tab_bar.tab_count + index
+
+func deselect_tab():
+	tab_bar.current_tab = -1
+
 func _input(event: InputEvent) -> void:
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):
-		var mouse_position = get_local_mouse_position() - self.get_rect().position
+		var mouse_position = tab_bar.get_local_mouse_position() #- self.get_rect().position
 		if not tab_bar.tab_count:
 			return
-		var tab_rect = tab_bar.get_tab_rect(hover_target)
-		if tab_rect.has_point(mouse_position) and tab_just_closed == false:
-			close_tab(get_tab_id(hover_target))
-			tab_just_closed = true
-	else:
-		tab_just_closed = false
+		var hover_index = get_hover_index(mouse_position)
+		if hover_index == -1:
+			return
+		var tab_rect = tab_bar.get_tab_rect(hover_index)
+		if tab_rect.has_point(mouse_position):
+			close_tab(get_tab_id(hover_index))
+			await get_tree().create_timer(0.1).timeout
 
 func get_tab_id(index: int):
 	for key in tab_id_mapping.keys():

@@ -51,7 +51,9 @@ func style_input():
 	type_label.text = "Enum: " + property["class_name"]
 
 func receive_input(input):
-	if typeof(input) == TYPE_INT and input > 0 and input < current_items.size():
+	print(input)
+	if typeof(input) == TYPE_INT and input >= 0 and input < current_items.size():
+		input_node.select(input)
 		_on_item_selected(input)
 	else:
 		Helper.throw_error("Invalid default input for Enum Type InputManager")

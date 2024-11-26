@@ -40,6 +40,9 @@ static func intersect_arrays(arr1, arr2):
 			in_both_arrays.append(v)
 	return in_both_arrays
 
+static func index_in_array(index: int, arr: Array):
+	return index < arr.size() and index >= 0
+
 ## updates one objects values with another objects ones[br]
 ## [param skipped_properties]: will skip certain variables if their names match[br]
 ## [param ignore_propery_overflow]: 	if set to true the func will ignore it if the update_object has variables

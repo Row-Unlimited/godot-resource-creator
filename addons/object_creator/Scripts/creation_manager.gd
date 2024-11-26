@@ -143,8 +143,13 @@ func _on_settings_button_pressed():
 		var settings_object: ObjectWrapper = ObjectWrapper.new(SETTINGS_CLASS_PATH, "PluginConfig", plugin_config)
 		settings_object = create_new_creation_screen(settings_object, CreateObject.CreateMenuType.SETTINGS).object_wrapper
 		settings_menu = settings_object
+		tab_manager.select_tab()
 	else:
-		tab_manager.open_tab_by_id(settings_menu.id)
+		var current_tab_id = tab_manager.current_node_id
+		if current_tab_id and current_tab_id  != settings_menu.id:
+			tab_manager.open_tab_by_id(settings_menu.id)
+		else:
+			_on_overview_button_pressed()
 
 func _on_settings_changed(plugin_config_object: Object):
 	var plugin_config_new = plugin_config_object
@@ -154,7 +159,7 @@ func _on_settings_changed(plugin_config_object: Object):
 	if plugin_config_new is PluginConfig:
 		plugin_config = plugin_config_new
 		ResourceSaver.save(plugin_config_new, PLUGIN_CONFIG_PATH)
-		main_screen.set_active_node(overview_menu)
+		_on_overview_button_pressed()
 		tab_manager.close_tab(plugin_config_object.id)
 
 func _on_tree_refresh_clicked():
@@ -167,7 +172,9 @@ func _on_add_item_clicked(class_id):
 	pass
 
 func _on_overview_button_pressed():
+	tab_manager.current_node_id = "main"
 	main_screen.set_active_node(overview_menu)
+	tab_manager.deselect_tab()
 
 func _on_tab_closed(id):
 	var wrapper = get_wrapper(id)

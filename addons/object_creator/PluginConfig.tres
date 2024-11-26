@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PluginConfig" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="PluginConfig" load_steps=2 format=3 uid="uid://ddvfw5k524ibm"]
 
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/plugin_config.gd" id="1_myur8"]
 
