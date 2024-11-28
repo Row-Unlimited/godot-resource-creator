@@ -10,6 +10,7 @@ For Integration information look [here](doc_files/Integration.md)
 
 - Implement Sub-Objects in dicts/arrs
   - implement sub-object typed arrays
+- Implement JSON export of Objects
 - Improve Config Functionality (reduce types for dict/arr)
 - Implement Button in the export menu that can be used to duplicate already created resources
 - Implement Button in export menu that can delete objects

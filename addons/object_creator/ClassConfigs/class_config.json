@@ -6,89 +6,89 @@
   
 
   "CLASS_GENERAL_CONFIG": {
-    "accept_empty": true,
-    "change_empty_default": false
+	"accept_empty": true,
+	"change_empty_default": false
   },
 
   "TYPE_CONFIGS": {
-    "TYPE_INT": {
-      "range_max": 100,
-      "range_min": -100,
-      "change_empty_default": true,
-      "default_value": 0
-    },
+	"TYPE_INT": {
+	  "range_max": 100,
+	  "range_min": -100,
+	  "change_empty_default": true,
+	  "default_value": 0
+	},
 
-    "TYPE_OBJECT": {
-      "TestScript": {
-        "constructor_values": [0, "test_string", "VAR_NAME:test_variable"]
-      },
+	"TYPE_OBJECT": {
+	  "TestScript": {
+		"constructor_values": [0, "test_string", "VAR_NAME:test_variable"]
+	  },
 
-      "res://scripts/gd-scripts/sub_resource_test.gd": {
+	  "res://scripts/gd-scripts/sub_resource_test.gd": {
 
-      }
-    }
+	  }
+	}
   },
 
   "PROPERTY_CONFIGS": {
-    "test_int": {
-      "type": 2,
-      "range_max": 100,
-      "range_min": 0,
-      "accept_empty": false,
-      "change_empty_default": false,
-      "default_value": 3,
-      "disable_editing": true
-    },
+	"test_int": {
+	  "type": 2,
+	  "range_max": 100,
+	  "range_min": 0,
+	  "accept_empty": false,
+	  "change_empty_default": false,
+	  "default_value": 3,
+	  "disable_editing": true
+	},
 
-    "test_array": {
-      "type": 28,
-      "range_max": 5,
-      "range_min": 0,
-      "accept_empty": true,
-      "change_empty_default": false,
-      "default_value": ["this", "is an", "example"],
-      "disable_editing": false,
-      "SUB_ARRAY_CONFIG": {
-        "type": 4,
-        "range_max": 10,
-        "range_min": 1,
-        "accept_empty": true,
-        "change_empty_default": true,
-        "disable_editing": true
-      }
-    },
+	"test_array": {
+	  "type": 28,
+	  "range_max": 5,
+	  "range_min": 0,
+	  "accept_empty": true,
+	  "change_empty_default": false,
+	  "default_value": ["this", "is an", "example"],
+	  "disable_editing": false,
+	  "SUB_ARRAY_CONFIG": {
+		"type": 4,
+		"range_max": 10,
+		"range_min": 1,
+		"accept_empty": true,
+		"change_empty_default": true,
+		"disable_editing": true
+	  }
+	},
 
-    "test_vector": {
-      "type": 12,
-      "range_max": 100,
-      "range_min": 0,
-      "accept_empty": false,
-      "change_empty_default": false,
-      "default_value": [1, 2, 3],
-      "disable_editing": true,
-      "hide_input": true,
-      "X_CONFIG": {
-        "range_max": 5,
-        "range_min": -5,
-        "disable_editing": false
-      },
-      "Y_CONFIG": {
-        "range_max": 50,
-        "range_min": -50,
-        "disable_editing": false
-      },
-      "Z_CONFIG": {
-        "default_value": 0,
-        "disable_editing": true
-      },
-      "W_CONFIG": {
-        "accept_empty": false,
-        "change_empty_default": true
-      }
-    },
+	"test_vector": {
+	  "type": 12,
+	  "range_max": 100,
+	  "range_min": 0,
+	  "accept_empty": false,
+	  "change_empty_default": false,
+	  "default_value": [1, 2, 3],
+	  "disable_editing": true,
+	  "hide_input": true,
+	  "X_CONFIG": {
+		"range_max": 5,
+		"range_min": -5,
+		"disable_editing": false
+	  },
+	  "Y_CONFIG": {
+		"range_max": 50,
+		"range_min": -50,
+		"disable_editing": false
+	  },
+	  "Z_CONFIG": {
+		"default_value": 0,
+		"disable_editing": true
+	  },
+	  "W_CONFIG": {
+		"accept_empty": false,
+		"change_empty_default": true
+	  }
+	},
 
-    "test_object": {
-      "type": 24
-    }
+	"test_object": {
+	  "type": 24
+	}
   }
 }

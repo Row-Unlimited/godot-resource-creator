@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://dp37abkh7wgph"]
 
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/creation_manager.gd" id="1_6is2m"]
-[ext_resource type="Theme" uid="uid://du8tldypjrsog" path="res://addons/object_creator/Assets/ThemeAssets/BaseTheme/base_theme.tres" id="1_uhibf"]
+[ext_resource type="Theme" uid="uid://du8tldypjrsog" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/default_theme.tres" id="1_imsfs"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UIScriptsNew/tab_manager.gd" id="2_cx134"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UIScriptsNew/screen_manager.gd" id="4_13l1c"]
 [ext_resource type="PackedScene" uid="uid://cjrjsmw62bo4a" path="res://addons/object_creator/Scenes/MainMenuUI/overview_menu.tscn" id="5_k30fj"]
@@ -24,7 +24,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = ExtResource("1_uhibf")
+theme = ExtResource("1_imsfs")
 script = ExtResource("1_6is2m")
 
 [node name="Panel" type="Panel" parent="."]

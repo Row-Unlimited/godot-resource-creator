@@ -32,7 +32,6 @@ func submit_status_dict():
 
 func create_enum_items():
 	var item_strings = property["hint_string"].split(",")
-	print(item_strings)
 	for item in item_strings:
 		item = item.split(":")
 		var item_name = item[0]
@@ -51,7 +50,6 @@ func style_input():
 	type_label.text = "Enum: " + property["class_name"]
 
 func receive_input(input):
-	print(input)
 	if typeof(input) == TYPE_INT and input >= 0 and input < current_items.size():
 		input_node.select(input)
 		_on_item_selected(input)
