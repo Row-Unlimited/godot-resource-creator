@@ -3,8 +3,8 @@ class_name MultiElementInput
 extends InputManager
 
 
-const SUPPORTED_TYPES = ["String", "int", "float", "bool", "Array", "Dictionary","Vector2", "Vector3", "Vector4", "Vector2i", "Vector3i", "Vector4i"]
-const VECTOR_TYPES = [TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I, TYPE_VECTOR4, TYPE_VECTOR4I]
+const SUPPORTED_TYPES = ["String", "int", "float", "bool", "Array", "Dictionary","Vector2", "Vector3", "Vector4", "Vector2i", "Vector3i", "Vector4i", "Object"]
+const VECTOR_TYPES = [TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I, TYPE_VECTOR4, TYPE_VECTOR4I, TYPE_OBJECT]
 
 var element_container_scene = preload("res://addons/object_creator/Scenes/Variable Input Scenes/multi_element_container.tscn")
 
@@ -12,6 +12,9 @@ var add_element_button: Button
 var element_type_button: DataTypeOptionButton
 var is_minimized = false
 var add_element_section: HBoxContainer
+
+var typed_object_type = null
+var sub_obj_infos: Dictionary
 
 var selected_type: Variant.Type = Variant.Type.TYPE_NIL
 var input_managers: Array
@@ -91,6 +94,8 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 			new_scene = input_scenes["array"]
 		TYPE_DICTIONARY:
 			new_scene = input_scenes["dictionary"]
+		TYPE_OBJECT:
+			new_scene = input_scenes["object"]
 		_:
 			if VECTOR_TYPES.has(type):
 				new_scene = input_scenes["vector"]
@@ -103,6 +108,7 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 	#apply indent UI
 	if type == TYPE_ARRAY or type == TYPE_DICTIONARY:
 		new_input_manager.indent_level = indent_level + 1
+		new_input_manager.sub_obj_infos = sub_obj_infos # give sub_obj_infos to array/dict so they can connect object inputs
 	
 	add_child(new_input_node) # add MultiElementContainer as new child
 
@@ -111,7 +117,16 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 	# Sets the child position so we can move it with the arrow up and down buttons
 	new_input_node.position_child = actual_position
 	new_input_node.initialize_input(new_input_manager)
-	new_input_manager.initialize_input({})
+	# TODO: change once type dicts are out
+	if type == TYPE_OBJECT: # set up object inputs with callables since they have to interact with the creation_manager
+		new_input_manager.connect("edit_sub_object_clicked", sub_obj_infos["edit_callable"])
+		new_input_manager.connect("choose_class_button_clicked", sub_obj_infos["choose_callable"])
+		new_input_manager.parent_wrapper = sub_obj_infos["parent_wrapper"]
+
+		if typed_object_type:
+			new_input_manager.initialize_input({"class_name": typed_object_type})
+		else:
+			new_input_manager.initialize_input({})
 
 	new_input_node.connect("remove_node", Callable(self, "_on_remove_node"))
 	if config:

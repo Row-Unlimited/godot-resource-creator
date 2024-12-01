@@ -76,6 +76,14 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 				new_input.connect("choose_class_button_clicked", object_chosen_callable)
 				new_input.parent_wrapper = object_wrapper
 			
+			# give the sub-object callables to arr/dict since they can contain sub-objects
+			if property["type"] in [TYPE_ARRAY, TYPE_DICTIONARY]:
+				new_input.sub_obj_infos = {
+					"edit_callable": object_edited_callable,
+					"choose_callable": object_chosen_callable,
+					"parent_wrapper": object_wrapper
+					}
+
 			add_breakline()
 
 			# sets the accept_empty_inputs setting

@@ -193,12 +193,13 @@ func _on_object_created(object_wrapper: ObjectWrapper):
 	tab_manager.close_tab(object_wrapper.id)
 
 func _on_export_activated(path_dict: Dictionary):
-	for wrapper in created_object_wrappers:
+	var parent_wrappers = created_object_wrappers.filter(func(x): return x.parent_wrapper == null)
+	for wrapper in parent_wrappers:
 		if wrapper.id in path_dict.keys():
 			wrapper.export_path = path_dict[wrapper.id]
 		else:
 			assert(false, "Not all wrappers are in the export path_dict")
-	exporter.export_wrappers(created_object_wrappers)
+	exporter.export_wrappers(parent_wrappers)
 
 func _on_export_reset_clicked():
 	export_tree.reset_export_view(created_object_wrappers)

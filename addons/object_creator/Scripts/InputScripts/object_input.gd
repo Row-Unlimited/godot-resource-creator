@@ -43,28 +43,37 @@ func initialize_input(property_dict: Dictionary):
 	choose_class_button.connect("pressed", Callable(self, "_on_choose_class_button_clicked"))
 	edit_button.connect("pressed", Callable(self, "_on_edit_button_clicked"))
 	clear_button.connect("pressed", Callable(self, "_on_clear_button_clicked"))
-
-	property_type_label.text = property_dict["class_name"]
+	if property_dict:
+		property_type_label.text = property_dict["class_name"]
 
 	# load classes for object select
 	# TODO: add integration
 	class_loader = ClassLoader.new()
 	wrappers = class_loader.return_possible_classes()
 
-	for wrapper in wrappers:
-		var wrapper_obj = load(wrapper.path).new()
+	var wrong_wrappers = []
+
+	for i in wrappers.size():
+		var wrapper = wrappers[i]
+		var wrapper_obj = Helper.create_null_instance(load(wrapper.path))
+		#var wrapper_obj = load(wrapper.path).new()
 		var wrapper_name = wrapper_obj.get_script().get_global_name()
 		if property_dict["class_name"] == wrapper_name or wrapper_obj.is_class(property_dict["class_name"]):
 			class_names.append(wrapper.real_class_name if wrapper.real_class_name else Helper.file_name_to_class_name(wrapper.file_class_name))
-		
-		pass
+		else:
+			wrong_wrappers.append(i)
+	
+	wrong_wrappers.sort()
+	wrong_wrappers.reverse()
+	for pos in wrong_wrappers:
+		wrappers.remove_at(pos)
 
 	#class_names = wrappers.map(func(x): return x.real_class_name if x.real_class_name else Helper.file_name_to_class_name(x.file_class_name))
 	
-
-
 	# set up select class button
-	property_name_label.text = property_dict["name"] if property_dict else ""
+	if "name" in property_dict.keys():
+		property_name_label.text = property_dict["name"] if property_dict else ""
+	
 	for i in class_names.size():
 		var class_option = class_names[i]
 		select_index_to_wrapper[property_select.item_count] = wrappers[i]
@@ -72,6 +81,11 @@ func initialize_input(property_dict: Dictionary):
 			pass
 		property_select.add_item(class_names[i])
 	_on_item_selected(0) # select first item by default so it doesn't just look selected without working
+
+	if property_select.item_count == 1:
+		# automatically select the class if there is only one possible class
+		_on_choose_class_button_clicked()
+		clear_button.disabled = true
 
 func attempt_submit(mute_warnings=false):
 	var return_value = null
@@ -111,6 +125,9 @@ func hide_input_warning():
 func _on_item_selected(index: int):
 	select_index = index
 	class_name_label.text = class_names[index]
+
+func set_up_nodes():
+	pass
 
 func _on_choose_class_button_clicked():
 	chosen_wrapper = select_index_to_wrapper[select_index]

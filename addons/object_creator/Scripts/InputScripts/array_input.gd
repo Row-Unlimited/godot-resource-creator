@@ -6,6 +6,9 @@ extends MultiElementInput
 ## InputManager Objects are stored in input_managers array and sorted when UI nodes are moved
 
 func check_typed():
+
+	var possible_class_names = ClassLoader.new().return_class_names()
+
 	var type_arr: String
 	var hint_string : String = property["hint_string"]
 	match property["hint"]:
@@ -20,6 +23,10 @@ func check_typed():
 		return
 	if type_arr in SUPPORTED_TYPES:
 		disable_select_type_button([type_arr], true, true)
+	elif Helper.check_string_contains_array(possible_class_names, hint_string):
+		var class_name_string = Array(hint_string.split(":")).back()
+		typed_object_type = class_name_string
+		disable_select_type_button(["Object"], true, true)
 	else:
 		# TODO  find solution
 		assert(false, "unsupported type in typed array")
@@ -44,6 +51,8 @@ func attempt_submit(mute_warnings=false) -> Variant:
 		var input_value = input_manager.attempt_submit()
 		if not input_value in Enums.InputErrorType:
 			input_manager.hide_input_warning()
+			if input_value is ObjectWrapper and input_manager.input_type == TYPE_OBJECT:
+				input_value = input_value.obj
 			return_array.append(input_value)
 		elif input_value == Enums.InputResponse.IGNORE:
 			pass

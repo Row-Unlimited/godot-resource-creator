@@ -67,6 +67,42 @@ static func update_object(base_object: Object, update_object: Object, skipped_pr
 		if update_value or not ignore_null_values:
 			base_object.set(property_name, update_value)
 
+static func create_null_instance(script: Script):
+	var method_list = script.get_script_method_list()
+	method_list = method_list.filter(func(x):return x["name"] == "_init")
+
+	var init_dict 
+	if method_list:
+		init_dict = method_list[0]
+	else:
+		return script.new()
+	var args = []
+	for arg in init_dict["args"]:
+		var arg_type = arg["type"]
+		match arg_type:
+			TYPE_BOOL:
+				args.append(false)
+			TYPE_STRING:
+				args.append("")
+			TYPE_ARRAY:
+				args.append([])
+			TYPE_DICTIONARY:
+				args.append({})
+			_:
+				if arg_type in [TYPE_INT, TYPE_FLOAT]:
+					args.append(0)
+				elif arg_type in [TYPE_VECTOR2, TYPE_VECTOR2I]:
+					args.append(Vector2(0, 0))
+				elif [TYPE_VECTOR3, TYPE_VECTOR3I]:
+					args.append(Vector3(0,0,0))
+				elif [TYPE_VECTOR4, TYPE_VECTOR4I]:
+					args.append(Vector4(0,0,0,0))
+				else:
+					args.append(null)
+	
+	return script.callv("new", args)
+
+
 ## compares arrays and returns whether they are the same.[br]
 ## [param ignore_order]: if set to false, the method will also check whether the elements
 ## are in the correct order

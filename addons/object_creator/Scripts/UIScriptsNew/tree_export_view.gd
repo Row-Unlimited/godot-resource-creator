@@ -17,7 +17,8 @@ var tree_items: Array[TreeItem]
 ## the item whose path is currently being edited
 var edit_path_item: TreeItem
 
-var child_wrappers: Array = []
+var temp_child_wrappers: Array = []
+var child_ids: Array = []
 
 #region UiVars
 var default_color = Color(1, 1, 1)
@@ -41,10 +42,15 @@ func add_new_object(object_wrapper, path_editable = true):
 	if get_item_by_id(object_wrapper.id):
 		return
 
-	var parent_item = get_item_by_id(object_wrapper.parent_wrapper.id) if object_wrapper.parent_wrapper else root_item
+	var parent_item
+	if object_wrapper.parent_wrapper:
+		parent_item = get_item_by_id(object_wrapper.parent_wrapper.id)
+		child_ids.append(object_wrapper.id)
+	else:
+		parent_item = root_item
 	# save the object_wrapper of the child object until the parent item is saved
 	if parent_item == null:
-		child_wrappers.append(object_wrapper)
+		temp_child_wrappers.append(object_wrapper)
 		return
 
 	var new_item = parent_item.create_child()
@@ -58,7 +64,7 @@ func add_new_object(object_wrapper, path_editable = true):
 
 	tree_items.append(new_item)
 
-	var children = child_wrappers.filter(func(x): return x.parent_wrapper.id == object_wrapper.id)
+	var children = temp_child_wrappers.filter(func(x): return x.parent_wrapper.id == object_wrapper.id)
 	for child in children:
 		add_new_object(child, false)
 
@@ -78,6 +84,8 @@ func submit_wrapper_paths():
 	var path_dict = {}
 	for item: TreeItem in tree_items:
 		var item_id = item.get_metadata(0)
+		if item_id in child_ids:
+			continue
 		path_dict[item_id] = item.get_text(1)
 	return path_dict
 

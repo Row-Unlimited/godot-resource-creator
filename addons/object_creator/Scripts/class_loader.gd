@@ -19,6 +19,18 @@ func return_integrated_classes() -> Array:
 	
 	return ClassArray
 
+func return_class_names():
+	var start_path = "res://"
+	var filePaths: Array = Helper.search_filetypes_in_directory(".gd", start_path, plugin_config.ignored_directories)
+	filePaths.append_array(Helper.search_filetypes_in_directory(".cs", start_path, plugin_config.ignored_directories))
+	var class_names = []
+	for path in filePaths:
+		var new_script: Script = load(path)
+		if new_script.get_global_name():
+			class_names.append(new_script.get_global_name())
+	
+	return class_names
+
 ## returns ObjectWrapper objects for each creatable class in the project [br]
 ## certain directories are/can-be excluded through the plugin_config
 func return_possible_classes() -> Array:
