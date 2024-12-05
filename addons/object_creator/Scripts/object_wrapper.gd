@@ -11,6 +11,7 @@ var export_path = ""
 ## id that is assigned after a creation process is started
 var id
 var parent_wrapper: ObjectWrapper
+var child_wrapper_ids: Array
 var obj
 var real_class_name: String
 
@@ -20,6 +21,12 @@ var constr_invalid: bool = false
 
 var obj_script: Script
 var class_config = {}
+var save_dict: Dictionary :
+	set(value):
+		save_dict = value
+		#value = refresh_obj_with_dict([self])
+		#Helper.print_collection(value)
+
 
 func _init(path: String = "", name: String = "", obj = null, times_used = 0, config = {}):
 	self.path = path
@@ -69,3 +76,38 @@ func create_object(properties: Dictionary):
 	obj = obj_script.callv("new", constructor_args)
 	obj = Helper.apply_dict_values_object(obj, value_dict)
 	return self
+
+func refresh_obj_with_dict(object_wrappers: Array):
+	var wrapper_ids = object_wrappers.map(func(x): return x.id)
+	if save_dict:
+		var new_dict = obj_dict_insert_objects(save_dict["properties"], object_wrappers, wrapper_ids)
+		obj = Helper.apply_dict_values_object(obj, new_dict)
+
+func obj_dict_insert_objects(value, object_wrappers, wrapper_ids):
+	#  TODO: test if this does not leave out anything
+	var value_type = typeof(value)
+
+	if value_type == TYPE_DICTIONARY and "value" in value.keys() and "name" in value.keys() and "type" in value.keys():
+		value = value["value"]
+		if value in wrapper_ids:
+			var wrapper = object_wrappers.filter(func(x): return x.id == value)[0]
+			value = wrapper.obj
+		value_type = typeof(value)
+
+	match value_type:
+		TYPE_DICTIONARY:
+			if "value" in value.keys() and "name" in value.keys() and "type" in value.keys():
+				print(value, " ", value.keys())
+				value = value["value"]
+				if value in wrapper_ids:
+					var wrapper = object_wrappers.filter(func(x): return x.id == value)[0]
+					wrapper.refresh_obj_with_dict(object_wrappers)
+					value = wrapper.obj
+			else:
+				for key in value.keys():
+					value[key] = obj_dict_insert_objects(value[key], object_wrappers, wrapper_ids)
+		TYPE_ARRAY:
+			for i in value.size():
+				value[i] = obj_dict_insert_objects(value[i], object_wrappers, wrapper_ids)
+		
+	return value

@@ -25,6 +25,8 @@ var select_index_to_wrapper: Dictionary
 
 var select_index: int
 
+var status_dict: Dictionary
+
 func initialize_input(property_dict: Dictionary):
 	property = property_dict
 	input_type = TYPE_OBJECT
@@ -115,8 +117,12 @@ func receive_input(input):
 		assert(false, "ERROR: NON OBJECT CANNOT BE RECEIVED AS INPUT FOR OBJECT INPUT")
 
 func submit_status_dict():
-		var status_dict
-		return status_dict
+	var new_status_dict = {
+		"name": property["name"] if "name" in property.keys() else "",
+		"value": chosen_wrapper.id if chosen_wrapper else "",
+		"type": input_type
+	}
+	return new_status_dict
 
 func hide_input_warning():
 	pass

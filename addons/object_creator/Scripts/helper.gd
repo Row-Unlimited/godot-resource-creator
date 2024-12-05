@@ -369,6 +369,19 @@ static func filter_dict(dict: Dictionary, condition: Callable):
 			dict.erase(key)
 	return dict
 
+static func map_dict(dict: Dictionary, map_function: Callable):
+	for key in dict.keys():
+		var value = dict[key]
+
+		match typeof(value):
+			TYPE_ARRAY:
+				dict[key] = value.map(map_function)
+			TYPE_DICTIONARY:
+				dict[key] = map_dict(value, map_function)
+			_:
+				dict[key] = map_function.call(value)
+	return dict
+
 ## puts all sub dicts of a dictionary in one dictionary side by side (if some dicts have the same name this does not work) [br]
 ## with [param search_keys] you can change the behavior so the return dictionary only has the ROOT and all dicts that had one of the specified search keys
 static func flatten_sub_dicts(dict: Dictionary, search_keys = []):

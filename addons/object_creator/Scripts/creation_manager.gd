@@ -187,6 +187,10 @@ func _on_tab_closed(id):
 func _on_object_created(object_wrapper: ObjectWrapper):
 	if object_wrapper.parent_wrapper == null:
 		object_wrapper.export_path = default_export_path if object_wrapper.export_path.is_empty() else object_wrapper.export_path
+	else:
+		var parent_wrapper = get_wrapper(object_wrapper.parent_wrapper.id)
+		if parent_wrapper:
+			parent_wrapper.child_wrapper_ids.append(object_wrapper.id)
 	created_object_wrappers.append(object_wrapper)
 	export_tree.add_new_object(object_wrapper)
 	main_screen.set_active_node(overview_menu)
@@ -195,6 +199,7 @@ func _on_object_created(object_wrapper: ObjectWrapper):
 func _on_export_activated(path_dict: Dictionary):
 	var parent_wrappers = created_object_wrappers.filter(func(x): return x.parent_wrapper == null)
 	for wrapper in parent_wrappers:
+		wrapper.refresh_obj_with_dict(created_object_wrappers)
 		if wrapper.id in path_dict.keys():
 			wrapper.export_path = path_dict[wrapper.id]
 		else:
