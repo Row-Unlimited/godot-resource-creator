@@ -4,13 +4,13 @@ extends Tree
 
 signal edit_item_clicked(item_id)
 signal reset_clicked
+signal delete_object_clicked(item_id)
 
 enum ButtonType {
 	EDIT,
-	REFRESH
+	REFRESH,
+	DELETE,
 }
-
-var root_item: TreeItem
 
 var tree_items: Array[TreeItem]
 
@@ -26,34 +26,42 @@ var default_color = Color(1, 1, 1)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	columns = 2
+	columns = 3
 	_create_base_nodes()
 	connect("item_activated", Callable(self, "_on_item_activated"))
 	connect("button_clicked", Callable(self, "_handle_button_press"))
 
 func _create_base_nodes():
-	var new_item = self.create_item()
-	new_item.set_text(0, "Created Objects:")
-	new_item.add_button(1, load("res://addons/object_creator/Assets/textures/refresh.png"))
-	new_item.set_metadata(0, "BASE_ITEM")
-	root_item = new_item
+	var column_titles = [
+		"Created Items:",
+		"Export Paths:"
+	]
+	for i in columns:
+		if i < column_titles.size():
+			set_column_title(i, column_titles[i])
+			set_column_title_alignment(i, 0)
+	column_titles_visible = true
+
+	set_column_expand_ratio(2, 1.5)
 
 func add_new_object(object_wrapper, path_editable = true):
 	if get_item_by_id(object_wrapper.id):
 		return
 
 	var parent_item
+	var new_item
 	if object_wrapper.parent_wrapper:
 		parent_item = get_item_by_id(object_wrapper.parent_wrapper.id)
 		child_ids.append(object_wrapper.id)
+		if parent_item == null:
+			temp_child_wrappers.append(object_wrapper)
+			return
+		new_item = parent_item.create_child()
 	else:
-		parent_item = root_item
+		new_item = create_item()
 	# save the object_wrapper of the child object until the parent item is saved
-	if parent_item == null:
-		temp_child_wrappers.append(object_wrapper)
-		return
+	
 
-	var new_item = parent_item.create_child()
 	new_item.set_metadata(0, object_wrapper.id)
 	new_item.set_text(0, object_wrapper.file_class_name)
 	new_item.set_text(1, object_wrapper.export_path)
@@ -61,6 +69,13 @@ func add_new_object(object_wrapper, path_editable = true):
 	if path_editable:
 		new_item.add_button(1, load("res://addons/object_creator/Assets/textures/edit_button.png"))
 		new_item.set_metadata(1, ButtonType.EDIT)
+
+	#TODO: implement delete for sub_objects as well
+	if parent_item == null:
+		new_item.add_button(columns - 1, load("res://addons/object_creator/Assets/textures/Cross.png"))
+		new_item.set_metadata(columns - 1, ButtonType.DELETE)
+
+		new_item.set_cell_mode(columns - 1, 1)
 
 	tree_items.append(new_item)
 
@@ -100,12 +115,16 @@ func _on_item_activated():
 		emit_signal("edit_item_clicked", item_id)
 
 func _handle_button_press(item, column, id, mouse_button_index):
-	match item.get_metadata(1):
+	match item.get_metadata(column):
 		ButtonType.EDIT:
 			item.set_editable(1, true)
 			edit_path_item = item
 		ButtonType.REFRESH:
 			emit_signal("reset_clicked")
+		ButtonType.DELETE:
+			var item_id = item.get_metadata(0)
+			emit_signal("delete_object_clicked", item_id)
+
 
 ## sets the color of all items with id in [param item_ids] to [param color] [br]
 ## [param change_others_default] makes it so that all ids that are not in [param item_ids]

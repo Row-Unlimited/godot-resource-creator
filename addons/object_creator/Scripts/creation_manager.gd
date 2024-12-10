@@ -64,6 +64,7 @@ func _ready() -> void:
 	export_tree = overview_menu.get_node("ExportMenu/ExportTree")
 	export_tree.connect("edit_item_clicked", Callable(self, "_on_obj_edit_clicked"))
 	export_tree.connect("reset_clicked", Callable(self, "_on_export_reset_clicked"))
+	export_tree.connect("delete_object_clicked", remove_wrapper)
 
 
 	# sets up the config and user settings

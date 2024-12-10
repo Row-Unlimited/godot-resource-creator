@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cjrjsmw62bo4a"]
+[gd_scene load_steps=5 format=3 uid="uid://cjrjsmw62bo4a"]
 
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UIScriptsNew/overview_menu.gd" id="1_bmldj"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UIScriptsNew/tree_export_view.gd" id="1_knyqt"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UIScriptsNew/tree_class_view.gd" id="1_ognw8"]
+[ext_resource type="Theme" uid="uid://du8tldypjrsog" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/default_theme.tres" id="2_wl07f"]
 
 [node name="OverviewMenu" type="Control"]
 layout_mode = 3
@@ -31,7 +32,9 @@ anchor_right = 0.95
 anchor_bottom = 0.9
 grow_horizontal = 2
 grow_vertical = 2
-columns = 2
+theme = ExtResource("2_wl07f")
+columns = 3
+column_titles_visible = true
 script = ExtResource("1_knyqt")
 
 [node name="ExportButton" type="Button" parent="ExportMenu"]

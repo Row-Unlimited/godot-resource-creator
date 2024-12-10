@@ -1,10 +1,12 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://du8tldypjrsog"]
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://du8tldypjrsog"]
 
 [ext_resource type="StyleBox" uid="uid://csfryudfcvpm2" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/Button/normal_button.tres" id="1_0mf4v"]
 [ext_resource type="StyleBox" uid="uid://wv6wb4yvd6h5" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/Button/disabled_button.tres" id="1_h2nm5"]
 [ext_resource type="StyleBox" uid="uid://dg2apy28lmh00" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/Button/pressed_button.tres" id="2_7va0d"]
 [ext_resource type="StyleBox" uid="uid://b1dkrl6x32b30" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/Button/hovered_button.tres" id="3_gayt0"]
 [ext_resource type="StyleBox" uid="uid://do4kpj3gy3oar" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/Panel/normal_panel.tres" id="3_nmqo7"]
+[ext_resource type="StyleBox" uid="uid://cj60seopikamp" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/Tree/normal_title_button.tres" id="6_eltal"]
+[ext_resource type="StyleBox" uid="uid://btqsrcpktge4r" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/Tree/panel_tree.tres" id="6_yk0vc"]
 
 [sub_resource type="FontVariation" id="FontVariation_gev02"]
 
@@ -26,4 +28,12 @@ LineEdit/colors/font_placeholder_color = Color(1, 0.756863, 0.454902, 0.635294)
 LineEdit/colors/font_selected_color = Color(1, 0.756863, 0.454902, 1)
 LineEdit/colors/font_uneditable_color = Color(0.611765, 0.392157, 0, 0.658824)
 Panel/styles/panel = ExtResource("3_nmqo7")
+Tree/colors/guide_color = Color(0.49683, 0.340661, 0.00668382, 0.682353)
+Tree/colors/relationship_line_color = Color(0.498039, 0.341176, 0.00784314, 0.682353)
+Tree/colors/title_button_color = Color(0.163284, 4.45691e-05, 0.591662, 1)
+Tree/constants/draw_relationship_lines = 1
+Tree/styles/panel = ExtResource("6_yk0vc")
+Tree/styles/title_button_hover = ExtResource("6_eltal")
+Tree/styles/title_button_normal = ExtResource("6_eltal")
+Tree/styles/title_button_pressed = ExtResource("6_eltal")
 VBoxContainer/constants/separation = 8

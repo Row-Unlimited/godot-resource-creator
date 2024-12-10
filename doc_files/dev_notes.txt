@@ -1,0 +1,10 @@
+TODOs:
+	- Export Tree UI changes:
+		+ Implement Buttons for Objects:
+			~ Toggle Switch export as json (maybe also in create Object)
+			~ delete object button
+			~
+	- Fix Problem where no error is sent when letters are entered as vector arguments
+	- Rework json export helper func so it can work with objects in some capacity
+	- Rework lower half of create object UI, so it includes a checkbox for Export as Json
+	- Remove Error Enum and replace it with a String Array to make sure there is not type confusion with normal int values

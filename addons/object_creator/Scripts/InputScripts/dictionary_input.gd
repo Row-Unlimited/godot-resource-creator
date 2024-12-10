@@ -37,7 +37,7 @@ func attempt_submit(mute_warnings=false) -> Variant:
 		var new_key = container.key_line_edit.text
 		var value = input_manager.attempt_submit()
 		
-		if value == Enums.InputResponse.IGNORE:
+		if not value is String and value == Enums.InputResponse.IGNORE:
 			continue
 
 		if new_key:

@@ -3,6 +3,7 @@ class_name Exporter
 extends Node
 
 const PLUGIN_CONFIG_PATH = "res://addons/object_creator/PluginConfig.tres"
+const digit_number = 4
 
 func export_wrappers(wrappers: Array[ObjectWrapper]):
 	var path_group_dict = {}
@@ -49,13 +50,15 @@ func create_file_name(path: String, object: Object, is_json=false) -> String:
 	var fileName: String
 	var file_ending = ".tres" if not is_json else ".json"
 	
-	for filePath in dir_files:
-		if filePath.ends_with(file_ending):
-			number_files += 1
-	
 	var file_header = object.get_script().get_global_name()
 	file_header = file_header if file_header else Helper.get_object_script_name(object)
 
+	for file_path in dir_files:
+		if file_path.ends_with(file_ending) and file_header in file_path:
+			number_files += 1
+
+	var number_string = str(number_files)
+	number_string = number_string.lpad(digit_number - number_string.length(),"0")
 	fileName = file_header + "000" + str(number_files) + file_ending
 	return fileName
 
