@@ -50,6 +50,7 @@ func create_vector_UI(type: Variant.Type):
 	
 	for input in input_array:
 		input.visible = true
+		input.input_type = TYPE_INT if is_int else TYPE_FLOAT
 
 
 func return_input() -> Variant:
@@ -57,20 +58,24 @@ func return_input() -> Variant:
 	var return_vector
 	for input in input_array:
 		var temp_value = input.retrieve_input()
+		var error_object: InputError
+		error_object = temp_value if temp_value is InputError else InputError.new_error_object()
 
-		if temp_value in Enums.InputErrorType and temp_value != Enums.InputErrorType.EMPTY:
-			return temp_value
-		elif temp_value.is_empty():
+
+		if error_object.has_any_errors(["EMPTY"]):
+			return error_object
+		elif error_object.has_any_errors(["EMPTY"]):
 			if accept_empty:
 				if change_empty_default:
 					value_array.append([0, 0, 0, 0].resize(variable_number))
 				else:
-					value_array.append(Enums.InputResponse.IGNORE)
+					value_array.append(InputError.new_error_object(["IGNORE"]))
 			else:
-				value_array.append(Enums.InputErrorType.EMPTY)
+				value_array.append(error_object)
 		else:
 			value_array.append(temp_value)
 	
+	# TODO: fix error behavior for vectors
 	return_vector = Helper.custom_to_vector(value_array, is_int)
 	return return_vector
 

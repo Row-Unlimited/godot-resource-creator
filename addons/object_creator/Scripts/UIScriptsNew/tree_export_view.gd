@@ -13,6 +13,7 @@ enum ButtonType {
 }
 
 var tree_items: Array[TreeItem]
+var root_item: TreeItem
 
 ## the item whose path is currently being edited
 var edit_path_item: TreeItem
@@ -32,6 +33,8 @@ func _ready() -> void:
 	connect("button_clicked", Callable(self, "_handle_button_press"))
 
 func _create_base_nodes():
+	root_item = create_item()
+	root_item.set_text(0, "GdScript Items")
 	var column_titles = [
 		"Created Items:",
 		"Export Paths:"

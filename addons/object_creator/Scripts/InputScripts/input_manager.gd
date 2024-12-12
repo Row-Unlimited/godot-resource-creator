@@ -153,7 +153,10 @@ func receive_input(input):
 func set_input_disabled(is_disabled: bool):
 	pass
 
-func return_empty_value():
+func return_empty_value(error_object: InputError = null):
+	if error_object == null:
+		error_object = InputError.new_error_object()
+
 	if accept_empty:
 		if change_empty_default:
 			match input_type:
@@ -182,6 +185,8 @@ func return_empty_value():
 				_:
 					return null
 		else:
-			return Enums.InputResponse.IGNORE
+			error_object.toggle_error("IGNORE", true)
+			return error_object
 	else:
-		return Enums.InputErrorType.EMPTY
+		error_object.toggle_error("EMPTY", true)
+		return error_object

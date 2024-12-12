@@ -2,7 +2,7 @@
 class_name CustomLineEdit
 extends LineEdit
 
-@export var input_type: Variant.Type ## expected type of input, choosing int for example will only allow int values for retriaval
+@export var input_type: Variant.Type = TYPE_FLOAT ## expected type of input, choosing int for example will only allow int values for retriaval
 @export var input_max: int ## float or int for a max int/float range (inclusive)
 @export var activated_max = false ## bool variable to active the max
 @export var input_min: int ## float or int for min int/float range (inclusive)
@@ -11,7 +11,8 @@ extends LineEdit
 @export var excluded_values: Array ## array that checks for chars or substrings and rejects them when retrieving
 
 func _ready():
-	connect("text_changed", Callable(self, "on_text_changed"))
+	#connect("text_changed", Callable(self, "on_text_changed"))
+	pass
 
 func retrieve_input():
 	if text.is_empty():
@@ -20,28 +21,29 @@ func retrieve_input():
 	match input_type:
 		TYPE_INT:
 			if not text.is_valid_int():
-				return Enums.InputErrorType.TYPE_INVALID
+				return InputError.new_error_object(["TYPE_INVALID"])
 			else:
 				var number_string = int(text)
 				if activated_max and number_string > input_max:
-					return Enums.InputErrorType.RANGE_INVALID
+					return InputError.new_error_object(["RANGE_INVALID"])
 				if activated_min and number_string < input_min:
-					return Enums.InputErrorType.RANGE_INVALID
+					return InputError.new_error_object(["RANGE_INVALID"])
 				
 		TYPE_FLOAT:
 			if not text.is_valid_float():
-				return Enums.InputErrorType.TYPE_INVALID
+				return InputError.new_error_object(["TYPE_INVALID"])
 			else:
 				var number_string = float(text)
 				if activated_max and number_string > input_max:
-					return Enums.InputErrorType.RANGE_INVALID
+					return InputError.new_error_object(["RANGE_INVALID"])
 				if activated_min and number_string < input_min:
-					return Enums.InputErrorType.RANGE_INVALID
-	
+					return InputError.new_error_object(["RANGE_INVALID"])
+		_:
+			Helper.throw_error("Vector Line Edit has unsupported type " + str(input_type) + " loaded!")
 	# this one is not currently in use really
 	for item in excluded_values:
 		if text.contains(str(item)):
-			return Enums.InputErrorType.INVALID
+			return InputError.new_error_object(["INVALID"])
 	
 	return text
 

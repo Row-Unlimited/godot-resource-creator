@@ -37,7 +37,7 @@ func attempt_submit(mute_warnings=false) -> Variant:
 		var new_key = container.key_line_edit.text
 		var value = input_manager.attempt_submit()
 		
-		if not value is String and value == Enums.InputResponse.IGNORE:
+		if value is InputError and value == value.is_ignore():
 			continue
 
 		if new_key:
@@ -45,7 +45,7 @@ func attempt_submit(mute_warnings=false) -> Variant:
 				# TODO: add show input warning for missing key
 				missing_input_nodes.append(input_manager)
 				assert(false, "ERROR: duplicate keys!")
-			if not value in Enums.InputErrorType:
+			if not value is InputError:
 				input_manager.hide_input_warning()
 				return_dict[new_key] = value
 		else:
@@ -54,7 +54,7 @@ func attempt_submit(mute_warnings=false) -> Variant:
 	
 
 	if missing_input_nodes:
-		return Enums.InputErrorType.INVALID
+		return InputError.new_error_object(["INVALID"])
 	elif return_dict.is_empty():
 		return return_empty_value()
 	else:

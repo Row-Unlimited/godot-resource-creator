@@ -154,10 +154,10 @@ func on_submit_pressed():
 		if input_value is ObjectWrapper:
 			input_value = input_value.obj
 		
-		if input_value in Enums.InputErrorType:
+		if input_value is InputError and input_value.has_any_errors():
 			input_error_nodes.append(input_node)
 		else:
-			if not Helper.equal(input_value, Enums.InputResponse.IGNORE):
+			if not (input_value is InputError and input_value.is_ignore()):
 				var prop_name = input_node.property["name"]
 				properties[prop_name]["value"] = input_value
 			input_node.hide_input_warning()
@@ -171,7 +171,7 @@ func on_submit_pressed():
 	else:
 		for inputManager: InputManager in input_error_nodes:
 			inputManager.show_input_warning(true)
-		return Enums.InputErrorType.OBJECT_INVALID
+		return InputError.new_error_object(["OBJECT_INVALID"])
 
 ## function we use to customize the create_object menu so it can be used for settings or other purposes
 ## also implements settings for the creation process

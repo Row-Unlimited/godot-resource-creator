@@ -17,7 +17,8 @@ func initialize_input(property_dict: Dictionary):
 		style_input()
 
 func attempt_submit(mute_warnings=false) -> Variant:
-	var return_value = Enums.InputErrorType.INVALID
+	var error_object = InputError.new_error_object(["TYPE_INVALID"])
+	var return_value
 	var temp_value: String = input_node.text
 
 	match input_type:
@@ -30,13 +31,19 @@ func attempt_submit(mute_warnings=false) -> Variant:
 		Variant.Type.TYPE_STRING:
 			if not temp_value.is_empty():
 				return_value = temp_value
-	# check for the different cases and return an enum InputErrorType value for better warnings
-	if temp_value.is_empty():
-		return_value = return_empty_value()
-	elif check_range_invalid(return_value):
-		return_value = Enums.InputErrorType.RANGE_INVALID
+	# check for the different cases and return an enum InputError value for better warnings
+	if return_value or accept_empty:
+		error_object.toggle_error("TYPE_INVALID")
 
-	return return_value
+	if temp_value.is_empty():
+		return_value = return_empty_value(error_object)
+	elif check_range_invalid(return_value):
+		error_object.toggle_error("RANGE_INVALID", true)
+
+	if error_object.has_any_errors() or return_value == null:
+		return error_object
+	else:
+		return return_value
 
 func submit_status_dict():
 	# if it's a property it has a name, if it's a sub_element like in an array it is empty

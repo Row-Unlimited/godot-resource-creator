@@ -17,6 +17,14 @@ static func check_string_contains_array(string_array: Array, check_string: Strin
 			return true
 	return false
 
+static func remove_duplicates(array: Array):
+	var new_array = []
+	for value in array:
+		if value in new_array:
+			continue
+		else:
+			new_array.append(value)
+
 ## only works for now if class has a constructor with no or only optional parameters
 static func duplicate_object(obj: Object):
 	var new_obj = obj.get_script().new()

@@ -94,7 +94,7 @@ func attempt_submit(mute_warnings=false):
 	if object_create_screen:
 		return_value = object_create_screen.on_submit_pressed()
 	
-	if return_value == null or return_value in Enums.InputErrorType:
+	if return_value == null or return_value is InputError:
 		# TODO: implement actual response to return_value giving you an error
 		return_value = return_empty_value()
 
