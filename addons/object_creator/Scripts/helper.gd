@@ -328,6 +328,19 @@ static func return_func_arg_optionality(script: Script, func_name: String):
 		args[i]["is_optional"] = "=" in arg_lines[i]
 	return args
 
+static func object_to_dict_recursive_support(x):
+	match typeof(x):
+		TYPE_OBJECT:
+			if x.get_script():
+				x = object_to_dict(x)
+		TYPE_ARRAY:
+			x = x.map(object_to_dict_recursive_support)
+		TYPE_DICTIONARY:
+			for key in x.keys():
+				var value = x[key]
+				x[key] = object_to_dict_recursive_support(value)
+	return x
+
 ## turns a custom object into a dictionary for json serialization
 ## adds class_name key if one was defined and script_name key to distinguish the dictionaries
 static func object_to_dict(obj: Object):
@@ -340,13 +353,16 @@ static func object_to_dict(obj: Object):
 	if class_name_line:
 		return_dict["class_name"] = class_name_line
 
-	
 	return_dict["script_name"] = get_object_script_name(obj)
+	return_dict["script_path"] = obj.get_script().resource_path
 	for property in obj_properties:
-		# TODO: implement saving of sub_objects
 		var prop_name = property["name"]
-		var prop_value = obj.get(prop_name) 
+		var prop_value = obj.get(prop_name)
+		if prop_value is Script:
+			continue 
 		if prop_value:
+			prop_value = object_to_dict_recursive_support(prop_value)
+			
 			return_dict[prop_name] = prop_value 
 	return return_dict
 

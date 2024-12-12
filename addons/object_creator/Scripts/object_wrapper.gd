@@ -15,6 +15,8 @@ var child_wrapper_ids: Array
 var obj
 var real_class_name: String
 
+var export_as_json: bool = false
+
 var number_constructor_args: int = 0
 var constructor_args: Array
 var constr_invalid: bool = false

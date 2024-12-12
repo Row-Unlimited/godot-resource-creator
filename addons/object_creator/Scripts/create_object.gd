@@ -10,7 +10,8 @@ var test_input = preload("res://addons/object_creator/Scenes/Variable Input Scen
 var breakline = preload("res://addons/object_creator/Scenes/break_line.tscn")
 var headline = preload("res://addons/object_creator/Scenes/UI Addon Scenes/headline.tscn")
 var input_root_node: VBoxContainer
-var submit_button: Button
+@onready var submit_button: Button = get_node("SubmitBox/CreateObject")
+@onready var toggle_json_button: CheckButton = get_node("SubmitBox/ToggleJsonButton")
 var input_nodes: Array
 var object_wrapper: ObjectWrapper
 var property_list: Array
@@ -40,6 +41,10 @@ signal create_sub_object_clicked(sub_object_wrapper)
 
 func _ready() -> void:
 	window_type = WindowType.CREATE_OBJECT
+	submit_button.connect("pressed", on_submit_pressed)
+	toggle_json_button.connect("toggled", _on_toggle_json)
+	if object_wrapper.parent_wrapper:
+		toggle_json_button.disabled = true
 
 ## Creates the create_object menu UI and Logic[br]
 ## takes the class from the object_wrapper and gets the property list[br]
@@ -52,8 +57,6 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 	var class_script: Script = load(object_wrapper.path)
 	property_list = class_script.get_script_property_list()
 	input_root_node = get_node("ScrollContainer/VBoxContainer")
-	submit_button = get_node("SubmitBox/CreateObject")
-	submit_button.connect("pressed", Callable(self, "on_submit_pressed"))
 	
 	# sets up the window settings, so whether it is a special menu or whether it should accept empty inputs
 	menu_set_up(create_menu_type)
@@ -262,3 +265,6 @@ func parse_property_dict_custom(property_dict: Dictionary):
 					prop_value = Helper.custom_to_vector(prop_value)
 		property_dict["value"] = prop_value
 		return property_dict
+
+func _on_toggle_json(toggle_mode):
+	object_wrapper.export_as_json = toggle_mode

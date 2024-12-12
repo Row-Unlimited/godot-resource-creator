@@ -27,7 +27,7 @@ var default_color = Color(1, 1, 1)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	columns = 3
+	columns = 2
 	_create_base_nodes()
 	connect("item_activated", Callable(self, "_on_item_activated"))
 	connect("button_clicked", Callable(self, "_handle_button_press"))
@@ -45,7 +45,8 @@ func _create_base_nodes():
 			set_column_title_alignment(i, 0)
 	column_titles_visible = true
 
-	set_column_expand_ratio(2, 1.5)
+	set_column_expand_ratio(1, 3)
+	set_column_expand_ratio(0, 1)
 
 func add_new_object(object_wrapper, path_editable = true):
 	if get_item_by_id(object_wrapper.id):
@@ -64,21 +65,17 @@ func add_new_object(object_wrapper, path_editable = true):
 		new_item = create_item()
 	# save the object_wrapper of the child object until the parent item is saved
 	
-
+	var path_metadata = {"is_path_editable": path_editable}
 	new_item.set_metadata(0, object_wrapper.id)
 	new_item.set_text(0, object_wrapper.file_class_name)
 	new_item.set_text(1, object_wrapper.export_path)
-	
-	if path_editable:
-		new_item.add_button(1, load("res://addons/object_creator/Assets/textures/edit_button.png"))
-		new_item.set_metadata(1, ButtonType.EDIT)
 
 	#TODO: implement delete for sub_objects as well
 	if parent_item == null:
 		new_item.add_button(columns - 1, load("res://addons/object_creator/Assets/textures/Cross.png"))
-		new_item.set_metadata(columns - 1, ButtonType.DELETE)
+		path_metadata["button_type"] = ButtonType.DELETE
 
-		new_item.set_cell_mode(columns - 1, 1)
+	new_item.set_metadata(1, path_metadata)
 
 	tree_items.append(new_item)
 
@@ -113,15 +110,19 @@ func get_item_by_id(id, column_index = 0):
 
 ## emits signal with clicked id when an item name column is double clicked
 func _on_item_activated():
-	var item_id = str(get_selected().get_metadata(get_selected_column()))
-	if get_item_by_id(item_id):
-		emit_signal("edit_item_clicked", item_id)
+	var item: TreeItem = get_selected()
+	var col = get_selected_column()
+	if col == 0:
+		var item_id = str(item.get_metadata(col))
+		if get_item_by_id(item_id):
+			emit_signal("edit_item_clicked", item_id)
+	elif col == 1:
+		item.set_editable(1, true)
+		edit_path_item = item
+
 
 func _handle_button_press(item, column, id, mouse_button_index):
-	match item.get_metadata(column):
-		ButtonType.EDIT:
-			item.set_editable(1, true)
-			edit_path_item = item
+	match item.get_metadata(column)["button_type"]:
 		ButtonType.REFRESH:
 			emit_signal("reset_clicked")
 		ButtonType.DELETE:

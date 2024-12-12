@@ -10,6 +10,7 @@ func export_wrappers(wrappers: Array[ObjectWrapper]):
 	# sorts wrappers into groups depending on the path
 	for wrapper in wrappers:
 		var path = wrapper.export_path
+
 		if path in path_group_dict.keys():
 			path_group_dict[path] = path_group_dict[path] + [wrapper]
 		else:
@@ -18,8 +19,14 @@ func export_wrappers(wrappers: Array[ObjectWrapper]):
 	# exports the wrappers, path by path
 	for key in path_group_dict.keys():
 		var path_group = path_group_dict[key]
-		path_group = path_group.map(func(wrapper): return wrapper.obj) # turns wrapper into the objects
-		export_files(key, path_group)
+
+		var normal_group = path_group.filter(func(x): return not x.export_as_json)
+		var json_group = path_group.filter(func(x): return x.export_as_json)
+
+		normal_group = normal_group.map(func(wrapper): return wrapper.obj) # turns wrapper into the objects
+		json_group = json_group.map(func(wrapper): return wrapper.obj)
+		export_files(key, normal_group)
+		export_to_json(key, json_group)
 
 ## creates new Exporter object which will then immediately export the object(s) to the chosen path
 func export_files(path: String, export_objects : Array):

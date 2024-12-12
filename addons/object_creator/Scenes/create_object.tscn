@@ -1,6 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://bfnivp2qemwie"]
+[gd_scene load_steps=4 format=3 uid="uid://bfnivp2qemwie"]
 
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/create_object.gd" id="1_m440h"]
+[ext_resource type="Theme" uid="uid://du8tldypjrsog" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/default_theme.tres" id="2_lxya6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h874h"]
+bg_color = Color(0.0862745, 0.145098, 0.352941, 1)
+border_width_top = 3
+border_color = Color(0.803922, 0.521569, 0, 1)
 
 [node name="CreateObject" type="Control"]
 layout_mode = 3
@@ -17,7 +23,7 @@ anchors_preset = -1
 anchor_left = 0.01
 anchor_top = 0.1
 anchor_right = 0.99
-anchor_bottom = 0.8
+anchor_bottom = 0.85
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -25,16 +31,39 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SubmitBox" type="VBoxContainer" parent="."]
+[node name="SubmitBox" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.85
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource("2_lxya6")
+theme_override_styles/panel = SubResource("StyleBoxFlat_h874h")
+
+[node name="CreateObject" type="Button" parent="SubmitBox"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.7
+anchor_top = 0.3
+anchor_right = 0.9
+anchor_bottom = 0.7
+size_flags_horizontal = 4
+text = "Save Object"
+
+[node name="ToggleJsonButton" type="CheckButton" parent="SubmitBox"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.05
-anchor_top = 0.9
-anchor_right = 0.95
-anchor_bottom = 1.0
-alignment = 1
+anchor_top = 0.1
+anchor_right = 0.25
+anchor_bottom = 0.4
+text = "JSON Export"
 
-[node name="CreateObject" type="Button" parent="SubmitBox"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Save Object"
+[node name="ToggleViewHidden" type="CheckButton" parent="SubmitBox"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.6
+anchor_right = 0.25
+anchor_bottom = 0.9
+text = "Show hidden"

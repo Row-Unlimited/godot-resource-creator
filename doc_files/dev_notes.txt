@@ -5,6 +5,3 @@ TODOs:
 			~ delete object button
 			~
 	- Re-Implement Warnings
-	- Rework json export helper func so it can work with objects in some capacity
-	- Rework lower half of create object UI, so it includes a checkbox for Export as Json
-	- Remove Error Enum and replace it with a String Array to make sure there is not type confusion with normal int values
