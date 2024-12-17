@@ -7,19 +7,25 @@ func set_up_nodes():
 	type_label = get_node("InputContainer/PropertyType")
 	name_label = get_node("InputContainer/PropertyName")
 	input_node = get_node("InputContainer/Input")
-	input_warning = get_node("WarningContainer/WrongInputWarning")
 
 
 func initialize_input(property_dict: Dictionary):
 	type_label = get_node("InputContainer/PropertyType")
 	name_label = get_node("InputContainer/PropertyName")
 	input_node = get_node("InputContainer/Input")
-	input_warning = get_node("WarningContainer/WrongInputWarning")
 	input_node.connect("toggled", Callable(self, "on_toggled"))
 	
 	if property_dict:
 		set_property_information(property_dict)
 		type_label.text = return_type_string(property["type"])
+
+func _ready() -> void:
+	calc_minimum_size()
+
+func calc_minimum_size():
+	var max_child_size = get_node("InputContainer").get_children().map(func(x): return x.size.y).max()
+	var stylebox = get_theme_stylebox("panel")
+	custom_minimum_size.y = (max_child_size / 75) * 100 + stylebox.border_width_bottom + stylebox.border_width_top
 
 func attempt_submit(mute_warnings=false) -> Variant:
 	

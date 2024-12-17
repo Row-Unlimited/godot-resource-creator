@@ -99,7 +99,6 @@ func obj_dict_insert_objects(value, object_wrappers, wrapper_ids):
 	match value_type:
 		TYPE_DICTIONARY:
 			if "value" in value.keys() and "name" in value.keys() and "type" in value.keys():
-				print(value, " ", value.keys())
 				value = value["value"]
 				if value in wrapper_ids:
 					var wrapper = object_wrappers.filter(func(x): return x.id == value)[0]

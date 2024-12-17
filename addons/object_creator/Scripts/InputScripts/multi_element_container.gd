@@ -18,11 +18,15 @@ var position_child : int :
 			input.array_position = value - 1
 var input: InputManager
 
+@onready var indent_manager: InputIndentManager = $IndentManager
+
 signal move_node(node : MultiElementContainer, isUpwards: int)
 signal remove_node(node : MultiElementContainer)
 
 func initialize_input(input: InputManager):
-	add_child(input)
+	if not indent_manager:
+		indent_manager = get_node("IndentManager")
+	indent_manager.add_to_manager(input)
 	self.input = input
 	input.set_up_nodes()
 	input.array_position = position_child - 1 # to make sure input has a position
@@ -39,15 +43,15 @@ func _on_remove_button_pressed():
 	emit_signal("remove_node", self)
 
 func add_key_lineEdit():
-	button_container = get_node("ButtonContainer")
+	button_container = get_node("IndentManager/ButtonContainer")
 	key_line_edit = LineEdit.new()
 	key_line_edit.placeholder_text = "Key"
 	button_container.add_child(key_line_edit)
-	button_container.move_custom(key_line_edit, 0)
+	button_container.move_child(key_line_edit, 0)
 	key_line_edit.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	key_line_edit.size_flags_stretch_ratio = 1
 
 ## removes the move buttons since we don't need them for dictionaries
 func remove_move_buttons():
-	for button in [get_node("ButtonContainer/MoveDownButton"), get_node("ButtonContainer/MoveUpButton")]:
+	for button in [get_node("IndentManager/ButtonContainer/MoveDownButton"), get_node("IndentManager/ButtonContainer/MoveUpButton")]:
 		button.visible = false

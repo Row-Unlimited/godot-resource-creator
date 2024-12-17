@@ -19,11 +19,7 @@ var sub_obj_infos: Dictionary
 var selected_type: Variant.Type = Variant.Type.TYPE_NIL
 var input_managers: Array
 
-var indent_level = 1 : 
-	set(value):
-		indent_level = value
-		if add_element_section:
-			add_element_section.indent_level = value
+var indent_level = 1
 
 var input_scenes = {
 	"default": preload("res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"),
@@ -190,7 +186,7 @@ func _on_type_button_selected(index):
 ## Minimizes Arrays for better UX
 func _on_minimize_pressed():
 	for node: Node in get_children():
-		if node.name != "AddElementSection" and node.name != "Warning":
+		if node.name != "IndentManager/AddElementSection" and node.name != "Warning":
 			node.visible = is_minimized
 	if is_minimized:
 		is_minimized = false

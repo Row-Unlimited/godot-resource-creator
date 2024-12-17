@@ -87,8 +87,6 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 					"parent_wrapper": object_wrapper
 					}
 
-			add_breakline()
-
 			# sets the accept_empty_inputs setting
 			new_input.accept_empty_inputs = accept_empty_inputs
 			
@@ -173,7 +171,7 @@ func on_submit_pressed():
 		return return_wrapper
 	else:
 		for inputManager: InputManager in input_error_nodes:
-			inputManager.show_input_warning(true)
+			inputManager.show_input_warning()
 		return InputError.new_error_object(["OBJECT_INVALID"])
 
 ## function we use to customize the create_object menu so it can be used for settings or other purposes

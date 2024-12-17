@@ -21,6 +21,14 @@ func initialize_input(property_dict: Dictionary):
 		style_input()
 		create_enum_items()
 
+func _ready() -> void:
+	calc_minimum_size()
+
+func calc_minimum_size():
+	var max_child_size = get_node("InputContainer").get_children().map(func(x): return x.size.y).max()
+	var stylebox = get_theme_stylebox("panel")
+	custom_minimum_size.y = (max_child_size / 75) * 100 + stylebox.border_width_bottom + stylebox.border_width_top
+
 func attempt_submit(mute_warnings=false) -> Variant:
 	return current_item
 

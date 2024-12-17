@@ -4,10 +4,10 @@
 [ext_resource type="PackedScene" uid="uid://b45y4htt48hlq" path="res://addons/object_creator/Scenes/break_line_array.tscn" id="2_2g3rl"]
 [ext_resource type="Texture2D" uid="uid://cya8l0htpkrnn" path="res://addons/object_creator/Assets/textures/Arrow-Up.png" id="2_8ajga"]
 [ext_resource type="Texture2D" uid="uid://b3b6pivlgk6nc" path="res://addons/object_creator/Assets/textures/Arrow-Down.png" id="3_knb70"]
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/input_indent_hbox.gd" id="3_s1fe5"]
 [ext_resource type="Texture2D" uid="uid://cw164j5sq8t7c" path="res://addons/object_creator/Assets/textures/Cross.png" id="4_h1ket"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/input_indent_manager.gd" id="6_dwp2x"]
 
-[node name="ArrayElementInput" type="VBoxContainer"]
+[node name="MultiElementContainer" type="VBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -16,36 +16,44 @@ grow_vertical = 2
 script = ExtResource("1_d8801")
 
 [node name="BreakLine" parent="." instance=ExtResource("2_2g3rl")]
+visible = false
 layout_mode = 2
 
-[node name="ButtonContainer" type="HBoxContainer" parent="."]
+[node name="IndentManager" type="GridContainer" parent="."]
+layout_mode = 2
+columns = 2
+script = ExtResource("6_dwp2x")
+
+[node name="MarginContainer" type="MarginContainer" parent="IndentManager"]
+layout_mode = 2
+
+[node name="ButtonContainer" type="HBoxContainer" parent="IndentManager"]
 layout_mode = 2
 alignment = 2
-script = ExtResource("3_s1fe5")
 
-[node name="Margin" type="MarginContainer" parent="ButtonContainer"]
+[node name="Margin" type="MarginContainer" parent="IndentManager/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
 
-[node name="MoveUpButton" type="Button" parent="ButtonContainer"]
+[node name="MoveUpButton" type="Button" parent="IndentManager/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.1
 icon = ExtResource("2_8ajga")
 
-[node name="MoveDownButton" type="Button" parent="ButtonContainer"]
+[node name="MoveDownButton" type="Button" parent="IndentManager/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.1
 icon = ExtResource("3_knb70")
 
-[node name="RemoveButton" type="Button" parent="ButtonContainer"]
+[node name="RemoveButton" type="Button" parent="IndentManager/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.1
 icon = ExtResource("4_h1ket")
 
-[connection signal="pressed" from="ButtonContainer/MoveUpButton" to="." method="_on_move_up_pressed"]
-[connection signal="pressed" from="ButtonContainer/MoveDownButton" to="." method="_on_move_down_pressed"]
-[connection signal="pressed" from="ButtonContainer/RemoveButton" to="." method="_on_remove_button_pressed"]
+[connection signal="pressed" from="IndentManager/ButtonContainer/MoveUpButton" to="." method="_on_move_up_pressed"]
+[connection signal="pressed" from="IndentManager/ButtonContainer/MoveDownButton" to="." method="_on_move_down_pressed"]
+[connection signal="pressed" from="IndentManager/ButtonContainer/RemoveButton" to="." method="_on_remove_button_pressed"]

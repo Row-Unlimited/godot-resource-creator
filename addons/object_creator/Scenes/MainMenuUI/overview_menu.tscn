@@ -33,7 +33,7 @@ anchor_bottom = 0.9
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_wl07f")
-columns = 3
+columns = 2
 column_titles_visible = true
 script = ExtResource("1_knyqt")
 

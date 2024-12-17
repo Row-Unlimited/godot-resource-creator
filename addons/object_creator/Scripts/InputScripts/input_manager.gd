@@ -1,6 +1,6 @@
 @tool
 class_name InputManager
-extends VBoxContainer
+extends Control
 ## Parent Class of all Input Scenes
 ## Should in essence be regarded as an abstract class
 
@@ -12,6 +12,8 @@ var input_node
 var input_warning
 var array_position: int # position if inputmanager is within an array
 var accept_empty_inputs : bool
+
+var current_errors: InputError
 
 #region config_variables
 ## range describes number range for int/float and size range for string/array/dictionary
@@ -34,6 +36,9 @@ func initialize_input(property_dict: Dictionary):
 func attempt_submit(mute_warnings=false) -> Variant:
 	var return_value
 	return return_value
+
+func calc_minimum_size():
+	pass
 
 ## Parent Virtual Function for all input Managers to bring their input into a save format
 ## So the CreateObject class can save it

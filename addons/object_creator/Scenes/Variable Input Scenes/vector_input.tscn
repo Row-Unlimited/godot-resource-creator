@@ -1,21 +1,30 @@
-[gd_scene load_steps=5 format=3 uid="uid://c5mithlbn00gg"]
+[gd_scene load_steps=6 format=3 uid="uid://c5mithlbn00gg"]
 
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/vector_input.gd" id="1_6bawn"]
+[ext_resource type="StyleBox" uid="uid://dtbgmryo2r8eh" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/input_panel.tres" id="1_tlyt6"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/custom_line_edit.gd" id="2_o3c11"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/vector_input_input.gd" id="2_pxnw2"]
 [ext_resource type="LabelSettings" uid="uid://c7ay5h8tbaidb" path="res://addons/object_creator/Assets/input_warning.tres" id="4_q32at"]
 
-[node name="VectorInput" type="VBoxContainer"]
-anchors_preset = -1
+[node name="VectorInput" type="Panel"]
+anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 0.2
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
+theme_override_styles/panel = ExtResource("1_tlyt6")
 script = ExtResource("1_6bawn")
 
 [node name="InputContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.15
+anchor_right = 0.95
+anchor_bottom = 0.85
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_vertical = 3
 
 [node name="PropertyName" type="Label" parent="InputContainer"]
@@ -85,7 +94,11 @@ script = ExtResource("2_o3c11")
 input_type = 0
 
 [node name="WarningContainer" type="HBoxContainer" parent="."]
+visible = false
 layout_mode = 2
+offset_top = 66.0
+offset_right = 1152.0
+offset_bottom = 129.0
 size_flags_vertical = 3
 
 [node name="WrongInputWarning" type="Label" parent="WarningContainer"]

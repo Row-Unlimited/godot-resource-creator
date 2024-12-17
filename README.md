@@ -9,3 +9,5 @@ For Integration information look [here](doc_files/Integration.md)
 ## Goals
 
 ## Current Limitations
+- Currently enum values can only be created if a set enum variable is defined in the class.  
+  This means you cannot create Enum Values in Arrays or Dictionaries for now.

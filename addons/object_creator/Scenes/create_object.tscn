@@ -21,7 +21,6 @@ script = ExtResource("1_m440h")
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.01
-anchor_top = 0.1
 anchor_right = 0.99
 anchor_bottom = 0.85
 grow_horizontal = 2

@@ -26,6 +26,17 @@ func initialize_input(property_dict: Dictionary):
 	input_node.create_vector_UI(input_type)
 	
 
+func _ready() -> void:
+	calc_minimum_size()
+
+func calc_minimum_size():
+	var max_child_size = get_node("InputContainer/Input/X").size.y
+	var number_inputs = get_node("InputContainer/Input").get_children().filter(func(x): return x.visible).size()
+	if number_inputs > 2:
+		max_child_size *= 2
+	var stylebox = get_theme_stylebox("panel")
+	custom_minimum_size.y = (max_child_size / 75) * 100 + stylebox.border_width_bottom + stylebox.border_width_top
+
 func attempt_submit(mute_warnings=false) -> Variant:
 	var return_value = null
 	return input_node.return_input()
