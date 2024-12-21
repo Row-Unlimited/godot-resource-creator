@@ -24,12 +24,24 @@ signal move_node(node : MultiElementContainer, isUpwards: int)
 signal remove_node(node : MultiElementContainer)
 
 func initialize_input(input: InputManager):
+	button_container = get_node("IndentManager/ButtonContainer")
 	if not indent_manager:
 		indent_manager = get_node("IndentManager")
-	indent_manager.add_to_manager(input)
+	input_manager = input
+	indent_manager.add_child_to_indent_manager(input)
 	self.input = input
 	input.set_up_nodes()
 	input.array_position = position_child - 1 # to make sure input has a position
+
+func calc_minimum_size():
+	var size = 0
+	if button_container:
+		size += button_container.size.y
+	if input_manager:
+		size += input_manager.calc_minimum_size()
+	print("container size is: ", size)
+	print("is manager ready? ", input_manager.is_node_ready())
+	return size
 
 func _on_move_up_pressed():
 	emit_signal("move_node", self, position_child - 1)

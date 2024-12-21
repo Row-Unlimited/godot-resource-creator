@@ -27,7 +27,7 @@ func initialize_input(property_dict: Dictionary):
 	
 
 func _ready() -> void:
-	calc_minimum_size()
+	custom_minimum_size.y = calc_minimum_size()
 
 func calc_minimum_size():
 	var max_child_size = get_node("InputContainer/Input/X").size.y
@@ -35,7 +35,7 @@ func calc_minimum_size():
 	if number_inputs > 2:
 		max_child_size *= 2
 	var stylebox = get_theme_stylebox("panel")
-	custom_minimum_size.y = (max_child_size / 75) * 100 + stylebox.border_width_bottom + stylebox.border_width_top
+	return (max_child_size / 75) * 100 + stylebox.border_width_bottom + stylebox.border_width_top
 
 func attempt_submit(mute_warnings=false) -> Variant:
 	var return_value = null

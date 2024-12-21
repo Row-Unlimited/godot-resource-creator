@@ -5,6 +5,7 @@
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/bool_input_button.gd" id="2_i81gb"]
 
 [node name="BoolInput" type="Panel"]
+custom_minimum_size = Vector2(0, 47.3333)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

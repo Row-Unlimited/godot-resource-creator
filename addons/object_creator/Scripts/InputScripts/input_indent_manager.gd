@@ -27,7 +27,8 @@ func update_margin(i_level: int = indent_level):
 		if container:
 			container.custom_minimum_size.x = indent_level * INDENT_MIN_SIZE
 
-func add_to_manager(node: Control):
+func add_child_to_indent_manager(node: Control):
+	print(indent_level)
 	var count = get_child_count()
 	var items_per_row = columns
 	if count % columns == 0:

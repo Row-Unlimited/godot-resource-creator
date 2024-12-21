@@ -8,8 +8,9 @@
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/input_indent_manager.gd" id="6_dwp2x"]
 
 [node name="MultiElementContainer" type="VBoxContainer"]
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = -1
+anchor_left = 0.01
+anchor_right = 0.99
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -29,6 +30,8 @@ layout_mode = 2
 
 [node name="ButtonContainer" type="HBoxContainer" parent="IndentManager"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 alignment = 2
 
 [node name="Margin" type="MarginContainer" parent="IndentManager/ButtonContainer"]

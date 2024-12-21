@@ -9,11 +9,7 @@ TODOs:
 		current_errors setup implemented in:
 			- Default
 			- bool needs no implementation
-		- To Improve Warnings I need to improve UI
-			+ Change Input Scene Root node from container to panel
-			+ make the panel only visible to the right of the indent
-			+ Main issue is that I now have to calculate a custom min size since the panel is seen as size 0 else
-			+ to get the indentation right I changed the arrays/dicts so they hold grid_container where the first element is a marginContainer
 	
 	- UI-Improvements:
 		+ Change create_object from VBoxContainer to control so borders can be better processed and don't get hidden
+		+ Switch root_node of inputs to panel for dict/arr/obj

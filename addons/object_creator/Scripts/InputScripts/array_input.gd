@@ -5,6 +5,50 @@ extends MultiElementInput
 ## Uses multi_element_container as InputNodes for the UI of the Inputs.
 ## InputManager Objects are stored in input_managers array and sorted when UI nodes are moved
 
+var child_sizes: Dictionary = {}
+
+func _ready() -> void:
+	connect("resized", func(): UiHelper.readjust_oversized_children(self))
+	update_sizes()		
+
+func update_sizes():
+	var children = get_children()
+	var margin = 5
+	var stylebox = get_theme_stylebox("panel").duplicate()
+	var new_min_size = calc_minimum_size()
+	if new_min_size:
+		custom_minimum_size.y = new_min_size
+	stylebox.bg_color = Color(0,0,0)
+	add_theme_stylebox_override("panel", stylebox)
+	
+	var child_position = custom_minimum_size.y * 0.05
+
+	for i in children.size():
+		var child = children[i]
+		child_position += margin
+		child.position.y = child_position
+		child_position += child_sizes[child]
+
+func calc_minimum_size():
+	var return_size = 0
+	var stylebox = get_theme_stylebox("panel").duplicate()
+
+	var children = get_children()
+	var min_size = 0
+
+	for child in children:
+		var child_size = 0
+		if child is MultiElementContainer:
+			child_size = child.calc_minimum_size()
+		else:
+			child_size = child.size.y
+		
+		child_sizes[child] = child_size
+		min_size += child_size
+		print("min_size: ", min_size)
+	return_size = (min_size / 85) * 100 + stylebox.border_width_bottom + stylebox.border_width_top
+	return return_size
+
 func check_typed():
 
 	var possible_class_names = ClassLoader.new().return_class_names()
@@ -44,6 +88,8 @@ func add_element(element_type: Variant.Type, def_input=null):
 	if def_input != null:
 		new_input_manager.receive_input(def_input)
 
+	update_sizes()
+
 func attempt_submit(mute_warnings=false) -> Variant:
 	var missing_input_nodes = []
 	var return_array = []
@@ -79,8 +125,13 @@ func submit_status_dict():
 
 ## takes an array and fills the input with input fields for each array element
 func receive_input(input):
+	print(is_node_ready())
+	await self.ready
+	print(is_node_ready())
+
 	for element in input:
 		add_element(typeof(element), element)
+	update_sizes()
 
 #region signal_methods
 

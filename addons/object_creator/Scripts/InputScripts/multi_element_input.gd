@@ -62,6 +62,10 @@ func set_up_nodes():
 	# select first type per default
 	_on_type_button_selected(0)
 
+func _ready() -> void:
+	
+	pass
+
 func check_typed():
 	pass
 
