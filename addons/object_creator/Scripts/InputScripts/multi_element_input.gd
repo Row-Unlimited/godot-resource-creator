@@ -12,14 +12,13 @@ var add_element_button: Button
 var element_type_button: DataTypeOptionButton
 var is_minimized = false
 var add_element_section: HBoxContainer
+var multi_input_vbox: VBoxContainer
 
 var typed_object_type = null
 var sub_obj_infos: Dictionary
 
 var selected_type: Variant.Type = Variant.Type.TYPE_NIL
 var input_managers: Array
-
-var indent_level = 1
 
 var input_scenes = {
 	"default": preload("res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"),
@@ -34,24 +33,25 @@ var sub_config: Dictionary
 
 ## gets called first and is used to initialize values
 func initialize_input(property_dict: Dictionary):
+	set_up_nodes()
 	if property_dict:
 		property = property_dict
-		set_up_nodes()
 		name_label.text = property_dict["name"]
 		input_type = property_dict["type"]
 
 func set_up_nodes():
-	add_element_section = get_node("AddElementSection")
+	multi_input_vbox = get_node("MarginContainer/MultiInputVBox")
+	add_element_section = multi_input_vbox.get_node("AddElementSection")
 	type_label = add_element_section.get_node("PropertyType")
 	name_label = add_element_section.get_node("PropertyName")
-	input_warning = get_node("Warning")
+	input_warning = multi_input_vbox.get_node("Warning")
 	add_element_button = add_element_section.get_node("AddElementButton")
 	element_type_button = add_element_section.get_node("ElementTypeButton")
 	
 	# connect buttons
 	add_element_button.connect("pressed", Callable(self, "_on_add_element_button_pressed"))
 	element_type_button.connect("item_selected", Callable(self, "_on_type_button_selected"))
-	get_node("AddElementSection/MinimizeButton").connect("pressed", Callable(self, "_on_minimize_pressed"))
+	add_element_section.get_node("MinimizeButton").connect("pressed", Callable(self, "_on_minimize_pressed"))
 	
 	for type in SUPPORTED_TYPES:
 		element_type_button.add_item(type)
@@ -61,10 +61,6 @@ func set_up_nodes():
 	
 	# select first type per default
 	_on_type_button_selected(0)
-
-func _ready() -> void:
-	
-	pass
 
 func check_typed():
 	pass
@@ -101,19 +97,20 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 				new_scene = input_scenes["vector"]
 				is_vector = true
 	var new_input_node: MultiElementContainer =  element_container_scene.instantiate()
+	new_input_node.indent_level = indent_level + 1
 	var new_input_manager = new_scene.instantiate()
+	new_input_manager.indent_level = indent_level + 1
 	input_managers.append(new_input_manager)
 	new_input_manager.input_type = type
 
 	#apply indent UI
 	if type == TYPE_ARRAY or type == TYPE_DICTIONARY:
-		new_input_manager.indent_level = indent_level + 1
 		new_input_manager.sub_obj_infos = sub_obj_infos # give sub_obj_infos to array/dict so they can connect object inputs
 	
-	add_child(new_input_node) # add MultiElementContainer as new child
+	multi_input_vbox.add_child(new_input_node) # add MultiElementContainer as new child
 
-	var actual_position = get_children().size() - 2 
-	move_child(new_input_node, actual_position) # so the warning is always at the bottom
+	var actual_position = multi_input_vbox.get_children().size() - 2
+	multi_input_vbox.move_child(new_input_node, actual_position) # so the warning is always at the bottom
 	# Sets the child position so we can move it with the arrow up and down buttons
 	new_input_node.position_child = actual_position
 	new_input_node.initialize_input(new_input_manager)
@@ -189,8 +186,8 @@ func _on_type_button_selected(index):
 
 ## Minimizes Arrays for better UX
 func _on_minimize_pressed():
-	for node: Node in get_children():
-		if node.name != "IndentManager/AddElementSection" and node.name != "Warning":
+	for node: Node in multi_input_vbox.get_children():
+		if node.name != "AddElementSection" and node.name != "Warning":
 			node.visible = is_minimized
 	if is_minimized:
 		is_minimized = false

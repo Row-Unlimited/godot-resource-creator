@@ -33,13 +33,14 @@ func initialize_input(property_dict: Dictionary):
 
 
 	# assign nodes variables
-	property_select = get_node("ClassSection/PropterySelect")
-	property_name_label = get_node("ClassSection/PropertyName")
-	property_type_label = get_node("ClassSection/PropertyType")
-	class_name_label = get_node("EditSection/ClassName")
-	choose_class_button = get_node("ClassSection/ChooseClassButton")
-	edit_button = get_node("EditSection/EditButton")
-	clear_button = get_node("EditSection/ClearButton")
+	input_container = get_node("MarginContainer/InputContainer")
+	property_select = input_container.get_node("ClassSection/PropterySelect")
+	property_name_label = input_container.get_node("ClassSection/PropertyName")
+	property_type_label = input_container.get_node("ClassSection/PropertyType")
+	class_name_label = input_container.get_node("EditSection/ClassName")
+	choose_class_button = input_container.get_node("ClassSection/ChooseClassButton")
+	edit_button = input_container.get_node("EditSection/EditButton")
+	clear_button = input_container.get_node("EditSection/ClearButton")
 
 	property_select.connect("item_selected", Callable(self, "_on_item_selected"))
 	choose_class_button.connect("pressed", Callable(self, "_on_choose_class_button_clicked"))

@@ -3,29 +3,17 @@ extends InputManager
 
 var toggle_status = false
 
-func set_up_nodes():
-	type_label = get_node("InputContainer/PropertyType")
-	name_label = get_node("InputContainer/PropertyName")
-	input_node = get_node("InputContainer/Input")
-
-
 func initialize_input(property_dict: Dictionary):
-	type_label = get_node("InputContainer/PropertyType")
-	name_label = get_node("InputContainer/PropertyName")
-	input_node = get_node("InputContainer/Input")
+	# setup nodes
+	input_container = get_node("MarginContainer/InputContainer")
+	type_label = input_container.get_node("PropertyType")
+	name_label = input_container.get_node("PropertyName")
+	input_node = input_container.get_node("Input")
 	input_node.connect("toggled", Callable(self, "on_toggled"))
-	
+
 	if property_dict:
 		set_property_information(property_dict)
 		type_label.text = return_type_string(property["type"])
-
-func _ready() -> void:
-	custom_minimum_size.y = calc_minimum_size()
-
-func calc_minimum_size():
-	var max_child_size = get_node("InputContainer").get_children().map(func(x): return x.size.y).max()
-	var stylebox = get_theme_stylebox("panel")
-	return (max_child_size / 75) * 100 + stylebox.border_width_bottom + stylebox.border_width_top
 
 func attempt_submit(mute_warnings=false) -> Variant:
 	

@@ -6,36 +6,16 @@ const vector_enum_types = [5, 6, 9, 10, 12, 13]
 
 var is_int: bool
 
-
-func set_up_nodes():
-	type_label = get_node("InputContainer/PropertyType")
-	name_label = get_node("InputContainer/PropertyName")
-	input_node = get_node("InputContainer/Input")
-	input_warning = get_node("WarningContainer/WrongInputWarning")
-	type_label.text = return_type_string(input_type)
-	input_node.create_vector_UI(input_type)
-
 func initialize_input(property_dict: Dictionary):
-	type_label = get_node("InputContainer/PropertyType")
-	name_label = get_node("InputContainer/PropertyName")
-	input_node = get_node("InputContainer/Input")
-	input_warning = get_node("WarningContainer/WrongInputWarning")
+	input_container = get_node("MarginContainer/InputContainer")
+	type_label = input_container.get_node("PropertyType")
+	name_label = input_container.get_node("PropertyName")
+	input_node = input_container.get_node("Input")
+	input_warning = get_node("MarginContainer/WarningContainer/WrongInputWarning")
 	
 	set_property_information(property_dict)
 	type_label.text = return_type_string(input_type)
 	input_node.create_vector_UI(input_type)
-	
-
-func _ready() -> void:
-	custom_minimum_size.y = calc_minimum_size()
-
-func calc_minimum_size():
-	var max_child_size = get_node("InputContainer/Input/X").size.y
-	var number_inputs = get_node("InputContainer/Input").get_children().filter(func(x): return x.visible).size()
-	if number_inputs > 2:
-		max_child_size *= 2
-	var stylebox = get_theme_stylebox("panel")
-	return (max_child_size / 75) * 100 + stylebox.border_width_bottom + stylebox.border_width_top
 
 func attempt_submit(mute_warnings=false) -> Variant:
 	var return_value = null

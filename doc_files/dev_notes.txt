@@ -9,7 +9,3 @@ TODOs:
 		current_errors setup implemented in:
 			- Default
 			- bool needs no implementation
-	
-	- UI-Improvements:
-		+ Change create_object from VBoxContainer to control so borders can be better processed and don't get hidden
-		+ Switch root_node of inputs to panel for dict/arr/obj

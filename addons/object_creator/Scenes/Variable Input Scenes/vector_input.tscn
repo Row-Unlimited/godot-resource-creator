@@ -1,12 +1,12 @@
 [gd_scene load_steps=6 format=3 uid="uid://c5mithlbn00gg"]
 
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/vector_input.gd" id="1_6bawn"]
-[ext_resource type="StyleBox" uid="uid://dtbgmryo2r8eh" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/input_panel.tres" id="1_tlyt6"]
+[ext_resource type="StyleBox" uid="uid://dtbgmryo2r8eh" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/multi_input_indent_panels/input_panel_base.tres" id="1_tlyt6"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/custom_line_edit.gd" id="2_o3c11"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/vector_input_input.gd" id="2_pxnw2"]
 [ext_resource type="LabelSettings" uid="uid://c7ay5h8tbaidb" path="res://addons/object_creator/Assets/input_warning.tres" id="4_q32at"]
 
-[node name="VectorInput" type="Panel"]
+[node name="VectorInput" type="PanelContainer"]
 custom_minimum_size = Vector2(0, 47.3333)
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,48 +17,48 @@ size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("1_tlyt6")
 script = ExtResource("1_6bawn")
 
-[node name="InputContainer" type="HBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.05
-anchor_top = 0.15
-anchor_right = 0.95
-anchor_bottom = 0.85
-grow_horizontal = 2
-grow_vertical = 2
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="InputContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
 size_flags_vertical = 3
 
-[node name="PropertyName" type="Label" parent="InputContainer"]
+[node name="PropertyName" type="Label" parent="MarginContainer/InputContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 size_flags_stretch_ratio = 2.0
 vertical_alignment = 1
 
-[node name="Margin" type="MarginContainer" parent="InputContainer"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/InputContainer"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.2
 
-[node name="PropertyType" type="Label" parent="InputContainer"]
+[node name="PropertyType" type="Label" parent="MarginContainer/InputContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 vertical_alignment = 1
 
-[node name="Margin2" type="MarginContainer" parent="InputContainer"]
+[node name="Margin2" type="MarginContainer" parent="MarginContainer/InputContainer"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.2
 
-[node name="Input" type="GridContainer" parent="InputContainer"]
+[node name="Input" type="GridContainer" parent="MarginContainer/InputContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 columns = 2
 script = ExtResource("2_pxnw2")
 
-[node name="X" type="LineEdit" parent="InputContainer/Input"]
+[node name="X" type="LineEdit" parent="MarginContainer/InputContainer/Input"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
@@ -67,7 +67,7 @@ placeholder_text = "x"
 script = ExtResource("2_o3c11")
 input_type = 0
 
-[node name="Y" type="LineEdit" parent="InputContainer/Input"]
+[node name="Y" type="LineEdit" parent="MarginContainer/InputContainer/Input"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
@@ -76,7 +76,7 @@ placeholder_text = "y"
 script = ExtResource("2_o3c11")
 input_type = 0
 
-[node name="Z" type="LineEdit" parent="InputContainer/Input"]
+[node name="Z" type="LineEdit" parent="MarginContainer/InputContainer/Input"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
@@ -85,7 +85,7 @@ placeholder_text = "z"
 script = ExtResource("2_o3c11")
 input_type = 0
 
-[node name="W" type="LineEdit" parent="InputContainer/Input"]
+[node name="W" type="LineEdit" parent="MarginContainer/InputContainer/Input"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
@@ -94,15 +94,12 @@ placeholder_text = "w"
 script = ExtResource("2_o3c11")
 input_type = 0
 
-[node name="WarningContainer" type="HBoxContainer" parent="."]
+[node name="WarningContainer" type="HBoxContainer" parent="MarginContainer"]
 visible = false
 layout_mode = 2
-offset_top = 66.0
-offset_right = 1152.0
-offset_bottom = 129.0
 size_flags_vertical = 3
 
-[node name="WrongInputWarning" type="Label" parent="WarningContainer"]
+[node name="WrongInputWarning" type="Label" parent="MarginContainer/WarningContainer"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3

@@ -26,8 +26,6 @@ var class_config = {}
 var save_dict: Dictionary :
 	set(value):
 		save_dict = value
-		#value = refresh_obj_with_dict([self])
-		#Helper.print_collection(value)
 
 
 func _init(path: String = "", name: String = "", obj = null, times_used = 0, config = {}):

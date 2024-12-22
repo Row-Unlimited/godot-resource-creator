@@ -9,11 +9,22 @@ var input_type: Variant.Type
 var name_label
 var type_label
 var input_node
+var input_container: Container
 var input_warning
 var array_position: int # position if inputmanager is within an array
 var accept_empty_inputs : bool
 
 var current_errors: InputError
+
+#region ui_variables
+var indent_level = 0
+var base_panel_resource = "res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/multi_input_indent_panels/input_panel_base.tres"
+const indent_panel_resources = [
+ 	"res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/multi_input_indent_panels/indent_panel_0.tres",
+ 	"res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/multi_input_indent_panels/indent_panel_1.tres",
+	"res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/multi_input_indent_panels/indent_panel_2.tres"
+	]
+#endregion
 
 #region config_variables
 ## range describes number range for int/float and size range for string/array/dictionary
@@ -33,12 +44,15 @@ var final_value = null
 func initialize_input(property_dict: Dictionary):
 	property = property_dict
 
+func set_up_nodes():
+	pass
+
+func _ready() -> void:
+	set_indent_color()
+
 func attempt_submit(mute_warnings=false) -> Variant:
 	var return_value
 	return return_value
-
-func calc_minimum_size():
-	pass
 
 ## Parent Virtual Function for all input Managers to bring their input into a save format
 ## So the CreateObject class can save it
@@ -146,7 +160,8 @@ func show_input_warning(mute_warnings=false):
 	input_warning.visible = true
 
 func hide_input_warning():
-	input_warning.visible = false
+	if input_warning:
+		input_warning.visible = false
 
 ## virtual function that should be used so each input type can receive input when created
 ## primarily useful when we're dealing with editing objects instead of creating them
@@ -195,3 +210,13 @@ func return_empty_value(error_object: InputError = null):
 	else:
 		error_object.toggle_error("EMPTY", true)
 		return error_object
+
+func set_indent_color():
+	if indent_level != 0:
+		var stylebox_indent_index = (indent_level - 1) % indent_panel_resources.size()
+		var fitting_stylebox = indent_panel_resources[stylebox_indent_index]
+		fitting_stylebox = load(fitting_stylebox)
+		if fitting_stylebox is StyleBox:
+			add_theme_stylebox_override("panel", fitting_stylebox)
+		else:
+			Helper.throw_error("Stylebox Path for Input is broken")

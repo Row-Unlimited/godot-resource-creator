@@ -7,48 +7,6 @@ extends MultiElementInput
 
 var child_sizes: Dictionary = {}
 
-func _ready() -> void:
-	connect("resized", func(): UiHelper.readjust_oversized_children(self))
-	update_sizes()		
-
-func update_sizes():
-	var children = get_children()
-	var margin = 5
-	var stylebox = get_theme_stylebox("panel").duplicate()
-	var new_min_size = calc_minimum_size()
-	if new_min_size:
-		custom_minimum_size.y = new_min_size
-	stylebox.bg_color = Color(0,0,0)
-	add_theme_stylebox_override("panel", stylebox)
-	
-	var child_position = custom_minimum_size.y * 0.05
-
-	for i in children.size():
-		var child = children[i]
-		child_position += margin
-		child.position.y = child_position
-		child_position += child_sizes[child]
-
-func calc_minimum_size():
-	var return_size = 0
-	var stylebox = get_theme_stylebox("panel").duplicate()
-
-	var children = get_children()
-	var min_size = 0
-
-	for child in children:
-		var child_size = 0
-		if child is MultiElementContainer:
-			child_size = child.calc_minimum_size()
-		else:
-			child_size = child.size.y
-		
-		child_sizes[child] = child_size
-		min_size += child_size
-		print("min_size: ", min_size)
-	return_size = (min_size / 85) * 100 + stylebox.border_width_bottom + stylebox.border_width_top
-	return return_size
-
 func check_typed():
 
 	var possible_class_names = ClassLoader.new().return_class_names()
@@ -88,7 +46,7 @@ func add_element(element_type: Variant.Type, def_input=null):
 	if def_input != null:
 		new_input_manager.receive_input(def_input)
 
-	update_sizes()
+	#update_sizes()
 
 func attempt_submit(mute_warnings=false) -> Variant:
 	var missing_input_nodes = []
@@ -125,13 +83,11 @@ func submit_status_dict():
 
 ## takes an array and fills the input with input fields for each array element
 func receive_input(input):
-	print(is_node_ready())
 	await self.ready
-	print(is_node_ready())
 
 	for element in input:
 		add_element(typeof(element), element)
-	update_sizes()
+	#update_sizes()
 
 #region signal_methods
 
@@ -139,16 +95,15 @@ func receive_input(input):
 ## Is called by a signal when the remove Button is pressed in MultiElementContainer
 ## Since the Array UI represents the Array Position later on, this also sorts the Input Managers
 func _on_move_node(node: MultiElementContainer, new_position: int):
-	
-	if new_position >= get_children().size() - 1 or new_position < 1:
+	if new_position >= multi_input_vbox.get_children().size() - 1 or new_position < 1:
 		return # elements shouldn't be under the warning or over the first element
 	else:
-		move_child(node, new_position)
+		multi_input_vbox.move_child(node, new_position)
 		node.position_child = new_position
 		# set all child positions correctly
 		var i = 0;
-		for child in get_children():
-			if child.is_class("VBoxContainer"):
+		for child in multi_input_vbox.get_children():
+			if child is MultiElementContainer:
 				if child.position_child != i:
 					child.position_child = i
 					
@@ -160,5 +115,5 @@ func _on_move_node(node: MultiElementContainer, new_position: int):
 func _on_remove_node(node: MultiElementContainer):
 	input_managers.remove_at(input_managers.find(node.input))
 	on_elements_changed_size()
-	remove_child(node)
+	multi_input_vbox.remove_child(node)
 #endregion

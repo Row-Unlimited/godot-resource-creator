@@ -6,10 +6,11 @@ var current_items: Array = []
 var current_item: int = -1
 
 func set_up_nodes():
-	type_label = get_node("InputContainer/PropertyType")
-	name_label = get_node("InputContainer/PropertyName")
-	input_node = get_node("InputContainer/Input")
-	input_warning = get_node("WarningContainer/WrongInputWarning")
+	input_container = get_node("MarginContainer/InputContainer")
+	type_label = input_container.get_node("PropertyType")
+	name_label = input_container.get_node("PropertyName")
+	input_node = input_container.get_node("Input")
+	input_warning = get_node("MarginContainer/WarningContainer/WrongInputWarning")
 	input_node.connect("item_selected", Callable(self, "_on_item_selected"))
 
 
@@ -20,14 +21,6 @@ func initialize_input(property_dict: Dictionary):
 		set_property_information(property)
 		style_input()
 		create_enum_items()
-
-func _ready() -> void:
-	custom_minimum_size.y = calc_minimum_size()
-
-func calc_minimum_size():
-	var max_child_size = get_node("InputContainer").get_children().map(func(x): return x.size.y).max()
-	var stylebox = get_theme_stylebox("panel")
-	return (max_child_size / 75) * 100 + stylebox.border_width_bottom + stylebox.border_width_top
 
 func attempt_submit(mute_warnings=false) -> Variant:
 	return current_item

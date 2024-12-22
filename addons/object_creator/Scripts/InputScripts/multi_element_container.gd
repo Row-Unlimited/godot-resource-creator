@@ -1,9 +1,11 @@
 @tool
 class_name MultiElementContainer
-extends VBoxContainer
+extends Container
 ## This Class is used in the multi_element_container scene to handle UI of Array Inputs
 ## sets up the InputManager as childObject and updates the array_position of InputManager
 ## sends signals for movement and removing to the Array_inputManager above
+
+const INDENT_UNIT = 30
 
 var key_line_edit : LineEdit
 var button_container : HBoxContainer
@@ -13,24 +15,29 @@ var input_manager : InputManager
 var position_child : int : 
 	set(value):
 		position_child = value
-# this is needed so when we move UI for input, the inputManagers are also moved in the array
+		# this is needed so when we move UI for input, the inputManagers are also moved in the array
 		if input:
 			input.array_position = value - 1
 var input: InputManager
 
-@onready var indent_manager: InputIndentManager = $IndentManager
+var indent_level = 1 :
+	set(value):
+		indent_level = value
+		add_theme_constant_override("margin_left", INDENT_UNIT)
+@onready var indent_container: Container = $IndentContainer
 
 signal move_node(node : MultiElementContainer, isUpwards: int)
 signal remove_node(node : MultiElementContainer)
 
 func initialize_input(input: InputManager):
-	button_container = get_node("IndentManager/ButtonContainer")
-	if not indent_manager:
-		indent_manager = get_node("IndentManager")
+	if not indent_container:
+		indent_container = get_node("IndentContainer")
+	button_container = indent_container.get_node("ButtonContainer")
 	input_manager = input
-	indent_manager.add_child_to_indent_manager(input)
+	indent_container.add_child(input)
+	indent_container.move_child(input, 0)
 	self.input = input
-	input.set_up_nodes()
+	input.initialize_input({})
 	input.array_position = position_child - 1 # to make sure input has a position
 
 func calc_minimum_size():
@@ -39,8 +46,6 @@ func calc_minimum_size():
 		size += button_container.size.y
 	if input_manager:
 		size += input_manager.calc_minimum_size()
-	print("container size is: ", size)
-	print("is manager ready? ", input_manager.is_node_ready())
 	return size
 
 func _on_move_up_pressed():
@@ -55,8 +60,8 @@ func _on_remove_button_pressed():
 	emit_signal("remove_node", self)
 
 func add_key_lineEdit():
-	button_container = get_node("IndentManager/ButtonContainer")
 	key_line_edit = LineEdit.new()
+	key_line_edit.custom_minimum_size.x = 100
 	key_line_edit.placeholder_text = "Key"
 	button_container.add_child(key_line_edit)
 	button_container.move_child(key_line_edit, 0)
@@ -65,5 +70,5 @@ func add_key_lineEdit():
 
 ## removes the move buttons since we don't need them for dictionaries
 func remove_move_buttons():
-	for button in [get_node("IndentManager/ButtonContainer/MoveDownButton"), get_node("IndentManager/ButtonContainer/MoveUpButton")]:
+	for button in [button_container.get_node("MoveDownButton"), button_container.get_node("MoveUpButton")]:
 		button.visible = false

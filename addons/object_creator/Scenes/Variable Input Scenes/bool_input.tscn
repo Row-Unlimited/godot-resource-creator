@@ -1,10 +1,10 @@
 [gd_scene load_steps=4 format=3 uid="uid://k1h1c8gdgvyn"]
 
-[ext_resource type="StyleBox" uid="uid://dtbgmryo2r8eh" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/input_panel.tres" id="1_axhct"]
+[ext_resource type="StyleBox" uid="uid://dtbgmryo2r8eh" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/multi_input_indent_panels/input_panel_base.tres" id="1_axhct"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/bool_input.gd" id="1_v0gea"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/bool_input_button.gd" id="2_i81gb"]
 
-[node name="BoolInput" type="Panel"]
+[node name="BoolInput" type="PanelContainer"]
 custom_minimum_size = Vector2(0, 47.3333)
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,42 +15,42 @@ size_flags_horizontal = 3
 theme_override_styles/panel = ExtResource("1_axhct")
 script = ExtResource("1_v0gea")
 
-[node name="InputContainer" type="HBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.05
-anchor_top = 0.15
-anchor_right = 0.95
-anchor_bottom = 0.85
-grow_horizontal = 2
-grow_vertical = 2
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="InputContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
 size_flags_vertical = 3
 
-[node name="PropertyName" type="Label" parent="InputContainer"]
+[node name="PropertyName" type="Label" parent="MarginContainer/InputContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 size_flags_stretch_ratio = 2.0
 vertical_alignment = 1
 
-[node name="Margin" type="MarginContainer" parent="InputContainer"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/InputContainer"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.2
 
-[node name="PropertyType" type="Label" parent="InputContainer"]
+[node name="PropertyType" type="Label" parent="MarginContainer/InputContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "bool"
 vertical_alignment = 1
 
-[node name="Margin2" type="MarginContainer" parent="InputContainer"]
+[node name="Margin2" type="MarginContainer" parent="MarginContainer/InputContainer"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.2
 
-[node name="Input" type="CheckButton" parent="InputContainer"]
+[node name="Input" type="CheckButton" parent="MarginContainer/InputContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0

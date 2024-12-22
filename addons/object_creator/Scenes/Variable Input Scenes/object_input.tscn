@@ -1,23 +1,34 @@
-[gd_scene load_steps=4 format=3 uid="uid://gb3gy73jngq6"]
+[gd_scene load_steps=5 format=3 uid="uid://gb3gy73jngq6"]
 
+[ext_resource type="StyleBox" uid="uid://dtbgmryo2r8eh" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/multi_input_indent_panels/input_panel_base.tres" id="1_4gqrx"]
 [ext_resource type="Texture2D" uid="uid://cw164j5sq8t7c" path="res://addons/object_creator/Assets/textures/Cross.png" id="1_ip54l"]
 [ext_resource type="Texture2D" uid="uid://bfxbi2wgbkutp" path="res://addons/object_creator/Assets/textures/checkmark.png" id="2_m3di5"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/object_input.gd" id="2_r24lb"]
 
-[node name="ResourceInput" type="VBoxContainer"]
+[node name="ResourceInput" type="PanelContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-alignment = 1
+theme_override_styles/panel = ExtResource("1_4gqrx")
 script = ExtResource("2_r24lb")
 
-[node name="ClassSection" type="HBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 5
+
+[node name="InputContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="ClassSection" type="HBoxContainer" parent="MarginContainer/InputContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="PropertyName" type="Label" parent="ClassSection"]
+[node name="PropertyName" type="Label" parent="MarginContainer/InputContainer/ClassSection"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -26,12 +37,12 @@ text = "PropertyName"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Margin2" type="MarginContainer" parent="ClassSection"]
+[node name="Margin2" type="MarginContainer" parent="MarginContainer/InputContainer/ClassSection"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.2
 
-[node name="PropertyType" type="Label" parent="ClassSection"]
+[node name="PropertyType" type="Label" parent="MarginContainer/InputContainer/ClassSection"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -40,16 +51,16 @@ text = "Object"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Margin" type="MarginContainer" parent="ClassSection"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/InputContainer/ClassSection"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.2
 
-[node name="PropterySelect" type="OptionButton" parent="ClassSection"]
+[node name="PropterySelect" type="OptionButton" parent="MarginContainer/InputContainer/ClassSection"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ChooseClassButton" type="TextureButton" parent="ClassSection"]
+[node name="ChooseClassButton" type="TextureButton" parent="MarginContainer/InputContainer/ClassSection"]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.3
@@ -57,28 +68,28 @@ texture_normal = ExtResource("2_m3di5")
 ignore_texture_size = true
 stretch_mode = 5
 
-[node name="EditSection" type="HBoxContainer" parent="."]
+[node name="EditSection" type="HBoxContainer" parent="MarginContainer/InputContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="IndentSpace" type="MarginContainer" parent="EditSection"]
+[node name="IndentSpace" type="MarginContainer" parent="MarginContainer/InputContainer/EditSection"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.8
 
-[node name="Margin2" type="MarginContainer" parent="EditSection"]
+[node name="Margin2" type="MarginContainer" parent="MarginContainer/InputContainer/EditSection"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.2
 
-[node name="Margin" type="MarginContainer" parent="EditSection/Margin2"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/InputContainer/EditSection/Margin2"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.2
 
-[node name="ClassName" type="Label" parent="EditSection"]
+[node name="ClassName" type="Label" parent="MarginContainer/InputContainer/EditSection"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
@@ -87,17 +98,17 @@ text = "ClassName"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Margin" type="MarginContainer" parent="EditSection"]
+[node name="Margin" type="MarginContainer" parent="MarginContainer/InputContainer/EditSection"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.2
 
-[node name="EditButton" type="Button" parent="EditSection"]
+[node name="EditButton" type="Button" parent="MarginContainer/InputContainer/EditSection"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Edit"
 
-[node name="ClearButton" type="TextureButton" parent="EditSection"]
+[node name="ClearButton" type="TextureButton" parent="MarginContainer/InputContainer/EditSection"]
 custom_minimum_size = Vector2(70, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.3
