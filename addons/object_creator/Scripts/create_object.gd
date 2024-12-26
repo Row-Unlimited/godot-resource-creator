@@ -12,6 +12,7 @@ var headline = preload("res://addons/object_creator/Scenes/UI Addon Scenes/headl
 var input_root_node: VBoxContainer
 @onready var submit_button: Button = get_node("SubmitBox/CreateObject")
 @onready var toggle_json_button: CheckButton = get_node("SubmitBox/ToggleJsonButton")
+@onready var toggle_hidden_button: CheckButton = get_node("SubmitBox/ToggleViewHidden")
 var input_nodes: Array
 var object_wrapper: ObjectWrapper
 var property_list: Array
@@ -43,6 +44,7 @@ func _ready() -> void:
 	window_type = WindowType.CREATE_OBJECT
 	submit_button.connect("pressed", on_submit_pressed)
 	toggle_json_button.connect("toggled", _on_toggle_json)
+	toggle_hidden_button.connect("toggled", _on_toggle_hidden)
 	if object_wrapper.parent_wrapper:
 		toggle_json_button.disabled = true
 
@@ -266,3 +268,8 @@ func parse_property_dict_custom(property_dict: Dictionary):
 
 func _on_toggle_json(toggle_mode):
 	object_wrapper.export_as_json = toggle_mode
+
+func _on_toggle_hidden(toggle_mode):
+	for node: InputManager in input_nodes:
+		if node.hide_input:
+			node.visible = toggle_mode

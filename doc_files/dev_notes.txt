@@ -1,11 +1,7 @@
 TODOs:
-	- Export Tree UI changes:
-		+ Implement Buttons for Objects:
-			~ Toggle Switch export as json (maybe also in create Object)
-			~ delete object button
-			~
 	- Re-Implement Warnings
 		- var in inputManager where current error_object is saved, that is used when show_input_warnings is called
 		current_errors setup implemented in:
 			- Default
 			- bool needs no implementation
+	- Fix config for arrays, so disable only disables adding/removing of elements not the disabling of the child_objects
