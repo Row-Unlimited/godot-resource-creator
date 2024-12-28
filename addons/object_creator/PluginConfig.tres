@@ -12,5 +12,6 @@ set_exportPath = "res://test-file-folder/"
 disable_navigator = false
 ignored_directories = Array[String]([".git", ".godot", "object_creator"])
 accept_empty_inputs = true
+error_color = Color(0.476942, 0, 0.0981081, 1)
 use_null_values_for_empty = false
 is_folder_hierarchical = false

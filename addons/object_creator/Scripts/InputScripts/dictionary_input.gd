@@ -36,8 +36,8 @@ func attempt_submit(mute_warnings=false) -> Variant:
 		var input_manager = container.input_manager 
 		var new_key = container.key_line_edit.text
 		var value = input_manager.attempt_submit()
-		
-		if value is InputError and value == value.is_ignore():
+
+		if value is InputError and value.is_ignore():
 			continue
 
 		if new_key:
@@ -48,12 +48,17 @@ func attempt_submit(mute_warnings=false) -> Variant:
 			if not value is InputError:
 				input_manager.hide_input_warning()
 				return_dict[new_key] = value
+			else:
+				missing_input_nodes.append(input_manager)
 		else:
 			# TODO: call show input warnings in wrong input managers
 			missing_input_nodes.append(input_manager)
 	
 
 	if missing_input_nodes:
+		for node in missing_input_nodes:
+			#node.show_input_warning()
+			pass
 		return InputError.new_error_object(["INVALID"])
 	elif return_dict.is_empty():
 		return return_empty_value()
@@ -107,5 +112,5 @@ func set_input_disabled(is_disabled: bool):
 func _on_remove_node(node: MultiElementContainer):
 	input_managers.remove_at(input_managers.find(node.input))
 	on_elements_changed_size()
-	remove_child(node)
+	multi_input_vbox.remove_child(node)
 #endregion

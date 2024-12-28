@@ -40,6 +40,7 @@ func attempt_submit(mute_warnings=false) -> Variant:
 
 	if error_object.has_any_errors() or return_value == null:
 		current_errors = error_object
+		show_input_warning()
 		return error_object
 	else:
 		return return_value

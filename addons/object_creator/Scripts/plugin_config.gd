@@ -10,6 +10,7 @@ extends Resource
 @export var disable_navigator: bool = false
 @export var ignored_directories: Array[String]
 @export var accept_empty_inputs : bool = true
+@export var error_color: Color
 ## when accept_empty_inputs is true and an input is submitted empty this will submit the null value
 ## (0 for int, "" for String etc. instead of null)
 @export var use_null_values_for_empty: bool = false

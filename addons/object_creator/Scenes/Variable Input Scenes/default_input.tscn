@@ -1,9 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://hd5073q6w1rl"]
+[gd_scene load_steps=4 format=3 uid="uid://hd5073q6w1rl"]
 
 [ext_resource type="StyleBox" uid="uid://dtbgmryo2r8eh" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/multi_input_indent_panels/input_panel_base.tres" id="1_dmu0c"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/default_input.gd" id="1_t6dnr"]
+[ext_resource type="Material" uid="uid://f3dwr5u0tnnm" path="res://addons/object_creator/Assets/error_overlay.tres" id="3_gqjsw"]
 
 [node name="DefaultInput" type="PanelContainer"]
+material = ExtResource("3_gqjsw")
 custom_minimum_size = Vector2(0, 47.3333)
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,6 +18,7 @@ theme_override_styles/panel = ExtResource("1_dmu0c")
 script = ExtResource("1_t6dnr")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
+material = ExtResource("3_gqjsw")
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 5

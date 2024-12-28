@@ -1,6 +1,6 @@
 @tool
 class_name InputManager
-extends Control
+extends PanelContainer
 ## Parent Class of all Input Scenes
 ## Should in essence be regarded as an abstract class
 
@@ -15,6 +15,7 @@ var array_position: int # position if inputmanager is within an array
 var accept_empty_inputs : bool
 
 var current_errors: InputError
+@onready var error_color = load("res://addons/object_creator/PluginConfig.tres").error_color
 
 #region ui_variables
 var indent_level = 0
@@ -49,6 +50,10 @@ func set_up_nodes():
 
 func _ready() -> void:
 	set_indent_color()
+	if material and material is ShaderMaterial:
+		#material = material.duplicate()
+		#material.set_shader(material.get_shader().duplicate())
+		material.set_shader_parameter("error_color", error_color)
 
 func attempt_submit(mute_warnings=false) -> Variant:
 	var return_value
@@ -157,11 +162,13 @@ func set_property_information(property: Dictionary):
 func show_input_warning(mute_warnings=false):
 	if mute_warnings:
 		return
-	input_warning.visible = true
+	material.set_shader_parameter("active", true)
+	if input_warning:
+		input_warning.visible = true
 
 func hide_input_warning():
-	if input_warning:
-		input_warning.visible = false
+	if material and material is ShaderMaterial:
+		material.set_shader_parameter("active", false)
 
 ## virtual function that should be used so each input type can receive input when created
 ## primarily useful when we're dealing with editing objects instead of creating them
