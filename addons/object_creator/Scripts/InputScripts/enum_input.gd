@@ -10,7 +10,6 @@ func set_up_nodes():
 	type_label = input_container.get_node("PropertyType")
 	name_label = input_container.get_node("PropertyName")
 	input_node = input_container.get_node("Input")
-	input_warning = get_node("MarginContainer/WarningContainer/WrongInputWarning")
 	input_node.connect("item_selected", Callable(self, "_on_item_selected"))
 
 

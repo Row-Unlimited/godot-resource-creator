@@ -1,15 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://cn68n4oj5xiwm"]
+[gd_scene load_steps=6 format=3 uid="uid://cn68n4oj5xiwm"]
 
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/array_input.gd" id="1_3yt2x"]
 [ext_resource type="StyleBox" uid="uid://dtbgmryo2r8eh" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/multi_input_indent_panels/input_panel_base.tres" id="1_emvkm"]
 [ext_resource type="Shader" path="res://addons/object_creator/Assets/error_overlay.gdshader" id="1_h2kp6"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/data_type_option_button.gd" id="2_jdguy"]
-[ext_resource type="LabelSettings" uid="uid://c7ay5h8tbaidb" path="res://addons/object_creator/Assets/input_warning.tres" id="3_1eya5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4irlb"]
 resource_local_to_scene = true
 shader = ExtResource("1_h2kp6")
-shader_parameter/error_color = Color(0.956808, 0.174213, 0.282906, 1)
+shader_parameter/error_color = Color(0.476942, 0, 0.0981081, 1)
 shader_parameter/active = false
 shader_parameter/opacity = 0.4
 
@@ -70,10 +69,3 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 script = ExtResource("2_jdguy")
-
-[node name="Warning" type="Label" parent="MarginContainer/MultiInputVBox"]
-visible = false
-layout_mode = 2
-text = "Not all Inputs are valid"
-label_settings = ExtResource("3_1eya5")
-horizontal_alignment = 1

@@ -1,7 +1,3 @@
 TODOs:
-	- Re-Implement Warnings
-		- var in inputManager where current error_object is saved, that is used when show_input_warnings is called
-		current_errors setup implemented in:
-			- Default
-			- bool needs no implementation
-	- Fix config for arrays, so disable only disables adding/removing of elements not the disabling of the child_objects
+	- Implement config for dictionaries
+	- Fix config of the sub configs, so they actually apply and throw errors

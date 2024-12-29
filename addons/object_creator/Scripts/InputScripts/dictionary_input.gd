@@ -52,13 +52,11 @@ func attempt_submit(mute_warnings=false) -> Variant:
 				missing_input_nodes.append(input_manager)
 		else:
 			# TODO: call show input warnings in wrong input managers
+			input_manager.show_input_warning(InputError.new_error_object(["MISSING_KEY"]))
 			missing_input_nodes.append(input_manager)
 	
 
 	if missing_input_nodes:
-		for node in missing_input_nodes:
-			#node.show_input_warning()
-			pass
 		return InputError.new_error_object(["INVALID"])
 	elif return_dict.is_empty():
 		return return_empty_value()

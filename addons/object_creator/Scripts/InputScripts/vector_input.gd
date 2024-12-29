@@ -11,7 +11,6 @@ func initialize_input(property_dict: Dictionary):
 	type_label = input_container.get_node("PropertyType")
 	name_label = input_container.get_node("PropertyName")
 	input_node = input_container.get_node("Input")
-	input_warning = get_node("MarginContainer/WarningContainer/WrongInputWarning")
 	
 	set_property_information(property_dict)
 	type_label.text = return_type_string(input_type)
@@ -19,8 +18,10 @@ func initialize_input(property_dict: Dictionary):
 
 func attempt_submit(mute_warnings=false) -> Variant:
 	var return_value = null
-	return input_node.return_input()
-	# TODO: maybe do something if errors occur
+	return_value = input_node.return_input()
+	if return_value is InputError and not return_value.is_ignore():
+		show_input_warning(return_value)
+	return return_value
 
 func submit_status_dict():
 	var value = "VECTOR::"+ str(input_node.return_input()) + "::"

@@ -16,31 +16,31 @@ func initialize_input(property_dict: Dictionary):
 
 func attempt_submit(mute_warnings=false) -> Variant:
 	var error_object = InputError.new_error_object(["TYPE_INVALID"])
-	var return_value
+	var return_value = null
 	var temp_value: String = input_node.text
-
-	match input_type:
-		Variant.Type.TYPE_INT:
-			if temp_value.is_valid_int():
-				return_value = temp_value.to_int()
-		Variant.Type.TYPE_FLOAT:
-			if temp_value.is_valid_float():
-				return_value = temp_value.to_float()
-		Variant.Type.TYPE_STRING:
-			if not temp_value.is_empty():
-				return_value = temp_value
-	# check for the different cases and return an enum InputError value for better warnings
-	if return_value or accept_empty:
-		error_object.toggle_error("TYPE_INVALID")
 
 	if temp_value.is_empty():
 		return_value = return_empty_value(error_object)
-	elif check_range_invalid(return_value):
-		error_object.toggle_error("RANGE_INVALID", true)
+	else:
+		match input_type:
+			Variant.Type.TYPE_INT:
+				if temp_value.is_valid_int():
+					return_value = temp_value.to_int()
+			Variant.Type.TYPE_FLOAT:
+				if temp_value.is_valid_float():
+					return_value = temp_value.to_float()
+			Variant.Type.TYPE_STRING:
+				if not temp_value.is_empty():
+					return_value = temp_value
+		# check for the different cases and return an enum InputError value for better warnings
+	if return_value != null:
+		error_object.toggle_error("TYPE_INVALID")
+		if check_range_invalid(return_value):
+			error_object.toggle_error("RANGE_INVALID", true)
 
 	if error_object.has_any_errors() or return_value == null:
 		current_errors = error_object
-		show_input_warning()
+		show_input_warning(error_object)
 		return error_object
 	else:
 		return return_value

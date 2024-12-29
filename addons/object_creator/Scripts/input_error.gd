@@ -12,6 +12,16 @@ enum ErrorType {
 }
 const error_type_string = ["IGNORE", "EMPTY","INVALID","TYPE_INVALID","RANGE_INVALID","MISSING_KEY","OBJECT_INVALID"]
 
+const error_message_dict = {
+	ErrorType.IGNORE:"",
+	ErrorType.EMPTY:"Input is Empty",
+	ErrorType.INVALID:"Input is Invalid",
+	ErrorType.TYPE_INVALID:"Input is of the wrong type",
+	ErrorType.RANGE_INVALID:"Input is not within the defined range",
+	ErrorType.MISSING_KEY:"No key was given",
+	ErrorType.OBJECT_INVALID:"Object is not valid",
+}
+
 var errors: Array[ErrorType] = []
 
 
@@ -61,3 +71,11 @@ func has_error(error, HAS_ONLY = false):
 
 func is_ignore():
 	return has_error("IGNORE", true)
+
+func create_error_tooltip():
+	var return_string = ""
+	for error in errors:
+		return_string += "\n- "
+		return_string += error_message_dict[error]
+	
+	return return_string

@@ -172,8 +172,6 @@ func on_submit_pressed():
 		object_wrapper.save_dict = save_session()
 		return return_wrapper
 	else:
-		for inputManager: InputManager in input_error_nodes:
-			inputManager.show_input_warning()
 		return InputError.new_error_object(["OBJECT_INVALID"])
 
 ## function we use to customize the create_object menu so it can be used for settings or other purposes

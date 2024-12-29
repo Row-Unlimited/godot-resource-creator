@@ -20,6 +20,12 @@ var position_child : int :
 			input.array_position = value - 1
 var input: InputManager
 
+var disabled_for_user: bool = false :
+	set(value):
+		disabled_for_user = value
+		if ready:
+			disable_buttons()
+
 var indent_level = 1 :
 	set(value):
 		indent_level = value
@@ -39,6 +45,7 @@ func initialize_input(input: InputManager):
 	self.input = input
 	input.initialize_input({})
 	input.array_position = position_child - 1 # to make sure input has a position
+	disable_buttons()
 
 func calc_minimum_size():
 	var size = 0
@@ -47,6 +54,12 @@ func calc_minimum_size():
 	if input_manager:
 		size += input_manager.calc_minimum_size()
 	return size
+
+func disable_buttons():
+	if button_container and button_container.get_children():
+		var buttons = button_container.get_children().filter(func(x): return x is Button)
+		for button in buttons:
+			button.disabled = disabled_for_user
 
 func _on_move_up_pressed():
 	emit_signal("move_node", self, position_child - 1)

@@ -44,7 +44,6 @@ func set_up_nodes():
 	add_element_section = multi_input_vbox.get_node("AddElementSection")
 	type_label = add_element_section.get_node("PropertyType")
 	name_label = add_element_section.get_node("PropertyName")
-	input_warning = multi_input_vbox.get_node("Warning")
 	add_element_button = add_element_section.get_node("AddElementButton")
 	element_type_button = add_element_section.get_node("ElementTypeButton")
 	
@@ -55,12 +54,12 @@ func set_up_nodes():
 	
 	for type in SUPPORTED_TYPES:
 		element_type_button.add_item(type)
-	
+
 	if property:
 		check_typed() # must be called after the items are added to the select button
-	
 	# select first type per default
-	_on_type_button_selected(0)
+	if element_type_button.item_count:
+		_on_type_button_selected(0)
 
 func check_typed():
 	pass
@@ -97,6 +96,9 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 				new_scene = input_scenes["vector"]
 				is_vector = true
 	var new_input_node: MultiElementContainer =  element_container_scene.instantiate()
+
+	new_input_node.disabled_for_user = disable_editing # tell container to disable the move/delete buttons
+
 	new_input_node.indent_level = indent_level + 1
 	var new_input_manager = new_scene.instantiate()
 	new_input_manager.indent_level = indent_level + 1
@@ -109,7 +111,7 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 	
 	multi_input_vbox.add_child(new_input_node) # add MultiElementContainer as new child
 
-	var actual_position = multi_input_vbox.get_children().size() - 2
+	var actual_position = multi_input_vbox.get_children().size() - 1
 	multi_input_vbox.move_child(new_input_node, actual_position) # so the warning is always at the bottom
 	# Sets the child position so we can move it with the arrow up and down buttons
 	new_input_node.position_child = actual_position
@@ -141,39 +143,49 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 	return return_dict
 
 func on_elements_changed_size():
-	if range_max:
+	if range_max and not add_element_button.disabled:
 		add_element_button.disabled = input_managers.size() >= range_max
 
 ## disables certain types so the select button can't choose them anymore
 ## [param include_types_only] makes it so only the values in types are enabled and all others are disabled
 func disable_select_type_button(types: Array, include_types_only = false, is_remove = false):
-	var remove_items = []
-	for i in element_type_button.item_count:
-		var should_be_disabled = element_type_button.get_item_text(i) in types
-		should_be_disabled = should_be_disabled if not include_types_only else not should_be_disabled
-		if is_remove and should_be_disabled:
-			remove_items.append(i)
-		else:
-			element_type_button.set_item_disabled(i, should_be_disabled)
-	
-	if remove_items:
-		remove_items.sort()
-		remove_items.reverse()
-		for index in remove_items:
-			element_type_button.remove_item(index)
-			
-	# now select a not disabled button
-	for i in element_type_button.item_count:
-		if element_type_button.is_item_disabled(i) == false:
-			element_type_button.select(i)
-			element_type_button.emit_signal("item_selected", i)
-			break
+	var item_count = element_type_button.item_count
+	if disable_editing:
+		for i in item_count:
+			element_type_button.remove_item(item_count - i - 1)
+		element_type_button.disabled = true
+		return
+	else:
+		var remove_items = []
+		for i in item_count:
+			var should_be_disabled = element_type_button.get_item_text(i) in types
+			should_be_disabled = should_be_disabled if not include_types_only else not should_be_disabled
+			if is_remove and should_be_disabled:
+				remove_items.append(i)
+			else:
+				element_type_button.set_item_disabled(i, should_be_disabled)
+
+		if remove_items:
+			remove_items.sort()
+			remove_items.reverse()
+			for index in remove_items:
+				element_type_button.remove_item(index)
+				
+		# now select a not disabled button
+		for i in element_type_button.item_count:
+			if element_type_button.is_item_disabled(i) == false:
+				element_type_button.select(i)
+				element_type_button.emit_signal("item_selected", i)
+				break
 
 func apply_config_rules(configs_ordered: Array):
 	# TODO: fix the remove button and maybe add config var that makes only the default elements not editable
 	var last_config = configs_ordered.back()
 	sub_config = last_config["SUB_ARRAY_CONFIG"] if "SUB_ARRAY_CONFIG" in last_config.keys() else {}
 	super(configs_ordered)
+	disable_select_type_button([], false, true)
+	if disable_editing:
+		add_element_button.disabled = true
 
 func set_input_disabled(is_disabled: bool):
 	add_element_button.disabled = is_disabled

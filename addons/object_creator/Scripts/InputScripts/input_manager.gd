@@ -10,7 +10,6 @@ var name_label
 var type_label
 var input_node
 var input_container: Container
-var input_warning
 var array_position: int # position if inputmanager is within an array
 var accept_empty_inputs : bool
 
@@ -159,16 +158,20 @@ func set_property_information(property: Dictionary):
 	name_label.text = property["name"]
 	input_type = property["type"]
 
-func show_input_warning(mute_warnings=false):
+func show_input_warning(error: InputError= null,mute_warnings=false):
 	if mute_warnings:
 		return
 	material.set_shader_parameter("active", true)
-	if input_warning:
-		input_warning.visible = true
+	if error:
+		var message = error.create_error_tooltip()
+		if message:
+			print("yahooo")
+			tooltip_text = message
 
 func hide_input_warning():
 	if material and material is ShaderMaterial:
 		material.set_shader_parameter("active", false)
+
 
 ## virtual function that should be used so each input type can receive input when created
 ## primarily useful when we're dealing with editing objects instead of creating them

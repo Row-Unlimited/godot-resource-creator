@@ -47,7 +47,7 @@
 	  "accept_empty": true,
 	  "change_empty_default": false,
 	  "default_value": ["this", "is an", "example"],
-	  "disable_editing": false,
+	  "disable_editing": true,
 	  "SUB_ARRAY_CONFIG": {
 		"type": 4,
 		"range_max": 10,

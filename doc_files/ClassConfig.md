@@ -63,6 +63,16 @@ Here a table listing all different Rules you can set and what they do:
 
 ## Other Information
 
+### Other sub_configs
+
+Some Objects have sub_values that allow you to make rules for each sub_value.
+
+|Input type|sub_config name|explanation|
+|----------|---------------|-----------|
+|Array|```SUB_ARRAY_CONFIG```|If you want to set rules for the values within an array you use this config. For example max/min only change the max array size not the size of the values in the array.<br> same goes for **disable_editing** which only makes it impossible to add/delete/reorder values but the values themselves will still be editable.|
+|Dictionary|||
+|Vector|- ```X_CONFIG``` <br> - ```Y_CONFIG``` <br> - ```Z_CONFIG``` <br> - ```W_CONFIG```|For vectors you can set rules for each of the 2-4 values. For example you can set a different max/min value for each coordinate. <br> If you however just want to set a rule that goes for all, you can still do that in the general vector config. <br> These rules also follow the rules as the rest of the configs, so you can set a general rule in the vector config, and if needed overwrite that rule in one specific coordinate.|
+
 ### VAR_NAME notation
 In some cases you might want to assign a value you chose for one property to other properties as well. And since copy-pasting it might be annoying, you can use this to set a **final_value** or one of the **constructor_values**.  
 
