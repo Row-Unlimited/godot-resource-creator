@@ -52,6 +52,24 @@ func create_vector_UI(type: Variant.Type):
 		input.visible = true
 		input.input_type = TYPE_INT if is_int else TYPE_FLOAT
 
+func apply_input_configs(configs: Dictionary):
+	for key in configs.keys():
+		var input_node
+		var input_config = configs[key]
+		match key:
+			"X_CONFIG":
+				input_node = x_input
+			"Y_CONFIG":
+				input_node = y_input
+			"Z_CONFIG":
+				input_node = z_input
+			"W_CONFIG":
+				input_node = w_input
+			_:
+				Helper.throw_error("wrong key in vector_input_input sub_config")
+				continue
+		Helper.apply_dict_values_object(input_node, input_config)
+		input_node.config = input_config
 
 func return_input() -> Variant:
 	var value_array = []

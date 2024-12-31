@@ -418,6 +418,42 @@ static func flatten_sub_dicts(dict: Dictionary, search_keys = []):
 			return_dict.merge(flatten_sub_dicts(value, search_keys))
 	return return_dict
 
+## creates new dict, by retrieving all the key-value pairs with matching keys in [param retrieve_keys] [br]
+## if [param inverse_creation] is true it will only use keys that are not in [param retrieve_keys].
+static func retrieve_sub_dict(dict: Dictionary, retrieve_keys = [], inverse_creation = false):
+	var new_dict = {}
+	for key in dict.keys():
+		var should_retrieve = key in retrieve_keys
+		if should_retrieve != inverse_creation:
+			new_dict[key] = dict[key]
+	
+	return new_dict
+
+## implements the Dictionary.merge() func so it merges values in sub_dictionaries if the dictionary refers to the same key [br]
+## [param overwrite] will determine whether key-value pairs will be overwritten if [param base_dict] and [param merge_dict] both have that key.
+## beware, since this is [b] deep [/b] even if overwrite is false dictionaries/arrays that exist in both might be changed if the new key-value pair is of the same type and has an unknown key.
+static func dictionary_merge_deep(base_dict, merge_dict, overwrite=false):
+	var base_keys = base_dict.keys()
+	var merge_keys = merge_dict.keys()
+	var overwrite_keys = merge_keys.filter(func(x): return x in base_keys)
+	# insert the unknown key-value pairs into the base_dict
+	var new_keys = merge_keys.filter(func(x): return not x in base_keys)
+	var new_key_values = retrieve_sub_dict(merge_dict, new_keys)
+	base_dict.merge(new_key_values)
+
+	for key in overwrite_keys:
+		var base_value = base_dict[key]
+		var merge_value = merge_dict[key]
+		if base_value is Dictionary:
+			if merge_value is Dictionary:
+				base_dict[key] = dictionary_merge_deep(base_value, merge_value, overwrite)
+			elif overwrite:
+				base_dict[key] = merge_value
+		elif overwrite:
+			base_dict[key] = merge_value
+	
+	return base_dict
+
 static func get_object_script_name(obj):
 	var file_name = get_last_path_parts(obj.get_script().resource_path, 1).pop_back()
 	return file_name.substr(0, file_name.length() - 3)

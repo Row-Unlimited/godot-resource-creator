@@ -78,8 +78,11 @@ func set_up_config_rules(config):
 
 ## function that handles the changing of values. [br] Can be modified in different InputManagers
 func apply_config_rules(configs_ordered: Array):
+	var final_config = {}
 	for config in configs_ordered:
-		Helper.apply_dict_values_object(self, config)
+		Helper.dictionary_merge_deep(final_config, config.duplicate(true), true)
+	
+	Helper.apply_dict_values_object(self, final_config.duplicate(true))
 	
 	set_input_disabled(disable_editing)
 	if default_value and typeof(default_value) in GlobalCollections.AcceptedTypes:
@@ -87,6 +90,8 @@ func apply_config_rules(configs_ordered: Array):
 	
 	if hide_input:
 		self.visible = false
+	
+	return final_config
 
 
 ## takes an input that fits the input type and checks whether it fits the range criteria
@@ -165,7 +170,6 @@ func show_input_warning(error: InputError= null,mute_warnings=false):
 	if error:
 		var message = error.create_error_tooltip()
 		if message:
-			print("yahooo")
 			tooltip_text = message
 
 func hide_input_warning():

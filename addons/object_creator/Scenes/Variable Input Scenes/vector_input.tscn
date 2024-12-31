@@ -73,7 +73,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 placeholder_text = "x"
 script = ExtResource("2_o3c11")
-input_type = 0
 
 [node name="Y" type="LineEdit" parent="MarginContainer/InputContainer/Input"]
 visible = false
@@ -82,7 +81,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 placeholder_text = "y"
 script = ExtResource("2_o3c11")
-input_type = 0
 
 [node name="Z" type="LineEdit" parent="MarginContainer/InputContainer/Input"]
 visible = false
@@ -91,7 +89,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 placeholder_text = "z"
 script = ExtResource("2_o3c11")
-input_type = 0
 
 [node name="W" type="LineEdit" parent="MarginContainer/InputContainer/Input"]
 visible = false
@@ -100,4 +97,3 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 placeholder_text = "w"
 script = ExtResource("2_o3c11")
-input_type = 0

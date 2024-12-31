@@ -65,7 +65,7 @@
 	  "accept_empty": false,
 	  "change_empty_default": false,
 	  "default_value": [1, 2, 3],
-	  "disable_editing": true,
+	  "disable_editing": false,
 	  "hide_input": true,
 	  "X_CONFIG": {
 		"range_max": 5,

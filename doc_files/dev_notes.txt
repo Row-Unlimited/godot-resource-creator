@@ -1,3 +1,4 @@
 TODOs:
 	- Implement config for dictionaries
+	- Implement sub config for vector input
 	- Fix config of the sub configs, so they actually apply and throw errors

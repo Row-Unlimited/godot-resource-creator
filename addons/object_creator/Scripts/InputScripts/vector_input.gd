@@ -49,9 +49,15 @@ func is_vector(input) -> bool:
 	return typeof(input) in vector_enum_types
 
 func apply_config_rules(configs_ordered: Array):
-	super(configs_ordered)
+	var final_config = super(configs_ordered)
 	input_node.accept_empty = accept_empty
 	input_node.change_empty_default = change_empty_default
+	#extract configs for each input (x,y,z,w)
+	var sub_keys = ["X_CONFIG", "Y_CONFIG", "Z_CONFIG", "W_CONFIG"]
+	sub_keys.resize(input_node.variable_number)
+	var sub_config = Helper.retrieve_sub_dict(final_config, sub_keys)
+	input_node.apply_input_configs(sub_config)
+
 
 func set_input_disabled(is_disabled: bool, target_specifier: Array = []):
 	for i in input_node.input_array.size():

@@ -12,6 +12,7 @@ func _ready() -> void:
 	#test_better_print()
 	#test_json()
 	#test_tab_bar()
+	test_dict_merge()
 	pass
 
 func test_crap():
@@ -41,6 +42,18 @@ func test_helper_update():
 	test_object_1.print_me()
 	print("--------------------------------")
 	test_object_2.print_me()
+
+func test_dict_merge():
+	var base_dict = {"test": {"test1": 10, "test2":20}}
+	var test_dict = {"test": {"test1":5}}
+	var base_double = base_dict.duplicate(true)
+	base_double.merge(test_dict, true)
+	print(base_double)
+
+	print(Helper.dictionary_merge_deep(base_dict, test_dict))
+	print(Helper.dictionary_merge_deep(base_dict, test_dict, true))
+
+	pass
 
 func test_tab_bar():
 	var tab_bar = TabBar.new()
