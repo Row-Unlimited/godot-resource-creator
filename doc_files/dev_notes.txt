@@ -1,4 +1,24 @@
 TODOs:
 	- Implement config for dictionaries
-	- Implement sub config for vector input
 	- Fix config of the sub configs, so they actually apply and throw errors
+	- UX:
+		+ Add config rule that allows you to include/exclude types in selection without creating typed arrays
+		+ make it consistent when the screen changes automatically
+			~ first object created switches to the creation screen, subsequent objects not
+			~ maybe make it switch every time we use the left mouse button, and make it possible to create one without switching with the middle mouse button
+		+ Minor Settings UI changes
+			~ remove json/hidden button and change save_button text
+			~ maybe also change theme to make it clear it's the settings menu
+		+ Configure the neighbors correctly for easier navigation with tab
+			~ maybe add other shortcuts like moving array elements with arrow keys
+	- UI:
+		+ More UI Improvements like changing the tabBar node
+		+ Change Array order elements (maybe add dragging)
+	- Integration:
+		+ Come up with integration features and remove old unused vars etc.
+	- General:
+		+ refactor code and remove old/unused variables, functions and scripts
+
+
+Future TODOs:
+	- Implement Color Input type

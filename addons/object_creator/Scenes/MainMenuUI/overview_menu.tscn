@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://cjrjsmw62bo4a"]
 
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/UIScriptsNew/overview_menu.gd" id="1_bmldj"]
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/UIScriptsNew/tree_export_view.gd" id="1_knyqt"]
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/UIScriptsNew/tree_class_view.gd" id="1_ognw8"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/overview_menu.gd" id="1_bmldj"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/tree_export_view.gd" id="1_knyqt"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/tree_class_view.gd" id="1_ognw8"]
 [ext_resource type="Theme" uid="uid://du8tldypjrsog" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/default_theme.tres" id="2_wl07f"]
 
 [node name="OverviewMenu" type="Control"]

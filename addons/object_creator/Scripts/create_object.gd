@@ -1,13 +1,12 @@
 @tool
 class_name CreateObject
-extends CreationWindow
+extends Control
 ## UI Window which creates custom input boxes for each property of the chosen class
 ## Checks if Inputs are correct by calling attempt_submit method in the InputManager objects
 
 const PLUGIN_CONFIG_PATH = "res://addons/object_creator/PluginConfig.tres"
 
 var test_input = preload("res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn")
-var breakline = preload("res://addons/object_creator/Scenes/break_line.tscn")
 var headline = preload("res://addons/object_creator/Scenes/UI Addon Scenes/headline.tscn")
 var input_root_node: VBoxContainer
 @onready var submit_button: Button = get_node("SubmitBox/CreateObject")
@@ -16,6 +15,8 @@ var input_root_node: VBoxContainer
 var input_nodes: Array
 var object_wrapper: ObjectWrapper
 var property_list: Array
+
+var session_dict : Dictionary
 
 # these are given to CreateObject by CreationManager after instantiating
 var object_chosen_callable: Callable
@@ -41,7 +42,6 @@ signal settings_changed(plugin_config_object)
 signal create_sub_object_clicked(sub_object_wrapper)
 
 func _ready() -> void:
-	window_type = WindowType.CREATE_OBJECT
 	submit_button.connect("pressed", on_submit_pressed)
 	toggle_json_button.connect("toggled", _on_toggle_json)
 	toggle_hidden_button.connect("toggled", _on_toggle_hidden)
@@ -202,9 +202,6 @@ func add_headline(text: String):
 	new_headline.text = text
 	input_root_node.add_child(new_headline)
 	input_root_node.move_child(new_headline, 0)
-
-func add_breakline():
-	input_root_node.add_child(breakline.instantiate())
 
 ## Saves the current creation status as a dict. [br]
 ## Every InputManager returns a Dict with a [b]property name[/b] key or 

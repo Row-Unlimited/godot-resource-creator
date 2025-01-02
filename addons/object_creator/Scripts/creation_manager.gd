@@ -6,11 +6,7 @@ const PLUGIN_CONFIG_PATH = "res://addons/object_creator/PluginConfig.tres"
 const SETTINGS_CLASS_PATH = "res://addons/object_creator/Scripts/plugin_config.gd"
 
 var create_object_screen = preload("res://addons/object_creator/Scenes/create_object.tscn")
-var class_choice_screen = preload("res://addons/object_creator/Scenes/class_choice.tscn")
 
-## holds the information for all ongoing create object processes [br]
-## example: {class_path:"", export_path:"", process_id:"12", parent_process_id:"1", session_dict:""}
-var object_processes: Array[Dictionary]
 var tab_manager: TabManager
 
 var class_loader: ClassLoader
@@ -84,11 +80,6 @@ func create_new_creation_screen(object_wrapper: ObjectWrapper, menu_type=CreateO
 	if menu_type != CreateObject.CreateMenuType.NORMAL:
 		new_create_window.connect("settings_changed", Callable(self, "_on_settings_changed"))
 	return new_create_window
-
-
-## deletes object process by ID
-func delete_object_process(object_id: int):
-	pass
 
 ## loads all creatable classes by searching the project and creates the tree UI
 func set_up_class_tree():
