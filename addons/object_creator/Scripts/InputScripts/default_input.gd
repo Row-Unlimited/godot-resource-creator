@@ -48,7 +48,12 @@ func attempt_submit(mute_warnings=false) -> Variant:
 func submit_status_dict():
 	# if it's a property it has a name, if it's a sub_element like in an array it is empty
 	var property_name = property["name"] if property else "" 
-	var status_dict = {"value" : input_node.text, "type" : input_type, "name" : property_name}
+	var property_value = input_node.text
+	if input_type == TYPE_INT:
+		property_value = property_value.to_int()
+	elif input_type == TYPE_FLOAT:
+		property_value = property_value.to_float()
+	var status_dict = {"value" : property_value, "type" : input_type, "name" : property_name}
 	return status_dict
 
 func style_input():

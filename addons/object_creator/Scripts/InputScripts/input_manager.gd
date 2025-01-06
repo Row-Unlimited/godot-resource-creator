@@ -166,6 +166,7 @@ func set_property_information(property: Dictionary):
 func show_input_warning(error: InputError= null,mute_warnings=false):
 	if mute_warnings:
 		return
+	material.set_shader_parameter("error_color", error_color)
 	material.set_shader_parameter("active", true)
 	if error:
 		var message = error.create_error_tooltip()

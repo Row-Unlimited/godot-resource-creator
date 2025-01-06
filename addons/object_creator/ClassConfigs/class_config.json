@@ -57,6 +57,9 @@
 		"disable_editing": true
 	  }
 	},
+	"test_typed_array": {
+		"range_min": 2
+	},
 
 	"test_vector": {
 	  "type": 12,
@@ -89,6 +92,10 @@
 
 	"test_object": {
 	  "type": 24
+	},
+	"test_dict": {
+		"range_max": 3,
+		"range_min": 1
 	}
   }
 }

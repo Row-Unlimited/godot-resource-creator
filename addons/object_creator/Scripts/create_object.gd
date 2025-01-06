@@ -156,7 +156,7 @@ func on_submit_pressed():
 		# if the output is an object wrapper only insert the obj into the actual property
 		if input_value is ObjectWrapper:
 			input_value = input_value.obj
-		
+
 		if input_value is InputError and input_value.has_any_errors():
 			input_error_nodes.append(input_node)
 		else:

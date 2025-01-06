@@ -51,6 +51,8 @@ func add_element(element_type: Variant.Type, def_input=null):
 func attempt_submit(mute_warnings=false) -> Variant:
 	var missing_input_nodes = []
 	var return_array = []
+	var error_object = InputError.new_error_object()
+
 	for input_manager: InputManager in input_managers:
 		var input_value = input_manager.attempt_submit()
 		if not input_value is InputError:
@@ -63,13 +65,15 @@ func attempt_submit(mute_warnings=false) -> Variant:
 			# TODO: call input warning method with type
 	
 	if missing_input_nodes:
-		# TODO: maybe add behavior that accepts certain empty fields or something
-		return InputError.new_error_object(["INVALID"])
+		error_object.toggle_error("INVALID", true)
 	
-	if return_array.is_empty():
-		return return_empty_value()
+	return_array = check_submit_errors(return_array, error_object)
+
+	if return_array is InputError:
+		show_input_warning(return_array)
 
 	return return_array
+
 
 func submit_status_dict():
 	var value_list = [] # value of the status_dict; Contains all input nodes status_dicts

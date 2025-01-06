@@ -4,7 +4,7 @@ extends InputManager
 
 
 const SUPPORTED_TYPES = ["String", "int", "float", "bool", "Array", "Dictionary","Vector2", "Vector3", "Vector4", "Vector2i", "Vector3i", "Vector4i", "Object"]
-const VECTOR_TYPES = [TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I, TYPE_VECTOR4, TYPE_VECTOR4I, TYPE_OBJECT]
+const VECTOR_TYPES = [TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I, TYPE_VECTOR4, TYPE_VECTOR4I]
 
 var element_container_scene = preload("res://addons/object_creator/Scenes/Variable Input Scenes/multi_element_container.tscn")
 
@@ -33,9 +33,9 @@ var sub_config: Dictionary
 
 ## gets called first and is used to initialize values
 func initialize_input(property_dict: Dictionary):
+	property = property_dict
 	set_up_nodes()
 	if property_dict:
-		property = property_dict
 		name_label.text = property_dict["name"]
 		input_type = property_dict["type"]
 
@@ -55,8 +55,8 @@ func set_up_nodes():
 	for type in SUPPORTED_TYPES:
 		element_type_button.add_item(type)
 
-	if property:
-		check_typed() # must be called after the items are added to the select button
+	#if property:
+	check_typed() # must be called after the items are added to the select button
 	# select first type per default
 	if element_type_button.item_count:
 		_on_type_button_selected(0)
@@ -191,6 +191,28 @@ func set_input_disabled(is_disabled: bool):
 	add_element_button.disabled = is_disabled
 	for input: InputManager in input_managers:
 		input.set_input_disabled(is_disabled)
+
+func check_submit_errors(value, error=null):
+	var error_object = InputError.new_error_object([]) if error == null else error
+
+	var is_in_range: bool
+	if range_max != null and value.size() > range_max:
+		is_in_range = false
+	elif range_min != null and value.size() < range_min:
+		is_in_range = false
+	else:
+		is_in_range = true
+
+	if value.is_empty():
+		value = return_empty_value(error_object)
+
+	if not is_in_range:
+		error_object.toggle_error("RANGE_INVALID", true)
+	
+	if error_object.is_ignore() or error_object.errors.is_empty():
+		return value
+	else:
+		return error_object
 
 #region signal_functions
 func _on_type_button_selected(index):

@@ -18,17 +18,17 @@ func return_type_by_index(index: int) -> Variant.Type:
 			return_type = TYPE_ARRAY
 		"Dictionary":
 			return_type = TYPE_DICTIONARY
-		"Vector 2":
+		"Vector2":
 			return_type = TYPE_VECTOR2
-		"Vector 2i":
+		"Vector2i":
 			return_type = TYPE_VECTOR2I
-		"Vector 3":
+		"Vector3":
 			return_type = TYPE_VECTOR3
-		"Vector 3i":
+		"Vector3i":
 			return_type = TYPE_VECTOR3I
-		"Vector 4":
+		"Vector4":
 			return_type = TYPE_VECTOR4
-		"Vector 4i":
+		"Vector4i":
 			return_type = TYPE_VECTOR4I
 		"Object":
 			return_type = TYPE_OBJECT

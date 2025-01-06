@@ -8,7 +8,6 @@ var element_containers : Array
 func check_typed():
 	pass
 
-# TODO: add key_type: Variant.Type,
 ## Adds a new element to a Dictionary Input
 func add_element( value_type: Variant.Type, def_key="", def_input = null):
 	var result_dict = create_scene_by_type(value_type)
@@ -31,6 +30,8 @@ func add_element( value_type: Variant.Type, def_key="", def_input = null):
 func attempt_submit(mute_warnings=false) -> Variant:
 	var missing_input_nodes = []
 	var return_dict = {}
+	var error_object = InputError.new_error_object([])
+
 
 	for container in element_containers:
 		var input_manager = container.input_manager 
@@ -55,13 +56,16 @@ func attempt_submit(mute_warnings=false) -> Variant:
 			input_manager.show_input_warning(InputError.new_error_object(["MISSING_KEY"]))
 			missing_input_nodes.append(input_manager)
 	
-
 	if missing_input_nodes:
-		return InputError.new_error_object(["INVALID"])
-	elif return_dict.is_empty():
-		return return_empty_value()
-	else:
-		return return_dict
+		error_object.toggle_error("INVALID", true)
+
+	return_dict = check_submit_errors(return_dict, error_object)
+	#TODO: here might be an issue with IGNORE error_type
+
+
+	if return_dict is InputError:
+		show_input_warning(return_dict)
+	return return_dict
 
 func submit_status_dict():
 	var value_list = {} # value of the status_dict; Contains all input nodes status_dicts

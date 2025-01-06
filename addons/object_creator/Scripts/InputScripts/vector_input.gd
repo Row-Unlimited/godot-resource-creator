@@ -12,7 +12,8 @@ func initialize_input(property_dict: Dictionary):
 	name_label = input_container.get_node("PropertyName")
 	input_node = input_container.get_node("Input")
 	
-	set_property_information(property_dict)
+	if property_dict:
+		set_property_information(property_dict)
 	type_label.text = return_type_string(input_type)
 	input_node.create_vector_UI(input_type)
 
@@ -24,7 +25,7 @@ func attempt_submit(mute_warnings=false) -> Variant:
 	return return_value
 
 func submit_status_dict():
-	var value = "VECTOR::"+ str(input_node.return_input()) + "::"
+	var value = input_node.return_input()
 	# if it's a property it has a name, if it's a sub_element like in an array it is empty
 	var property_name = property["name"] if property else "" 
 	var status_dict = {"value" : value, "type" : input_type, "name" : property_name}

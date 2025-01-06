@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://f3dwr5u0tnnm"]
 
-[ext_resource type="Shader" path="res://addons/object_creator/Assets/error_overlay.gdshader" id="1_8tdu2"]
+[ext_resource type="Shader" path="res://addons/object_creator/Assets/input_manager_effects.gdshader" id="1_8tdu2"]
 
 [resource]
 resource_local_to_scene = true
