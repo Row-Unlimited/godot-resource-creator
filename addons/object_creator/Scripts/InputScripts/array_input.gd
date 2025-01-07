@@ -11,7 +11,7 @@ func check_typed():
 
 	var possible_class_names = ClassLoader.new().return_class_names()
 
-	var type_arr: String
+	var type_arr
 	var hint_string : String = property["hint_string"]
 	match property["hint"]:
 		31:
@@ -19,11 +19,10 @@ func check_typed():
 		23:
 			var regex = RegEx.new()
 			regex.compile("([1-9]{1}[0-9]{0,1}):")
-			type_arr = regex.search(hint_string).get_string()
-			type_arr = return_type_string(type_arr.to_int())
+			type_arr = regex.search(hint_string).get_string().to_int()
 	if not type_arr:
 		return
-	if type_arr in SUPPORTED_TYPES:
+	if type_arr in TypeManager.SUPPORTED_TYPES:
 		disable_select_type_button([type_arr], true, true)
 	elif Helper.check_string_contains_array(possible_class_names, hint_string):
 		var class_name_string = Array(hint_string.split(":")).back()

@@ -60,6 +60,7 @@ Here a table listing all different Rules you can set and what they do:
 |```disable_editing```|will make it impossible to edit this property in the plugin|false|For Arrays/Dictionaries this will not disable the editing of the sub_items. For this you need to define **"SUB_ARRAY_CONFIG"**|
 |```hide_input```|if true this will hide the property in the plugin view|false| useful together with disable_editing or default_value |
 |```final_value```|overrides the value of the property and sets it to the value defined here.|unfilled|It is advisable to hide/disable a property when setting this rule, since the value you type will be overridden anyway. For objects or more complex values you can also use the ```"VAR_NAME:property_name"``` notation.|
+|```included_types```|Rule for Collections that allows you to only include certain types, to make type selection easier and improve UX|[]|To use this, you write for example ```"included_types": ["TYPE_INT", "TYPE_STRING"]```. <br> This is purely for UX, if you enter a non included type through a default_value rule, no error will occur.|
 
 ## Other Information
 

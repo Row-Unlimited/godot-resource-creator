@@ -68,7 +68,7 @@ func set_up_config_rules(config):
 	if not config:
 		return
 	self.config = Helper.flatten_sub_dicts(config)
-	var config_strings = ["CLASS_GENERAL_CONFIG", return_type_string(input_type, false)]
+	var config_strings = ["CLASS_GENERAL_CONFIG", TypeManager.find_type_value(input_type, TypeManager.TypeValue.TYPE_ENUM_STRING)]
 	config_strings = config_strings + [property["name"]] if property else config_strings
 	config_strings = config_strings.filter(func(x): return x in self.config.keys())
 	var configs_ordered = []
@@ -92,70 +92,6 @@ func apply_config_rules(configs_ordered: Array):
 		self.visible = false
 	
 	return final_config
-
-
-## takes an input that fits the input type and checks whether it fits the range criteria
-## not implemented yet
-func check_range_invalid(input: Variant) -> bool:
-	if typeof(input) != input_type:
-		return true
-	# TODO: add functionality that makes it possible to set custom ranges
-	match typeof(input):
-		TYPE_BOOL:
-			pass
-		TYPE_INT:
-			pass
-		TYPE_FLOAT:
-			pass
-		TYPE_STRING:
-			pass
-		TYPE_VECTOR2:
-			pass
-		TYPE_NODE_PATH:
-			pass
-		TYPE_CALLABLE:
-			pass
-		TYPE_DICTIONARY:
-			pass
-		TYPE_ARRAY:
-			pass
-	
-	return false
-
-func return_type_string(type: Variant.Type, is_default = true) -> String:
-	match type:
-		TYPE_BOOL:
-			return "bool" if is_default else "TYPE_BOOL"
-		TYPE_INT:
-			return "int" if is_default else "TYPE_INT"
-		TYPE_FLOAT:
-			return "float" if is_default else "TYPE_FLOAT"
-		TYPE_STRING:
-			return "String" if is_default else "TYPE_STRING"
-		TYPE_VECTOR2:
-			return "Vector2" if is_default else "TYPE_VECTOR2"
-		TYPE_VECTOR2I:
-			return "Vector2i" if is_default else "TYPE_VECTOR2I"
-		TYPE_VECTOR3:
-			return "Vector3" if is_default else "TYPE_VECTOR3"
-		TYPE_VECTOR3I:
-			return "Vector3i" if is_default else "TYPE_VECTOR3I"
-		TYPE_VECTOR4:
-			return "Vector4" if is_default else "TYPE_VECTOR4"
-		TYPE_VECTOR4I:
-			return "Vector4i" if is_default else "TYPE_VECTOR4I"
-		TYPE_NODE_PATH:
-			return "Node Path" if is_default else "TYPE_NODE_PATH"
-		TYPE_CALLABLE:
-			return "callable" if is_default else "TYPE_CALLABLE"
-		TYPE_DICTIONARY:
-			return "Dictionary" if is_default else "TYPE_DICTIONARY"
-		TYPE_ARRAY:
-			return "Array" if is_default else "TYPE_ARRAY"
-		TYPE_OBJECT:
-			return "Object" if is_default else "TYPE_OBJECT"
-		_:
-			return "unsupported"
 
 ## sets the labels and vars for a given property, is used in non array inputs
 func set_property_information(property: Dictionary):
@@ -194,31 +130,7 @@ func return_empty_value(error_object: InputError = null):
 
 	if accept_empty:
 		if change_empty_default:
-			match input_type:
-				TYPE_INT:
-					return 0
-				TYPE_FLOAT:
-					return 0
-				TYPE_STRING:
-					return ""
-				TYPE_VECTOR2:
-					return Vector2(0,0)
-				TYPE_VECTOR2I:
-					return Vector2i(0,0)
-				TYPE_VECTOR3:
-					return Vector3(0,0,0)
-				TYPE_VECTOR3I:
-					return Vector3i(0,0,0)
-				TYPE_VECTOR4:
-					return Vector4(0,0,0,0)
-				TYPE_VECTOR4I:
-					return Vector4i(0,0,0,0)
-				TYPE_DICTIONARY:
-					return {}
-				TYPE_ARRAY:
-					return []
-				_:
-					return null
+			return TypeManager.find_type_value(input_type, TypeManager.TypeValue.EMPTY_VALUE)
 		else:
 			error_object.toggle_error("IGNORE", true)
 			return error_object

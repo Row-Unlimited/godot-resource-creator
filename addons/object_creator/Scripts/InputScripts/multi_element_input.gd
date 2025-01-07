@@ -2,10 +2,6 @@
 class_name MultiElementInput
 extends InputManager
 
-
-const SUPPORTED_TYPES = ["String", "int", "float", "bool", "Array", "Dictionary","Vector2", "Vector3", "Vector4", "Vector2i", "Vector3i", "Vector4i", "Object"]
-const VECTOR_TYPES = [TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I, TYPE_VECTOR4, TYPE_VECTOR4I]
-
 var element_container_scene = preload("res://addons/object_creator/Scenes/Variable Input Scenes/multi_element_container.tscn")
 
 var add_element_button: Button
@@ -31,6 +27,8 @@ var input_scenes = {
 ## holds the sub_config which describes how the items of this dict/arr behave
 var sub_config: Dictionary
 
+var included_types: Array = []
+
 ## gets called first and is used to initialize values
 func initialize_input(property_dict: Dictionary):
 	property = property_dict
@@ -52,7 +50,7 @@ func set_up_nodes():
 	element_type_button.connect("item_selected", Callable(self, "_on_type_button_selected"))
 	add_element_section.get_node("MinimizeButton").connect("pressed", Callable(self, "_on_minimize_pressed"))
 	
-	for type in SUPPORTED_TYPES:
+	for type in TypeManager.get_all_values(TypeManager.TypeValue.READ_STRING):
 		element_type_button.add_item(type)
 
 	#if property:
@@ -74,27 +72,9 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 	var is_vector = false
 	var new_scene: PackedScene
 
-	match type:
-		TYPE_NIL:
-			return return_dict
-		TYPE_INT:
-			new_scene = input_scenes["default"]
-		TYPE_FLOAT:
-			new_scene = input_scenes["default"]
-		TYPE_STRING:
-			new_scene = input_scenes["default"]
-		TYPE_BOOL:
-			new_scene = input_scenes["bool"]
-		TYPE_ARRAY:
-			new_scene = input_scenes["array"]
-		TYPE_DICTIONARY:
-			new_scene = input_scenes["dictionary"]
-		TYPE_OBJECT:
-			new_scene = input_scenes["object"]
-		_:
-			if VECTOR_TYPES.has(type):
-				new_scene = input_scenes["vector"]
-				is_vector = true
+	new_scene = TypeManager.get_input_scene(type)
+	if TypeManager.VECTOR_TYPES.has(type):
+		is_vector = true
 	var new_input_node: MultiElementContainer =  element_container_scene.instantiate()
 
 	new_input_node.disabled_for_user = disable_editing # tell container to disable the move/delete buttons
@@ -149,6 +129,7 @@ func on_elements_changed_size():
 ## disables certain types so the select button can't choose them anymore
 ## [param include_types_only] makes it so only the values in types are enabled and all others are disabled
 func disable_select_type_button(types: Array, include_types_only = false, is_remove = false):
+	types = types.map(func(x): return TypeManager.find_type_value(x, TypeManager.TypeValue.READ_STRING))
 	var item_count = element_type_button.item_count
 	if disable_editing:
 		for i in item_count:
@@ -184,6 +165,8 @@ func apply_config_rules(configs_ordered: Array):
 	sub_config = last_config["SUB_ARRAY_CONFIG"] if "SUB_ARRAY_CONFIG" in last_config.keys() else {}
 	super(configs_ordered)
 	disable_select_type_button([], false, true)
+	if included_types:
+		disable_select_type_button(included_types, true, true)
 	if disable_editing:
 		add_element_button.disabled = true
 

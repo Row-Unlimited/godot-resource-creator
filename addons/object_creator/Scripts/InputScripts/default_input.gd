@@ -8,7 +8,7 @@ func initialize_input(property_dict: Dictionary):
 	type_label = input_container.get_node("PropertyType")
 	name_label = input_container.get_node("PropertyName")
 	input_node = input_container.get_node("Input")
-	type_label.text = return_type_string(input_type)
+	type_label.text = TypeManager.find_type_value(input_type, TypeManager.TypeValue.READ_STRING)
 
 	if property_dict:
 		set_property_information(property_dict)
@@ -58,7 +58,7 @@ func submit_status_dict():
 
 func style_input():
 	name_label.text = property["name"]
-	type_label.text = return_type_string(property["type"])
+	type_label.text = TypeManager.find_type_value(property["type"], TypeManager.TypeValue.READ_STRING)
 
 func receive_input(input):
 	var acceptable_types = [TYPE_INT, TYPE_FLOAT, TYPE_STRING]

@@ -13,7 +13,7 @@ func initialize_input(property_dict: Dictionary):
 
 	if property_dict:
 		set_property_information(property_dict)
-		type_label.text = return_type_string(property["type"])
+		type_label.text = TypeManager.find_type_value(property["type"], TypeManager.TypeValue.READ_STRING)
 
 func attempt_submit(mute_warnings=false) -> Variant:
 	

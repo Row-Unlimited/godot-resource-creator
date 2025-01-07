@@ -95,7 +95,8 @@
 	},
 	"test_dict": {
 		"range_max": 3,
-		"range_min": 1
+		"range_min": 1,
+		"included_types": ["TYPE_INT", "TYPE_STRING", "TYPE_VECTOR2"]
 	}
   }
 }

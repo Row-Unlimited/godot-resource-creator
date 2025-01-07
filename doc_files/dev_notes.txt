@@ -22,3 +22,6 @@ TODOs:
 
 Future TODOs:
 	- Implement Color Input type
+	- Code refactoring:
+		+ Move Vector match statements into TypeManager
+		+ Redo how vectors apply sub_configs, so that they have a X_CONFIG property that gets written into directly instead of doing all these shenanigans.

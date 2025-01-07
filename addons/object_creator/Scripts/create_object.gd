@@ -25,7 +25,6 @@ var object_edited_callable: Callable
 var accept_empty_inputs
 
 var SKIPPED_PROPERTIES =["resource_local_to_scene", "resource_path", "resource_name", "resource_scene_unique_id"]
-var VECTOR_TYPES = [TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I, TYPE_VECTOR4, TYPE_VECTOR4I]
 
 
 var menu_type = CreateMenuType.NORMAL
@@ -70,19 +69,20 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 	# Create UI for every single Input
 	for property: Dictionary in property_list:
 		var property_name = property["name"]
+		var property_type = property["type"]
 
-		var property_input_path = determine_input_type(property)
-		if property_input_path != "" and not SKIPPED_PROPERTIES.has(property_name) and property_name in export_var_lines:
-			var new_input : InputManager = load(property_input_path).instantiate()
+		if property_type in TypeManager.SUPPORTED_TYPES and not SKIPPED_PROPERTIES.has(property_name) and property_name in export_var_lines:
+			var property_input_scene = TypeManager.get_input_scene(property_type)
+			var new_input : InputManager = property_input_scene.instantiate()
 
 			# connect sub resource signals to creation manager
-			if property["type"] == TYPE_OBJECT:
+			if property_type == TYPE_OBJECT:
 				new_input.connect("edit_sub_object_clicked", object_edited_callable)
 				new_input.connect("choose_class_button_clicked", object_chosen_callable)
 				new_input.parent_wrapper = object_wrapper
 			
 			# give the sub-object callables to arr/dict since they can contain sub-objects
-			if property["type"] in [TYPE_ARRAY, TYPE_DICTIONARY]:
+			if property_type in [TYPE_ARRAY, TYPE_DICTIONARY]:
 				new_input.sub_obj_infos = {
 					"edit_callable": object_edited_callable,
 					"choose_callable": object_chosen_callable,
@@ -98,41 +98,10 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 			input_nodes.append(new_input)
 			if object_wrapper.obj:
 				var object_pre_value = object_wrapper.obj.get(property_name)
-				if typeof(object_pre_value) == property["type"] :
+				if typeof(object_pre_value) == property_type :
 					new_input.receive_input(object_pre_value)
 			
 			new_input.set_up_config_rules(object_wrapper.class_config)
-			
-
-func determine_input_type(property: Dictionary) -> String:
-	var vector_types = [TYPE_VECTOR2, TYPE_VECTOR2I, TYPE_VECTOR3, TYPE_VECTOR3I, TYPE_VECTOR4, TYPE_VECTOR4I]
-	var scene_string: String
-	match property["type"]:
-		TYPE_BOOL:
-			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/bool_input.tscn"
-		TYPE_INT:
-			if property["class_name"]:
-				scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/enum_input.tscn"
-			else:
-				scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"
-		TYPE_FLOAT:
-			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"
-		TYPE_STRING:
-			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"
-		TYPE_NODE_PATH:
-			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"
-		TYPE_DICTIONARY:
-			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/dictionary_input.tscn"
-		TYPE_ARRAY:
-			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/array_input.tscn"
-		TYPE_OBJECT:
-			scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/object_input.tscn"
-		_:
-			if vector_types.has(property["type"]):
-				scene_string = "res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"
-			else:
-				scene_string = ""
-	return scene_string
 
 ## Handles the submit of the Object on the upper-most level
 ## Calls for all inputManager to submit their values and then it creates it into one big object
@@ -256,7 +225,7 @@ func parse_property_dict_custom(property_dict: Dictionary):
 				for key in prop_value.keys():
 					prop_value[key] = parse_property_dict_custom(prop_value[key])["value"]
 			var other_type:
-				if other_type in VECTOR_TYPES:
+				if other_type in TypeManager.VECTOR_TYPES:
 					prop_value = Helper.custom_to_vector(prop_value)
 		property_dict["value"] = prop_value
 		return property_dict
