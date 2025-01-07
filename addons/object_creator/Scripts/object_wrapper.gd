@@ -14,6 +14,7 @@ var parent_wrapper: ObjectWrapper
 var child_wrapper_ids: Array
 var obj
 var real_class_name: String
+var creation_properties
 
 var export_as_json: bool = false
 
@@ -51,6 +52,8 @@ func set_script_info():
 ## properties is supposed to be the basic property_list dictionary you can get from the gdscript object class, but with another key "value" added [br]
 ## If the object class needs arguments for the constructor, it takes those from the config "constructor_values" variable.
 func create_object(properties: Dictionary):
+	creation_properties = properties
+
 	var value_dict: Dictionary = {}
 	for prop_name in properties.keys():
 		if "value" in properties[prop_name].keys():

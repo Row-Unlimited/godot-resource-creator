@@ -1,6 +1,6 @@
 @tool
 class_name CreateObject
-extends Control
+extends TabScreen
 ## UI Window which creates custom input boxes for each property of the chosen class
 ## Checks if Inputs are correct by calling attempt_submit method in the InputManager objects
 
@@ -106,7 +106,6 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 ## Handles the submit of the Object on the upper-most level
 ## Calls for all inputManager to submit their values and then it creates it into one big object
 func on_submit_pressed():
-
 	var properties: Dictionary
 	for property in property_list:
 		properties[property["name"]] = property
@@ -164,6 +163,11 @@ func create_default_menu():
 func create_settings_menu():
 	add_headline("Settings")
 	menu_type = CreateMenuType.SETTINGS
+	var submit_panel = get_node("SubmitBox")
+	submit_panel.get_node("CreateObject").text = "Save Settings"
+	var check_buttons = submit_panel.get_children().filter(func(x): return x is CheckButton)
+	for check_button in check_buttons:
+		check_button.visible = false
 
 ## adds a headline with [paramname text] as String value at the top of the window
 func add_headline(text: String):

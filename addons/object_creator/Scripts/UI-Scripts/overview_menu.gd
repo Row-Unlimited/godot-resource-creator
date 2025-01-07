@@ -1,6 +1,6 @@
 @tool
 class_name OverviewMenu
-extends Control
+extends TabScreen
 
 signal export_activated(path_dict: Dictionary)
 signal export_errors_detected(error_ids: Array)

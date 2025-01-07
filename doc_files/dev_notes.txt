@@ -20,6 +20,9 @@ TODOs:
 		+ refactor code and remove old/unused variables, functions and scripts
 
 
+BUGS:
+	- settings menu can't be opened after closing it
+
 Future TODOs:
 	- Implement Color Input type
 	- Code refactoring:

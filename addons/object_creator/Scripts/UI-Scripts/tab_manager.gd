@@ -27,7 +27,7 @@ func _ready() -> void:
 	
 	tab_bar.deselect_enabled = true
 
-func create_new_tab(tab_name, tab_node: Control = null, tab_id = "") -> String:
+func create_new_tab(tab_name, tab_node: TabScreen = null, tab_id = "") -> String:
 	tab_counter += 1
 	var tab_index = tab_bar.tab_count
 	tab_id = tab_id if tab_id else str(tab_counter)
@@ -45,6 +45,8 @@ func close_tab(id):
 	var tab_index = get_tab_index(id)
 	tab_bar.remove_tab(tab_index)
 
+	var remove_node = get_tab_node(id)
+	remove_node.emit_signal("pre_tab_closed", remove_node)
 	var replace_node
 
 	if tab_index - 1 >= 0:
@@ -54,7 +56,7 @@ func close_tab(id):
 	else:
 		replace_node = tab_screen.default_node
 
-	tab_screen.remove_node(get_tab_node(id), replace_node)
+	tab_screen.remove_node(remove_node, replace_node)
 	
 	
 	decrease_index_after(tab_index)

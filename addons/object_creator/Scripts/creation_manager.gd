@@ -71,14 +71,15 @@ func create_new_creation_screen(object_wrapper: ObjectWrapper, menu_type=CreateO
 	object_wrapper = set_up_new_wrapper(object_wrapper)
 	var new_create_window = create_object_screen.instantiate()
 	# give CreateObject callables to connect sub resource input managers to CreationManager
-	new_create_window.object_chosen_callable = Callable(self, "_on_sub_object_class_chosen")
-	new_create_window.object_edited_callable = Callable(self, "_on_sub_object_edit_clicked")
+	new_create_window.object_chosen_callable = _on_sub_object_class_chosen
+	new_create_window.object_edited_callable = _on_sub_object_edit_clicked
 	
 	new_create_window.initialize_UI(object_wrapper, menu_type)
 	tab_manager.create_new_tab(object_wrapper.file_class_name, new_create_window, object_wrapper.id)
-	new_create_window.connect("object_created", Callable(self, "_on_object_created"))
+	new_create_window.connect("object_created", _on_object_created)
+	new_create_window.connect("pre_tab_closed", _on_pre_tab_closed)
 	if menu_type != CreateObject.CreateMenuType.NORMAL:
-		new_create_window.connect("settings_changed", Callable(self, "_on_settings_changed"))
+		new_create_window.connect("settings_changed", _on_settings_changed)
 	return new_create_window
 
 ## loads all creatable classes by searching the project and creates the tree UI
@@ -147,12 +148,19 @@ func _on_settings_changed(plugin_config_object: Object):
 	var plugin_config_new = plugin_config_object
 	if plugin_config_object is ObjectWrapper:
 		plugin_config_new = plugin_config_object.obj
+	else:
+		Helper.throw_error("plugin_config was delivered to settings change without wrapper")
+	var new_plugin_values = plugin_config_object.creation_properties
+	new_plugin_values = Helper.filter_dict(new_plugin_values, func(x): return "value" in x.keys())
+	if new_plugin_values:
+		for key in new_plugin_values.keys():
+			new_plugin_values[key] = new_plugin_values[key]["value"]
+		plugin_config = Helper.apply_dict_values_object(plugin_config, new_plugin_values)
+		
+		ResourceSaver.save(plugin_config, PLUGIN_CONFIG_PATH)
 	
-	if plugin_config_new is PluginConfig:
-		plugin_config = plugin_config_new
-		ResourceSaver.save(plugin_config_new, PLUGIN_CONFIG_PATH)
-		_on_overview_button_pressed()
-		tab_manager.close_tab(plugin_config_object.id)
+	_on_overview_button_pressed()
+	tab_manager.close_tab(plugin_config_object.id)
 
 func _on_tree_refresh_clicked():
 	class_tree_mapping.clear()
@@ -174,6 +182,13 @@ func _on_tab_closed(id):
 		pass
 	else:
 		tab_manager.delete_object(id)
+
+func _on_pre_tab_closed(node: TabScreen):
+	if node.menu_type == CreateObject.CreateMenuType.SETTINGS:
+		if settings_menu in created_object_wrappers:
+			created_object_wrappers.remove_at(created_object_wrappers.find(settings_menu))
+		export_tree.reset_export_view(created_object_wrappers)
+		settings_menu = null
 
 
 func _on_object_created(object_wrapper: ObjectWrapper):
