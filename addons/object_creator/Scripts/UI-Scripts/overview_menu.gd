@@ -9,7 +9,7 @@ signal export_errors_detected(error_ids: Array)
 @onready var export_tree: TreeExportView = $ExportMenu/ExportTree
 
 func _ready() -> void:
-	export_button.connect("pressed", Callable(self, "_on_export_button_pressed"))
+	export_button.connect("pressed", _on_export_button_pressed)
 
 
 ## checks if paths are non-existant or invalid and changes the tree UI so the user sees the error

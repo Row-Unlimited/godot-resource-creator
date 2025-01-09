@@ -7,7 +7,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lts6w"]
 resource_local_to_scene = true
 shader = ExtResource("1_0t411")
-shader_parameter/error_color = Color(0.476942, 0, 0.0981081, 1)
+shader_parameter/error_color = Color(1, 0, 0, 1)
 shader_parameter/active = false
 shader_parameter/opacity = 0.4
 

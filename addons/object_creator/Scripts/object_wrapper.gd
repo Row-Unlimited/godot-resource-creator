@@ -2,7 +2,6 @@
 class_name ObjectWrapper
 extends Resource
 
-@export var times_used: int = 0 ## how often this class was created, is used to sort the classes in the choice window
 @export var file_class_name: String
 ## path to the script
 @export var path: String
@@ -29,10 +28,9 @@ var save_dict: Dictionary :
 		save_dict = value
 
 
-func _init(path: String = "", name: String = "", obj = null, times_used = 0, config = {}):
+func _init(path: String = "", name: String = "", obj = null, config = {}):
 	self.path = path
 	file_class_name = name
-	self.times_used = times_used
 	self.obj = obj
 	self.class_config = config
 	set_script_info()

@@ -42,10 +42,10 @@ func initialize_input(property_dict: Dictionary):
 	edit_button = input_container.get_node("EditSection/EditButton")
 	clear_button = input_container.get_node("EditSection/ClearButton")
 
-	property_select.connect("item_selected", Callable(self, "_on_item_selected"))
-	choose_class_button.connect("pressed", Callable(self, "_on_choose_class_button_clicked"))
-	edit_button.connect("pressed", Callable(self, "_on_edit_button_clicked"))
-	clear_button.connect("pressed", Callable(self, "_on_clear_button_clicked"))
+	property_select.connect("item_selected", _on_item_selected)
+	choose_class_button.connect("pressed", _on_choose_class_button_clicked)
+	edit_button.connect("pressed", _on_edit_button_clicked)
+	clear_button.connect("pressed", _on_clear_button_clicked)
 	if property_dict:
 		property_type_label.text = property_dict["class_name"]
 

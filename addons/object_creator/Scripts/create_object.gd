@@ -4,14 +4,20 @@ extends TabScreen
 ## UI Window which creates custom input boxes for each property of the chosen class
 ## Checks if Inputs are correct by calling attempt_submit method in the InputManager objects
 
-const PLUGIN_CONFIG_PATH = "res://addons/object_creator/PluginConfig.tres"
+enum CreateMenuType {
+	NORMAL,
+	SETTINGS
+}
 
-var test_input = preload("res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn")
-var headline = preload("res://addons/object_creator/Scenes/UI Addon Scenes/headline.tscn")
+const SKIPPED_PROPERTIES =["resource_local_to_scene", "resource_path", "resource_name", "resource_scene_unique_id"]
+const PLUGIN_CONFIG_PATH = "res://addons/object_creator/PluginConfig.tres"
+## array that yields us the correct signal string with the enum ints as index
+const MENU_TYPE_OUTPUT_SIGNAL = ["object_created", "settings_changed"]
+const HEADLINE_SCENE = preload("res://addons/object_creator/Scenes/UI Addon Scenes/headline.tscn")
+
+var menu_type = CreateMenuType.NORMAL
+
 var input_root_node: VBoxContainer
-@onready var submit_button: Button = get_node("SubmitBox/CreateObject")
-@onready var toggle_json_button: CheckButton = get_node("SubmitBox/ToggleJsonButton")
-@onready var toggle_hidden_button: CheckButton = get_node("SubmitBox/ToggleViewHidden")
 var input_nodes: Array
 var object_wrapper: ObjectWrapper
 var property_list: Array
@@ -21,19 +27,11 @@ var session_dict : Dictionary
 # these are given to CreateObject by CreationManager after instantiating
 var object_chosen_callable: Callable
 var object_edited_callable: Callable
-
 var accept_empty_inputs
 
-var SKIPPED_PROPERTIES =["resource_local_to_scene", "resource_path", "resource_name", "resource_scene_unique_id"]
-
-
-var menu_type = CreateMenuType.NORMAL
-enum CreateMenuType {
-	NORMAL,
-	SETTINGS
-}
-# array that yields us the correct signal string with the enum ints as index
-const type_to_output_signal = ["object_created", "settings_changed"]
+@onready var submit_button: Button = get_node("SubmitBox/CreateObject")
+@onready var toggle_json_button: CheckButton = get_node("SubmitBox/ToggleJsonButton")
+@onready var toggle_hidden_button: CheckButton = get_node("SubmitBox/ToggleViewHidden")
 
 signal object_created(object)
 signal settings_changed(plugin_config_object)
@@ -113,7 +111,7 @@ func on_submit_pressed():
 	var input_error_nodes: Array
 
 	# so we dynamically swap signals, so we can use this to export for settings for example
-	var output_signal = type_to_output_signal[menu_type]
+	var output_signal = MENU_TYPE_OUTPUT_SIGNAL[menu_type]
 
 	for input_node: InputManager in input_nodes:
 		var input_value 
@@ -171,7 +169,7 @@ func create_settings_menu():
 
 ## adds a headline with [paramname text] as String value at the top of the window
 func add_headline(text: String):
-	var new_headline = headline.instantiate()
+	var new_headline = HEADLINE_SCENE.instantiate()
 	new_headline.text = text
 	input_root_node.add_child(new_headline)
 	input_root_node.move_child(new_headline, 0)

@@ -29,8 +29,8 @@ var default_color = Color(1, 1, 1)
 func _ready() -> void:
 	columns = 2
 	_create_base_nodes()
-	connect("item_activated", Callable(self, "_on_item_activated"))
-	connect("button_clicked", Callable(self, "_handle_button_press"))
+	connect("item_activated", _on_item_activated)
+	connect("button_clicked", _handle_button_press)
 
 func _create_base_nodes():
 	root_item = create_item()

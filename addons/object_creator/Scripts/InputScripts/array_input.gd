@@ -41,7 +41,7 @@ func add_element(element_type: Variant.Type, def_input=null):
 	var new_input_manager: InputManager = result_dict["input_manager"]
 	
 	# connect remove and move buttons
-	new_input_node.connect("move_node", Callable(self, "_on_move_node"))
+	new_input_node.connect("move_node", _on_move_node)
 	if def_input != null:
 		new_input_manager.receive_input(def_input)
 

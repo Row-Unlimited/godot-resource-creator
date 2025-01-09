@@ -10,7 +10,7 @@ func set_up_nodes():
 	type_label = input_container.get_node("PropertyType")
 	name_label = input_container.get_node("PropertyName")
 	input_node = input_container.get_node("Input")
-	input_node.connect("item_selected", Callable(self, "_on_item_selected"))
+	input_node.connect("item_selected", _on_item_selected)
 
 
 func initialize_input(property_dict: Dictionary):

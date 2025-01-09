@@ -21,9 +21,9 @@ var hover_target: int
 func _ready() -> void:
 	tab_bar = get_node("TabBar")
 	tab_screen = get_node("MainScreen")
-	tab_bar.connect("tab_selected", Callable(self, "change_tab_screen"))
+	tab_bar.connect("tab_selected", change_tab_screen)
 	# signal is for closing tabs
-	tab_bar.connect("tab_hovered", Callable(self, "_on_tab_hovered"))
+	tab_bar.connect("tab_hovered", _on_tab_hovered)
 	
 	tab_bar.deselect_enabled = true
 

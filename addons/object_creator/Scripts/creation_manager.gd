@@ -7,18 +7,12 @@ const SETTINGS_CLASS_PATH = "res://addons/object_creator/Scripts/plugin_config.g
 
 var create_object_screen = preload("res://addons/object_creator/Scenes/create_object.tscn")
 
-var tab_manager: TabManager
-
 var class_loader: ClassLoader
 var exporter: Exporter
 
 var class_tree: TreeClassView
 var export_tree: TreeExportView
 var class_tree_mapping: Dictionary
-
-var main_screen: ScreenManager
-var overview_menu: OverviewMenu
-var menu_side_bar: Control
 
 var settings_button: TextureButton
 var settings_menu: ObjectWrapper
@@ -30,6 +24,11 @@ var object_counter = 0
 var plugin_config: PluginConfig
 var default_export_path = ""
 
+@onready var tab_manager: TabManager = get_node("TabManager")
+@onready var main_screen: ScreenManager = get_node("TabManager/MainScreen")
+@onready var overview_menu: OverviewMenu = get_node("TabManager/MainScreen/OverviewMenu")
+@onready var menu_side_bar: Control = get_node("MenuSideBar")
+
 func _ready() -> void:
 	# set up class loader and Exporter
 	class_loader = ClassLoader.new()
@@ -38,30 +37,25 @@ func _ready() -> void:
 	add_child(exporter)
 
 	# set up base UI variables
-	tab_manager = get_node("TabManager")
-	tab_manager.connect("tab_closed", Callable(self, "_on_tab_closed"))
-	main_screen = get_node("TabManager/MainScreen")
-	overview_menu = get_node("TabManager/MainScreen/OverviewMenu")
+	tab_manager.connect("tab_closed", _on_tab_closed)
 	main_screen.default_node = overview_menu
-	menu_side_bar = get_node("MenuSideBar")
-	menu_side_bar.get_node("ObjectOverviewButton").connect("pressed", Callable(self, "_on_overview_button_pressed"))
-	menu_side_bar.get_node("SettingsButton").activate_button(Callable(self, "_on_settings_button_pressed"))
+	menu_side_bar.get_node("ObjectOverviewButton").connect("pressed", _on_overview_button_pressed)
+	menu_side_bar.get_node("SettingsButton").activate_button(_on_settings_button_pressed)
 
 	# sets up signals for the overview_menu, for exporting
-	overview_menu.connect("export_activated", Callable(self, "_on_export_activated"))
+	overview_menu.connect("export_activated", _on_export_activated)
 
 	# set up class_tree for starting new creation processes
 	class_tree = overview_menu.get_node("CreateObjectMenu/TreeClassView")
-	class_tree.connect("add_button_clicked", Callable(self, "_on_add_item_clicked"))
-	class_tree.connect("refresh_clicked", Callable(self, "_on_tree_refresh_clicked"))
+	class_tree.connect("add_button_clicked", _on_add_item_clicked)
+	class_tree.connect("refresh_clicked", _on_tree_refresh_clicked)
 	set_up_class_tree()
 
 	# set up export_tree which gives an overview over created objects and lets you edit paths/objects
 	export_tree = overview_menu.get_node("ExportMenu/ExportTree")
-	export_tree.connect("edit_item_clicked", Callable(self, "_on_obj_edit_clicked"))
-	export_tree.connect("reset_clicked", Callable(self, "_on_export_reset_clicked"))
+	export_tree.connect("edit_item_clicked", _on_obj_edit_clicked)
+	export_tree.connect("reset_clicked", _on_export_reset_clicked)
 	export_tree.connect("delete_object_clicked", remove_wrapper)
-
 
 	# sets up the config and user settings
 	config_set_up()

@@ -15,7 +15,7 @@ var root_item: TreeItem
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	_create_base_nodes()
-	connect("button_clicked", Callable(self, "_on_button_clicked"))
+	connect("button_clicked", _on_button_clicked)
 
 func _create_base_nodes():
 	var new_item = self.create_item()

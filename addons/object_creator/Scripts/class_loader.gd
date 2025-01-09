@@ -35,7 +35,7 @@ func return_possible_classes() -> Array:
 			continue
 
 		var wrapper_config = plugin_config.get_config_by_path(path)
-		var new_wrapper = ObjectWrapper.new(path, name, null, 0, wrapper_config)
+		var new_wrapper = ObjectWrapper.new(path, name, null, wrapper_config)
 		if new_wrapper.constr_invalid:
 			Helper.throw_error("No constructor values given in config for class " + new_wrapper.real_class_name + " with constructor")
 			continue

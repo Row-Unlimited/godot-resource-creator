@@ -9,7 +9,7 @@ func initialize_input(property_dict: Dictionary):
 	type_label = input_container.get_node("PropertyType")
 	name_label = input_container.get_node("PropertyName")
 	input_node = input_container.get_node("Input")
-	input_node.connect("toggled", Callable(self, "on_toggled"))
+	input_node.connect("toggled", on_toggled)
 
 	if property_dict:
 		set_property_information(property_dict)

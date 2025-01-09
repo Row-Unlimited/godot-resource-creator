@@ -46,9 +46,9 @@ func set_up_nodes():
 	element_type_button = add_element_section.get_node("ElementTypeButton")
 	
 	# connect buttons
-	add_element_button.connect("pressed", Callable(self, "_on_add_element_button_pressed"))
-	element_type_button.connect("item_selected", Callable(self, "_on_type_button_selected"))
-	add_element_section.get_node("MinimizeButton").connect("pressed", Callable(self, "_on_minimize_pressed"))
+	add_element_button.connect("pressed", _on_add_element_button_pressed)
+	element_type_button.connect("item_selected", _on_type_button_selected)
+	add_element_section.get_node("MinimizeButton").connect("pressed", _on_minimize_pressed)
 	
 	for type in TypeManager.get_all_values(TypeManager.TypeValue.READ_STRING):
 		element_type_button.add_item(type)

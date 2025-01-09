@@ -26,42 +26,6 @@ var object_wrappers: Array
 var class_configs: Array
 
 
-
-func contains(object_wrapper: ObjectWrapper) -> ObjectWrapper:
-	for classObject: ObjectWrapper in object_wrappers:
-		if classObject.className == object_wrapper.className:
-			return classObject
-	return null
-
-func update_user_path_information(path: String):
-	for pathTuple: PathTuple in used_exportPaths:
-		if pathTuple.path == path:
-			pathTuple.times_used += 1
-			return
-	var new_tuple = PathTuple.new(path)
-	used_exportPaths.append(new_tuple)
-
-func update_user_class_information(classObjectNew: ObjectWrapper):
-	for object_wrapper: ObjectWrapper in object_wrappers:
-		if object_wrapper.path == classObjectNew.path:
-			object_wrapper.times_used += 1
-			return
-	object_wrappers.append(classObjectNew)
-
-func sort_arrays():
-	used_exportPaths.sort_custom(return_higher_path)
-	object_wrappers.sort_custom(return_higher_class)
-
-func return_higher_path(a: PathTuple, b: PathTuple):
-	if a.times_used >= b.times_used:
-		return true
-	return false
-
-func return_higher_class(a: ObjectWrapper, b: ObjectWrapper):
-	if a.times_used >= b.times_used:
-		return true
-	return false
-
 func load_class_configs():
 	class_configs = Helper.search_filetypes_in_directory(".json", "res://addons/object_creator/ClassConfigs")
 	class_configs = class_configs.map(func(x): return JSON.new().parse_string(FileAccess.get_file_as_string(x)))
