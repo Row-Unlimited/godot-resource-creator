@@ -2,7 +2,7 @@
 class_name TreeClassView
 extends Tree
 
-signal add_button_clicked(class_id)
+signal add_button_clicked(class_id, is_left_mouse: bool)
 signal refresh_clicked
 
 var categories: Array = []
@@ -64,7 +64,7 @@ func _on_button_clicked(item, column, id, mouse_button_index):
 	if item_id == "BASE_ITEM":
 		emit_signal("refresh_clicked")
 	else:
-		emit_signal("add_button_clicked", item_id)
+		emit_signal("add_button_clicked", item_id, mouse_button_index == 1)
 
 func reset_tree():
 	self.clear()

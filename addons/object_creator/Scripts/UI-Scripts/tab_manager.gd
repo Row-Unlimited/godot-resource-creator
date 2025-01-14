@@ -36,6 +36,10 @@ func create_new_tab(tab_name, tab_node: TabScreen = null, tab_id = "") -> String
 	tab_bar.add_tab(tab_name)
 	tab_bar.set_tab_metadata(tab_index, {"ID": tab_id})
 
+	if tab_bar.tab_count == 1:
+		deselect_tab()
+		tab_screen.set_active_node(tab_screen.default_node)
+
 	return tab_id
 
 ## closes a tab and then changes the UI, decreases the indicies after and emits a signal
@@ -109,6 +113,9 @@ func select_tab(index: int = -1):
 		return
 	else:
 		tab_bar.current_tab = index if index > -1 else tab_bar.tab_count + index
+
+func select_new_tab():
+	select_tab(tab_bar.tab_count - 1)
 
 func deselect_tab():
 	tab_bar.current_tab = -1

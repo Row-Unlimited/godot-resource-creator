@@ -27,4 +27,4 @@ func _exit_tree():
 	dock.free()
 
 func _get_plugin_icon():
-	return EditorInterface.get_editor_theme().get_icon("Node", "EditorIcons")
+	return load("res://addons/object_creator/Assets/textures/icon_file_new.png")

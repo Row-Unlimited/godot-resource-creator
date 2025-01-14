@@ -161,9 +161,10 @@ func _on_tree_refresh_clicked():
 	class_tree.reset_tree()
 	set_up_class_tree()
 
-func _on_add_item_clicked(class_id):
+func _on_add_item_clicked(class_id, open_new_window: bool):
 	create_new_creation_screen(class_tree_mapping[class_id])
-	pass
+	if open_new_window:
+		tab_manager.select_new_tab()
 
 func _on_overview_button_pressed():
 	tab_manager.current_node_id = "main"
