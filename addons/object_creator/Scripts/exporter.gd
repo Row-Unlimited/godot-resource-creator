@@ -69,9 +69,20 @@ func create_file_name(path: String, object: Object, is_json=false) -> String:
 	fileName = file_header + "000" + str(number_files) + file_ending
 	return fileName
 
-func save_settings_file(config_object: PluginConfig):
-	var skipped_properties =["resource_local_to_scene", "resource_path", "resource_name"]
-	var current_config = load(PLUGIN_CONFIG_PATH)
-	Helper.update_object(current_config, config_object)
-	ResourceSaver.save(current_config, PLUGIN_CONFIG_PATH)
+func save_settings_file(config_object: ObjectWrapper, old_config: PluginConfig):
+	var plugin_config_new = null
+	if config_object.obj is PluginConfig:
+		plugin_config_new = config_object.obj
+		var new_plugin_values = config_object.creation_properties
+		new_plugin_values = Helper.filter_dict(new_plugin_values, func(x): return "value" in x.keys())
+		if new_plugin_values:
+			for key in new_plugin_values.keys():
+				new_plugin_values[key] = new_plugin_values[key]["value"]
+			old_config = Helper.apply_dict_values_object(old_config, new_plugin_values)
+			
+			ResourceSaver.save(old_config, PLUGIN_CONFIG_PATH)
+	else:
+		Helper.throw_error("non PluginConfig object as argument in save_settings_file")
+	return plugin_config_new
+	
 	

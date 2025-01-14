@@ -4,11 +4,12 @@ extends Node
 
 const PLUGIN_CONFIG_PATH = "res://addons/object_creator/PluginConfig.tres"
 const SETTINGS_CLASS_PATH = "res://addons/object_creator/Scripts/plugin_config.gd"
-
-var create_object_screen = preload("res://addons/object_creator/Scenes/create_object.tscn")
+const CREATE_OBJECT_SCREEN = preload("res://addons/object_creator/Scenes/create_object.tscn")
 
 var class_loader: ClassLoader
 var exporter: Exporter
+
+var main_screen_node: Control
 
 var class_tree: TreeClassView
 var export_tree: TreeExportView
@@ -36,23 +37,26 @@ func _ready() -> void:
 	exporter = Exporter.new()
 	add_child(exporter)
 
+	if not main_screen_node:
+		main_screen_node = overview_menu # assign default menu to main_screen_node if it's empty
+
 	# set up base UI variables
 	tab_manager.connect("tab_closed", _on_tab_closed)
-	main_screen.default_node = overview_menu
+	main_screen.default_node = main_screen_node
 	menu_side_bar.get_node("ObjectOverviewButton").connect("pressed", _on_overview_button_pressed)
 	menu_side_bar.get_node("SettingsButton").activate_button(_on_settings_button_pressed)
 
-	# sets up signals for the overview_menu, for exporting
-	overview_menu.connect("export_activated", _on_export_activated)
+	# sets up signals for the main_screen_node, for exporting
+	main_screen_node.connect("export_activated", _on_export_activated)
 
 	# set up class_tree for starting new creation processes
-	class_tree = overview_menu.get_node("CreateObjectMenu/TreeClassView")
+	class_tree = main_screen_node.get_node("CreateObjectMenu/TreeClassView")
 	class_tree.connect("add_button_clicked", _on_add_item_clicked)
 	class_tree.connect("refresh_clicked", _on_tree_refresh_clicked)
 	set_up_class_tree()
 
 	# set up export_tree which gives an overview over created objects and lets you edit paths/objects
-	export_tree = overview_menu.get_node("ExportMenu/ExportTree")
+	export_tree = main_screen_node.get_node("ExportMenu/ExportTree")
 	export_tree.connect("edit_item_clicked", _on_obj_edit_clicked)
 	export_tree.connect("reset_clicked", _on_export_reset_clicked)
 	export_tree.connect("delete_object_clicked", remove_wrapper)
@@ -63,7 +67,7 @@ func _ready() -> void:
 
 func create_new_creation_screen(object_wrapper: ObjectWrapper, menu_type=CreateObject.CreateMenuType.NORMAL):
 	object_wrapper = set_up_new_wrapper(object_wrapper)
-	var new_create_window = create_object_screen.instantiate()
+	var new_create_window = CREATE_OBJECT_SCREEN.instantiate()
 	# give CreateObject callables to connect sub resource input managers to CreationManager
 	new_create_window.object_chosen_callable = _on_sub_object_class_chosen
 	new_create_window.object_edited_callable = _on_sub_object_edit_clicked
@@ -139,19 +143,15 @@ func _on_settings_button_pressed():
 			_on_overview_button_pressed()
 
 func _on_settings_changed(plugin_config_object: Object):
-	var plugin_config_new = plugin_config_object
 	if plugin_config_object is ObjectWrapper:
-		plugin_config_new = plugin_config_object.obj
+		var new_config = exporter.save_settings_file(plugin_config_object, plugin_config)
+		if new_config != null:
+			plugin_config = new_config
+		else:
+			Helper.throw_error("new config is null after saving")
 	else:
 		Helper.throw_error("plugin_config was delivered to settings change without wrapper")
-	var new_plugin_values = plugin_config_object.creation_properties
-	new_plugin_values = Helper.filter_dict(new_plugin_values, func(x): return "value" in x.keys())
-	if new_plugin_values:
-		for key in new_plugin_values.keys():
-			new_plugin_values[key] = new_plugin_values[key]["value"]
-		plugin_config = Helper.apply_dict_values_object(plugin_config, new_plugin_values)
-		
-		ResourceSaver.save(plugin_config, PLUGIN_CONFIG_PATH)
+	
 	
 	_on_overview_button_pressed()
 	tab_manager.close_tab(plugin_config_object.id)
@@ -167,7 +167,7 @@ func _on_add_item_clicked(class_id):
 
 func _on_overview_button_pressed():
 	tab_manager.current_node_id = "main"
-	main_screen.set_active_node(overview_menu)
+	main_screen.set_active_node(main_screen_node)
 	tab_manager.deselect_tab()
 
 func _on_tab_closed(id):
@@ -194,7 +194,7 @@ func _on_object_created(object_wrapper: ObjectWrapper):
 			parent_wrapper.child_wrapper_ids.append(object_wrapper.id)
 	created_object_wrappers.append(object_wrapper)
 	export_tree.add_new_object(object_wrapper)
-	main_screen.set_active_node(overview_menu)
+	main_screen.set_active_node(main_screen_node)
 	tab_manager.close_tab(object_wrapper.id)
 
 func _on_export_activated(path_dict: Dictionary):
@@ -204,7 +204,7 @@ func _on_export_activated(path_dict: Dictionary):
 		if wrapper.id in path_dict.keys():
 			wrapper.export_path = path_dict[wrapper.id]
 		else:
-			assert(false, "Not all wrappers are in the export path_dict")
+			Helper.throw_error("Not all wrappers are in the export path_dict")
 	exporter.export_wrappers(parent_wrappers)
 
 func _on_export_reset_clicked():

@@ -27,7 +27,7 @@ var class_configs: Array
 
 
 func load_class_configs():
-	class_configs = Helper.search_filetypes_in_directory(".json", "res://addons/object_creator/ClassConfigs")
+	class_configs = DirHelper.search_filetypes_in_directory(".json", "res://addons/object_creator/ClassConfigs")
 	class_configs = class_configs.map(func(x): return JSON.new().parse_string(FileAccess.get_file_as_string(x)))
 
 func get_config_by_path(path: String):

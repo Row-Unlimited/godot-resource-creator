@@ -204,14 +204,6 @@ func save_session():
 	session_dict = save_dict
 	return save_dict.duplicate()
 
-func load_session(session_dict: Dictionary):
-	var properties_dict = session_dict["properties"]
-	for input_node in input_nodes:
-		var input_name = input_node.property["name"]
-		if input_name in properties_dict.keys():
-			var parsed_property_dict = parse_property_dict_custom(properties_dict[input_name])
-			input_node.receive_input(parsed_property_dict["value"])
-
 ## parses back our session dict so the input managers can use it as input
 func parse_property_dict_custom(property_dict: Dictionary):
 		var prop_type = property_dict["type"]

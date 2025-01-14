@@ -65,7 +65,7 @@ func receive_input(input):
 	if typeof(input) in acceptable_types:
 		input_node.text = str(input)
 	else:
-		assert(false, "DEFAULTVALUE-ERROR: default_value type not of acceptable types: " + str(acceptable_types))
+		Helper.throw_error("DEFAULTVALUE-ERROR: default_value type not of acceptable types: " + str(acceptable_types))
 
 func set_input_disabled(is_disabled: bool):
 	input_node.editable = not is_disabled

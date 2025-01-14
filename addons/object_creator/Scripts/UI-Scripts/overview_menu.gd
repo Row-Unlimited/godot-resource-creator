@@ -11,7 +11,6 @@ signal export_errors_detected(error_ids: Array)
 func _ready() -> void:
 	export_button.connect("pressed", _on_export_button_pressed)
 
-
 ## checks if paths are non-existant or invalid and changes the tree UI so the user sees the error
 ## otherwise it sends a signal with the path dict so the creation_manager can start exporting
 func _on_export_button_pressed():

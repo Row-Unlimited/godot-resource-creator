@@ -36,7 +36,7 @@ func receive_input(input):
 		input = Helper.custom_to_vector(input)
 	
 	if not is_vector(input):
-		assert(false, "Error: you are trying to input a non vector object to a vector input")
+		Helper.throw_error("Error: you are trying to input a non vector object to a vector input")
 		return
 	var input_values = []
 	input_node.x_input.text = str(input.x)

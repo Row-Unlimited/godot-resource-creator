@@ -8,8 +8,8 @@ var plugin_config = preload(plugin_configPath)
 
 func return_class_names():
 	var start_path = "res://"
-	var filePaths: Array = Helper.search_filetypes_in_directory(".gd", start_path, plugin_config.ignored_directories)
-	filePaths.append_array(Helper.search_filetypes_in_directory(".cs", start_path, plugin_config.ignored_directories))
+	var filePaths: Array = DirHelper.search_filetypes_in_directory(".gd", start_path, plugin_config.ignored_directories)
+	filePaths.append_array(DirHelper.search_filetypes_in_directory(".cs", start_path, plugin_config.ignored_directories))
 	var class_names = []
 	for path in filePaths:
 		var new_script: Script = load(path)
@@ -23,8 +23,8 @@ func return_class_names():
 func return_possible_classes() -> Array:
 	var wrapper_array = []
 	var start_path = "res://"
-	var filePaths: Array = Helper.search_filetypes_in_directory(".gd", start_path, plugin_config.ignored_directories)
-	filePaths.append_array(Helper.search_filetypes_in_directory(".cs", start_path, plugin_config.ignored_directories))
+	var filePaths: Array = DirHelper.search_filetypes_in_directory(".gd", start_path, plugin_config.ignored_directories)
+	filePaths.append_array(DirHelper.search_filetypes_in_directory(".cs", start_path, plugin_config.ignored_directories))
 	var temp_wrappers = []
 	
 	for path in filePaths:
@@ -46,10 +46,3 @@ func return_possible_classes() -> Array:
 	wrapper_array = temp_wrappers
 	
 	return wrapper_array
-
-## will replace integrated classes and use the creation_config in plugin_config
-func return_sub_classes() -> Array:
-	
-
-
-	return []

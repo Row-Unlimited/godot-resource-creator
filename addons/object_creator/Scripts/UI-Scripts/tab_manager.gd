@@ -80,7 +80,7 @@ func change_tab_screen(index: int):
 		return
 	var tab_id = get_tab_id(index)
 	if not tab_id:
-		assert(false, "no id for this index")
+		Helper.throw_error("no id for this index")
 	else:
 		var tab_node = get_tab_node(tab_id)
 		tab_screen.set_active_node(tab_node)

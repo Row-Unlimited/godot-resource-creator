@@ -30,7 +30,7 @@ func check_typed():
 		disable_select_type_button(["Object"], true, true)
 	else:
 		# TODO  find solution
-		assert(false, "unsupported type in typed array")
+		Helper.throw_error("unsupported type in typed array")
 
 ## adds a new element to the input UI
 ## loads the correct InputManager and puts it into an MultiElementContainer		

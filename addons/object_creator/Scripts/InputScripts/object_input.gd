@@ -115,7 +115,7 @@ func receive_input(input):
 					_on_choose_class_button_clicked()
 					
 	else:
-		assert(false, "ERROR: NON OBJECT CANNOT BE RECEIVED AS INPUT FOR OBJECT INPUT")
+		Helper.throw_error("ERROR: NON OBJECT CANNOT BE RECEIVED AS INPUT FOR OBJECT INPUT")
 
 func submit_status_dict():
 	var new_status_dict = {

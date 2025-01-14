@@ -45,7 +45,7 @@ func attempt_submit(mute_warnings=false) -> Variant:
 			if new_key in return_dict.keys():
 				# TODO: add show input warning for missing key
 				missing_input_nodes.append(input_manager)
-				assert(false, "ERROR: duplicate keys!")
+				Helper.throw_error("ERROR: duplicate keys!")
 			if not value is InputError:
 				input_manager.hide_input_warning()
 				return_dict[new_key] = value
@@ -88,10 +88,6 @@ func receive_input(input: Dictionary):
 	for key in input.keys():
 		var item_value = input[key]
 		add_element(typeof(item_value), key, item_value)
-
-func make_name_input(is_dict=false):
-	# empty function since the MultiElementContainer needs to be set with that, which happens one step above
-	pass
 
 func get_all_keys() -> Array[String]:
 	var key_list: Array[String] = [] as Array[String]

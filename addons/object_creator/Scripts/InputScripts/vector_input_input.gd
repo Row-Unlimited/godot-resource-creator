@@ -96,8 +96,3 @@ func return_input() -> Variant:
 	# TODO: fix error behavior for vectors
 	return_vector = Helper.custom_to_vector(value_array, is_int)
 	return return_vector
-
-## checks if a vector input is valid
-func check_valid(value):
-	return (value.is_valid_int() if is_int else value.is_valid_float())
-		
