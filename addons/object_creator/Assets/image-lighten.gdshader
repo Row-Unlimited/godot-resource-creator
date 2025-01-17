@@ -8,7 +8,8 @@ void fragment() {
 			COLOR.rgb *= 0.7;
 		}
 		else {
-			COLOR.rgb *= 1.3;
+			COLOR.rgb = vec3(max(COLOR.r, 0.1), max(COLOR.g, 0.1), max(COLOR.b, 0.1));
+			COLOR.rgb *= 2.;
 		}
 	}
 }

@@ -30,6 +30,8 @@ var default_export_path = ""
 @onready var overview_menu: OverviewMenu = get_node("TabManager/MainScreen/OverviewMenu")
 @onready var menu_side_bar: Control = get_node("MenuSideBar")
 
+signal reload_plugin
+
 func _ready() -> void:
 	# set up class loader and Exporter
 	class_loader = ClassLoader.new()
@@ -44,6 +46,7 @@ func _ready() -> void:
 	tab_manager.connect("tab_closed", _on_tab_closed)
 	main_screen.default_node = main_screen_node
 	menu_side_bar.get_node("ObjectOverviewButton").connect("pressed", _on_overview_button_pressed)
+	menu_side_bar.get_node("RefreshButton").connect("pressed", _on_plugin_refresh_clicked)
 	menu_side_bar.get_node("SettingsButton").activate_button(_on_settings_button_pressed)
 
 	# sets up signals for the main_screen_node, for exporting
@@ -231,4 +234,8 @@ func _on_sub_object_class_chosen(wrapper: ObjectWrapper, input_manager: ObjectIn
 func _on_sub_object_edit_clicked(wrapper: ObjectWrapper, input_manager: ObjectInput):
 	if not tab_manager.open_tab_by_id(wrapper.id):
 		input_manager.object_create_screen = create_new_creation_screen(wrapper)
+
+func _on_plugin_refresh_clicked():
+	emit_signal("reload_plugin")
+
 #endregion

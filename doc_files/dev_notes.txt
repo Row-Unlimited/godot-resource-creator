@@ -1,9 +1,7 @@
 TODOs:
-	- Implement config for dictionaries
-	- Fix config of the sub configs, so they actually apply and throw errors
+	- Implement warning popup for plugin reload
 	- UX:
-		+ Configure the neighbors correctly for easier navigation with tab
-			~ maybe add other shortcuts like moving array elements with arrow keys
+		+ maybe add other shortcuts like moving array elements with arrow keys
 		+ Add Path selection option-button to create_object and add my line-edit plugin to the line-edit in the export menu
 	- UI:
 		+ More UI Improvements like changing the tabBar node
