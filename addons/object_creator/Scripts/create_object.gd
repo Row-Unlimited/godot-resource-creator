@@ -56,7 +56,8 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 	var class_script: Script = load(object_wrapper.path)
 	property_list = class_script.get_script_property_list()
 	input_root_node = get_node("ScrollContainer/VBoxContainer")
-	
+	property_list = find_tooltip_comments(property_list, class_script.source_code)
+
 	# sets up the window settings, so whether it is a special menu or whether it should accept empty inputs
 	menu_set_up(create_menu_type)
 	# filters out variables that are not export variables
@@ -173,6 +174,20 @@ func add_headline(text: String):
 	new_headline.text = text
 	input_root_node.add_child(new_headline)
 	input_root_node.move_child(new_headline, 0)
+
+func find_tooltip_comments(property_list: Array, source_code: String):
+	var var_comments = Helper.get_export_var_docs(property_list, source_code)
+	for i in property_list.size():
+		var var_name = property_list[i]["name"]
+		if not var_name in var_comments.keys():
+			continue
+		else:
+			var comments =  var_comments[var_name]
+			comments = comments.map(func(x): return "- " + x.substr(2)) # remove comment hashtags from comment string
+			comments = "\n".join(PackedStringArray(comments))
+			property_list[i]["tooltip_docs"] = comments
+	print(property_list)
+	return property_list
 
 ## Saves the current creation status as a dict. [br]
 ## Every InputManager returns a Dict with a [b]property name[/b] key or 

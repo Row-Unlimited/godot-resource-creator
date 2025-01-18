@@ -10,7 +10,7 @@ var class_loader: ClassLoader
 var exporter: Exporter
 
 var main_screen_node: Control
-
+# variables for the default scene
 var class_tree: TreeClassView
 var export_tree: TreeExportView
 var class_tree_mapping: Dictionary
@@ -39,16 +39,32 @@ func _ready() -> void:
 	exporter = Exporter.new()
 	add_child(exporter)
 
-	if not main_screen_node:
-		main_screen_node = overview_menu # assign default menu to main_screen_node if it's empty
-
 	# set up base UI variables
 	tab_manager.connect("tab_closed", _on_tab_closed)
-	main_screen.default_node = main_screen_node
 	menu_side_bar.get_node("ObjectOverviewButton").connect("pressed", _on_overview_button_pressed)
 	menu_side_bar.get_node("RefreshButton").connect("pressed", _on_plugin_refresh_clicked)
 	menu_side_bar.get_node("SettingsButton").activate_button(_on_settings_button_pressed)
 
+	# set up config
+	plugin_config = load("res://addons/object_creator/PluginConfig.tres")
+	default_export_path = plugin_config.set_exportPath if plugin_config.set_exportPath else default_export_path
+	# check if user wants to overwrite default scene
+	if plugin_config.override_default_scene and load(plugin_config.override_default_scene) is PackedScene:
+		var custom_default_node = load(plugin_config.override_default_scene).instantiate()
+		if custom_default_node is Control:
+			main_screen_node = custom_default_node
+		else:
+			Helper.throw_error("custom scene is not of type Control")
+
+	if not main_screen_node:
+		main_screen_node = overview_menu # assign default menu to main_screen_node if it's empty
+		default_scene_setup()
+
+	main_screen.default_node = main_screen_node
+	_on_overview_button_pressed()
+
+## connects signals and sets variables if the default scene is used
+func default_scene_setup():
 	# sets up signals for the main_screen_node, for exporting
 	main_screen_node.connect("export_activated", _on_export_activated)
 
@@ -63,10 +79,6 @@ func _ready() -> void:
 	export_tree.connect("edit_item_clicked", _on_obj_edit_clicked)
 	export_tree.connect("reset_clicked", _on_export_reset_clicked)
 	export_tree.connect("delete_object_clicked", remove_wrapper)
-
-	# sets up the config and user settings
-	config_set_up()
-
 
 func create_new_creation_screen(object_wrapper: ObjectWrapper, menu_type=CreateObject.CreateMenuType.NORMAL):
 	object_wrapper = set_up_new_wrapper(object_wrapper)
@@ -105,11 +117,6 @@ func set_up_class_tree():
 			# TODO: implement for csharp
 			pass
 	class_tree.set_up_class_view(parent_class_dict)
-
-func config_set_up():
-	plugin_config = load("res://addons/object_creator/PluginConfig.tres")
-	default_export_path = plugin_config.set_exportPath if plugin_config.set_exportPath else default_export_path
-
 
 func get_wrapper(id):
 	var wrapper = created_object_wrappers.filter(func(x): return x.id == id)

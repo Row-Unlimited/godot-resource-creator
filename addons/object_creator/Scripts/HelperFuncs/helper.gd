@@ -299,6 +299,56 @@ static func get_last_path_parts(path: String, number_parts: int, is_reverse=fals
 	path_parts.reverse()
 	return path_parts
 
+static func get_export_var_docs(property_list: Array, source_code: String):
+	var name_list = property_list.map(func(x): return x["name"])
+	var source_code_lines = Array(source_code.split("\n"))
+	var export_var_locations = {}
+	var doc_comment_locations = []
+	var var_regex = RegEx.new()
+	var_regex.compile(r"@export [^\r\n]*var\s([^\r\n\s\:]*)")
+	var comment_regex = RegEx.new()
+	comment_regex.compile(r"(##[^\r\n]*)")
+	var last_position = 0
+	for i in source_code_lines.size():
+		var line = source_code_lines[i]
+		var var_result = var_regex.search(line)
+		var comment_result = comment_regex.search(line)
+		if var_result and var_result.get_string(1) in name_list:
+			var var_name = var_result.get_string(1)
+			export_var_locations[var_name] = {}
+			export_var_locations[var_name]["location"] = i
+			export_var_locations[var_name]["lines"] = source_code_lines.slice(last_position, i + 1)
+			export_var_locations[var_name]["name"] = var_name
+			last_position = i + 1
+	var locations = export_var_locations.values().map(func(x): return x["location"] if x else null)
+	locations = locations.filter(func(x): return x != null)
+	source_code_lines.resize(locations.max() + 1)
+
+	for var_name in export_var_locations:
+		var check_lines = export_var_locations[var_name]["lines"]
+		var var_location = export_var_locations[var_name]["location"]
+		var last_var_location = 0
+		for i in check_lines.size():
+			var var_line = check_lines[i]
+			if "var " in var_line and not "@export" in var_line:
+				last_var_location = i + 1
+		check_lines = check_lines.slice(last_var_location)
+
+		var doc_comments = []
+
+		for var_line in check_lines:
+			var doc_comment = comment_regex.search(var_line)
+			if doc_comment:
+				doc_comments.append(doc_comment.get_string())
+		export_var_locations[var_name]["comments"] = doc_comments
+	
+	var return_values = {}
+	for key in export_var_locations:
+		var comment_dict = export_var_locations[key]
+		if not comment_dict["comments"].is_empty():
+			return_values[comment_dict["name"]] = comment_dict["comments"]
+	return return_values
+
 ## enhances the get-script_method_list function method, by checking for each arg,
 ## if it has a default value, through [b]is_optional[/b] key. [br]
 ## [param script] takes a script instance [br]

@@ -127,7 +127,6 @@ texture_normal = ExtResource("11_vvgd0")
 ignore_texture_size = true
 stretch_mode = 5
 script = ExtResource("12_spw37")
-enable_active_checks = null
 shader_switch_params = {
 "active": {
 "def": true,

@@ -9,4 +9,4 @@ ignored_directories = Array[String]([".git", ".godot", "object_creator"])
 accept_empty_inputs = true
 error_color = Color(1, 0, 0, 1)
 use_null_values_for_empty = false
-is_folder_hierarchical = false
+override_default_scene = ""

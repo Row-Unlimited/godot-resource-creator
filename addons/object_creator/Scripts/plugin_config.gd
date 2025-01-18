@@ -12,13 +12,8 @@ var object_wrappers: Array
 ## when accept_empty_inputs is true and an input is submitted empty this will submit the null value
 ## (0 for int, "" for String etc. instead of null)
 @export var use_null_values_for_empty: bool = false
-
-
-#region subobject settings
-## default puts sub_objects into the same folder as the parent_object
-## defines if a new folder for subobjects should be created
-@export var is_folder_hierarchical: bool = false
-#endregion
+## enter resource path to scene that should be used instead of the default scene
+@export var override_default_scene: String
 
 ## config users can create to define precisely how they want the creation to be handled [br]
 ## can be used to:[br] - define default property values [br] - exclude classes as sub_classes [br]
