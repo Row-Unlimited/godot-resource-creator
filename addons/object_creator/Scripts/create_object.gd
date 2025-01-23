@@ -177,14 +177,15 @@ func add_headline(text: String):
 
 func find_tooltip_comments(property_list: Array, source_code: String):
 	var var_comments = Helper.get_export_var_docs(property_list, source_code)
+	print(var_comments)
 	for i in property_list.size():
 		var var_name = property_list[i]["name"]
 		if not var_name in var_comments.keys():
 			continue
 		else:
 			var comments =  var_comments[var_name]
-			comments = comments.map(func(x): return "- " + x.substr(2)) # remove comment hashtags from comment string
-			comments = "\n".join(PackedStringArray(comments))
+			comments = Helper.format_doc_strings(comments)
+			print(comments)
 			property_list[i]["tooltip_docs"] = comments
 	print(property_list)
 	return property_list

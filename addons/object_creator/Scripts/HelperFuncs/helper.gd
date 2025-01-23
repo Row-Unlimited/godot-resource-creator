@@ -349,6 +349,15 @@ static func get_export_var_docs(property_list: Array, source_code: String):
 			return_values[comment_dict["name"]] = comment_dict["comments"]
 	return return_values
 
+static func format_doc_strings(doc_strings: Array):
+	doc_strings = doc_strings.map(func(x): return x.substr(2))
+	doc_strings = PackedStringArray(doc_strings)
+	var concat_string = " ".join(doc_strings)
+	print(concat_string)
+	concat_string = concat_string.replace("\n", "").replace("[br]", "\n")
+
+	return concat_string
+
 ## enhances the get-script_method_list function method, by checking for each arg,
 ## if it has a default value, through [b]is_optional[/b] key. [br]
 ## [param script] takes a script instance [br]

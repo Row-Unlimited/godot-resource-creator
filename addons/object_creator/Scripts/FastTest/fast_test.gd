@@ -13,6 +13,7 @@ func _ready() -> void:
 	#test_json()
 	#test_tab_bar()
 	#test_dict_merge()
+	#test_doc_format()
 	
 	pass
 
@@ -21,6 +22,10 @@ func test_crap():
 	for string in strings:
 		print(Helper.custom_to_vector(string, true))
 	pass
+
+func test_doc_format():
+	var test_string_newline = ["## test string [br]", "## test string 2"]
+	print(Helper.format_doc_strings(test_string_newline))
 
 func test_error():
 	var obj = InputError.new_error_object(["OBJECT_INVALID", InputError.ErrorType.EMPTY])

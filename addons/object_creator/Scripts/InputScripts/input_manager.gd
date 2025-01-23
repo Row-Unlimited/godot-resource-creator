@@ -12,6 +12,7 @@ var input_node
 var input_container: Container
 var array_position: int # position if inputmanager is within an array
 var accept_empty_inputs : bool
+var tooltip_string: String = ""
 
 var current_errors: InputError
 @onready var error_color = load("res://addons/object_creator/PluginConfig.tres").error_color
@@ -48,10 +49,11 @@ func set_up_nodes():
 	pass
 
 func _ready() -> void:
+	if property and "tooltip_docs" in property.keys():
+		tooltip_string = property["tooltip_docs"]
+		tooltip_text = tooltip_string
 	set_indent_color()
 	if material and material is ShaderMaterial:
-		#material = material.duplicate()
-		#material.set_shader(material.get_shader().duplicate())
 		material.set_shader_parameter("error_color", error_color)
 
 func attempt_submit(mute_warnings=false) -> Variant:
@@ -110,6 +112,7 @@ func show_input_warning(error: InputError= null,mute_warnings=false):
 			tooltip_text = message
 
 func hide_input_warning():
+	tooltip_text = tooltip_string
 	if material and material is ShaderMaterial:
 		material.set_shader_parameter("active", false)
 
