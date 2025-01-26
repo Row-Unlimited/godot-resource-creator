@@ -32,6 +32,7 @@ var accept_empty_inputs
 @onready var submit_button: Button = get_node("SubmitBox/CreateObject")
 @onready var toggle_json_button: CheckButton = get_node("SubmitBox/ToggleJsonButton")
 @onready var toggle_hidden_button: CheckButton = get_node("SubmitBox/ToggleViewHidden")
+@onready var export_path_edit: LineEdit = get_node("SubmitBox/ExportPathEdit")
 
 signal object_created(object)
 signal settings_changed(plugin_config_object)
@@ -44,6 +45,11 @@ func _ready() -> void:
 	toggle_hidden_button.connect("toggled", _on_toggle_hidden)
 	if object_wrapper.parent_wrapper:
 		toggle_json_button.disabled = true
+	
+	if object_wrapper.export_path:
+		export_path_edit.text = object_wrapper.export_path
+	if object_wrapper.class_config and "is_export_path_static" in object_wrapper.class_config.keys():
+		export_path_edit.editable = not object_wrapper.class_config["is_export_path_static"]
 
 ## Creates the create_object menu UI and Logic[br]
 ## takes the class from the object_wrapper and gets the property list[br]
@@ -134,6 +140,8 @@ func on_submit_pressed():
 
 	if input_error_nodes.is_empty():
 		# TODO: fix error where empty strings have no "value" key in their property
+		if DirAccess.dir_exists_absolute(export_path_edit.text):
+			object_wrapper.export_path = export_path_edit.text
 		var return_wrapper = object_wrapper.create_object(properties) # potential async issue if object wrapper assigns new object to itself
 		emit_signal(output_signal, return_wrapper)
 		object_wrapper.save_dict = save_session()
@@ -177,7 +185,6 @@ func add_headline(text: String):
 
 func find_tooltip_comments(property_list: Array, source_code: String):
 	var var_comments = Helper.get_export_var_docs(property_list, source_code)
-	print(var_comments)
 	for i in property_list.size():
 		var var_name = property_list[i]["name"]
 		if not var_name in var_comments.keys():
@@ -185,9 +192,7 @@ func find_tooltip_comments(property_list: Array, source_code: String):
 		else:
 			var comments =  var_comments[var_name]
 			comments = Helper.format_doc_strings(comments)
-			print(comments)
 			property_list[i]["tooltip_docs"] = comments
-	print(property_list)
 	return property_list
 
 ## Saves the current creation status as a dict. [br]

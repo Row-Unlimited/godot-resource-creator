@@ -34,10 +34,14 @@ func _init(path: String = "", name: String = "", obj = null, config = {}):
 	self.obj = obj
 	self.class_config = config
 	set_script_info()
-	if class_config and "constructor_values" in class_config.keys():
-		constructor_args = class_config["constructor_values"]
-		if constructor_args.size() < number_constructor_args:
-			constr_invalid = true
+	if class_config:
+		if "export_path" in class_config.keys():
+			export_path = class_config["export_path"]
+
+		if "constructor_values" in class_config.keys():
+			constructor_args = class_config["constructor_values"]
+			if constructor_args.size() < number_constructor_args:
+				constr_invalid = true
 
 func set_script_info():
 	if path:

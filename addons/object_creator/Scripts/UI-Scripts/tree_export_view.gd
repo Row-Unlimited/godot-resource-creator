@@ -49,6 +49,8 @@ func _create_base_nodes():
 	set_column_expand_ratio(0, 1)
 
 func add_new_object(object_wrapper, path_editable = true):
+	if "is_export_path_static" in object_wrapper.class_config.keys():
+		path_editable = not object_wrapper.class_config["is_export_path_static"]
 	if get_item_by_id(object_wrapper.id):
 		return
 
@@ -117,7 +119,8 @@ func _on_item_activated():
 		if get_item_by_id(item_id):
 			emit_signal("edit_item_clicked", item_id)
 	elif col == 1:
-		item.set_editable(1, true)
+		if item.get_metadata(1)["is_path_editable"]:
+			item.set_editable(1, true)
 		edit_path_item = item
 
 

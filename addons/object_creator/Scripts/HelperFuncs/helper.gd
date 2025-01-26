@@ -353,7 +353,6 @@ static func format_doc_strings(doc_strings: Array):
 	doc_strings = doc_strings.map(func(x): return x.substr(2))
 	doc_strings = PackedStringArray(doc_strings)
 	var concat_string = " ".join(doc_strings)
-	print(concat_string)
 	concat_string = concat_string.replace("\n", "").replace("[br]", "\n")
 
 	return concat_string
