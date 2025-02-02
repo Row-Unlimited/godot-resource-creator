@@ -25,6 +25,20 @@ var object_counter = 0
 var plugin_config: PluginConfig
 var default_export_path = ""
 
+#region popup_variables
+const popup_scene = preload("res://addons/object_creator/Scenes/UI Addon Scenes/popup.tscn")
+enum PopupTypes {
+	RELOAD,
+	DELETE_OBJECT,
+}
+
+var text_popups = {
+	PopupTypes.RELOAD: ["Plugin reload warning", "Are you sure you want to reload the plugin instance? This will delete everything you have created so far.\nConsider Exporting first."],
+	PopupTypes.DELETE_OBJECT: ["Object delete warning", "Are you sure you want to delete this object?"]
+}
+
+#endregion
+
 @onready var tab_manager: TabManager = get_node("TabManager")
 @onready var main_screen: ScreenManager = get_node("TabManager/MainScreen")
 @onready var overview_menu: OverviewMenu = get_node("TabManager/MainScreen/OverviewMenu")
@@ -136,6 +150,22 @@ func remove_wrapper(id):
 	created_object_wrappers = created_object_wrappers.filter(func(x): return x.id != id)
 	export_tree.reset_export_view(created_object_wrappers)
 
+func open_popup(type: PopupTypes):
+	var new_popup = popup_scene.instantiate()
+	var popup_texts
+	if type in text_popups.keys():
+		popup_texts = text_popups[type]
+	else:
+		Helper.throw_error("unregistered popup type")
+		return
+	
+	new_popup.set_text_vars(popup_texts[0], popup_texts[1])
+	add_child(new_popup)
+	new_popup.connect("popup_cancel", close_popup)
+	return new_popup
+
+func close_popup(popup):
+	popup.queue_free()
 
 #region signal_functions
 
@@ -243,6 +273,10 @@ func _on_sub_object_edit_clicked(wrapper: ObjectWrapper, input_manager: ObjectIn
 		input_manager.object_create_screen = create_new_creation_screen(wrapper)
 
 func _on_plugin_refresh_clicked():
+	var popup = open_popup(PopupTypes.RELOAD)
+	popup.connect("popup_continue", func():self.emit_signal("reload_plugin"))
+
+func _on_reload_plugin():
 	emit_signal("reload_plugin")
 
 #endregion

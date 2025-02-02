@@ -19,10 +19,14 @@ func _ready() -> void:
 
 func _create_base_nodes():
 	var new_item = self.create_item()
-	new_item.set_text(0, "Creatable classes overview")
+	new_item.set_text(0, "Scripts")
 	new_item.add_button(0, load("res://addons/object_creator/Assets/textures/refresh.png"))
 	new_item.set_metadata(0, "BASE_ITEM")
 	root_item = new_item
+
+	set_column_title(0, "Class Overview")
+	set_column_title_alignment(0, 0)
+	column_titles_visible = true
 
 func set_up_class_view(class_name_dict):
 	# TODO: maybe rearrange it so sub_classes are directly under the class they inherit from

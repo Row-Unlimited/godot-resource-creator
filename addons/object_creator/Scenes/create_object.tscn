@@ -59,18 +59,18 @@ text = "JSON Export"
 [node name="ToggleViewHidden" type="CheckButton" parent="SubmitBox"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.05
-anchor_top = 0.6
-anchor_right = 0.25
-anchor_bottom = 0.9
+anchor_left = 0.35
+anchor_top = 0.05
+anchor_right = 0.55
+anchor_bottom = 0.4
 text = "Show hidden"
 
 [node name="ExportPathEdit" type="LineEdit" parent="SubmitBox"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.35
+anchor_left = 0.05
 anchor_top = 0.6
-anchor_right = 0.6
+anchor_right = 0.55
 anchor_bottom = 0.9
 grow_horizontal = 2
 grow_vertical = 2

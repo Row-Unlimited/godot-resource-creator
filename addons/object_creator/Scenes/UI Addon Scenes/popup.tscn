@@ -1,0 +1,215 @@
+[gd_scene load_steps=16 format=3 uid="uid://cjmgc5xx5ty71"]
+
+[ext_resource type="Theme" uid="uid://du8tldypjrsog" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/default_theme.tres" id="1_1ak1c"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/popup_scene.gd" id="1_p2bw2"]
+
+[sub_resource type="Gradient" id="Gradient_dd03f"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.493562, 0.991416)
+colors = PackedColorArray(0.0862745, 0.145098, 0.352941, 0.470588, 0.0862745, 0.145098, 0.352941, 0.2, 0.0862745, 0.145098, 0.352941, 0.470588)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_m5vbx"]
+gradient = SubResource("Gradient_dd03f")
+fill_from = Vector2(1, 0)
+fill_to = Vector2(0, 1)
+metadata/_snap_enabled = true
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bqu77"]
+texture = SubResource("GradientTexture2D_m5vbx")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mgkc8"]
+bg_color = Color(0.0862745, 0.145098, 0.352941, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.803922, 0.521569, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_vhmaa"]
+font_size = 20
+font_color = Color(0.803922, 0.521569, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xq0ak"]
+bg_color = Color(0.248562, 0.366171, 0.750021, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.167647, 0.593486, 0.602136, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yj1fm"]
+bg_color = Color(0.470407, 0.924138, 0.936468, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.167647, 0.593486, 0.602136, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6uio7"]
+bg_color = Color(0.160784, 0.25098, 0.560784, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.167647, 0.593486, 0.602136, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ljvty"]
+bg_color = Color(0.346835, 0.174939, 0.487566, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.686275, 0, 0, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nj733"]
+bg_color = Color(0.999655, 0.125954, 0.0876166, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.686275, 0, 0, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bixoy"]
+bg_color = Color(0.160784, 0.25098, 0.560784, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.685733, 3.10443e-06, 5.77569e-07, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_drgml"]
+bg_color = Color(0.160992, 0.249812, 0.560341, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_6plvl"]
+font_size = 15
+font_color = Color(0.803922, 0.521569, 0, 1)
+
+[node name="PopupScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_p2bw2")
+
+[node name="DarkenBackgroundPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_1ak1c")
+theme_override_styles/panel = SubResource("StyleBoxTexture_bqu77")
+
+[node name="PopupWindow" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.25
+anchor_top = 0.3
+anchor_right = 0.75
+anchor_bottom = 0.7
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_1ak1c")
+theme_override_styles/panel = SubResource("StyleBoxFlat_mgkc8")
+
+[node name="HeaderLabel" type="Label" parent="PopupWindow"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.25
+anchor_top = 0.05
+anchor_right = 0.75
+anchor_bottom = 0.15
+grow_horizontal = 2
+label_settings = SubResource("LabelSettings_vhmaa")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ContinueButton" type="Button" parent="PopupWindow"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.15
+anchor_top = 0.75
+anchor_right = 0.4
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_hover_color = Color(0.168627, 0.592157, 0.603922, 1)
+theme_override_colors/font_pressed_color = Color(0.762987, 0.972678, 0.976471, 1)
+theme_override_colors/font_color = Color(0.168627, 0.592157, 0.603922, 1)
+theme_override_styles/hover = SubResource("StyleBoxFlat_xq0ak")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yj1fm")
+theme_override_styles/normal = SubResource("StyleBoxFlat_6uio7")
+text = "Continue"
+
+[node name="CancelButton" type="Button" parent="PopupWindow"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6
+anchor_top = 0.75
+anchor_right = 0.85
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_hover_color = Color(0.862745, 0.0980392, 0.247059, 1)
+theme_override_colors/font_pressed_color = Color(0.625395, 0.00104908, 2.40654e-07, 1)
+theme_override_colors/font_color = Color(0.862745, 0.0980392, 0.247059, 1)
+theme_override_styles/hover = SubResource("StyleBoxFlat_ljvty")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_nj733")
+theme_override_styles/normal = SubResource("StyleBoxFlat_bixoy")
+text = "Cancel"
+
+[node name="LargeLabelBackground" type="Panel" parent="PopupWindow"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.2
+anchor_right = 0.9
+anchor_bottom = 0.65
+theme_override_styles/panel = SubResource("StyleBoxFlat_drgml")
+
+[node name="LargeCustomLabel" type="Label" parent="PopupWindow/LargeLabelBackground"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.04
+anchor_top = 0.04
+anchor_right = 0.96
+anchor_bottom = 0.96
+label_settings = SubResource("LabelSettings_6plvl")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
