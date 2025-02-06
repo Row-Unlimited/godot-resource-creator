@@ -3,11 +3,10 @@ TODOs:
 	- Implement variable in plugin_config to disable popups for quicker navigation
 	- Implement more formatting for the comment tooltips
 	- UX:
-		+ maybe add other shortcuts like moving array elements with arrow keys
+		+ show class_config modifications in some way in the creation window when hovering over a property for example
 		+ Add Path selection option-button to create_object and add my line-edit plugin to the line-edit in the export menu
 	- UI:
 		+ More UI Improvements like changing the tabBar node
-		+ Change Array order elements (maybe add dragging)
 	- Integration:
 		+ Come up with integration features
 	- rename to godot_resource_creator

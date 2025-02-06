@@ -40,6 +40,8 @@ var hide_input: bool = false
 var final_value = null
 #endregion
 
+signal error_occurred(input_manager)
+
 ## set up function that is called by the CreateObject class [br]
 ## is the first function that is called, before the ready func
 func initialize_input(property_dict: Dictionary):
@@ -49,6 +51,10 @@ func set_up_nodes():
 	pass
 
 func _ready() -> void:
+	if input_node:
+		input_node.connect("focus_entered", _on_input_focus_changed)
+		input_node.connect("focus_exited", _on_input_focus_changed)
+
 	if property and "tooltip_docs" in property.keys():
 		tooltip_string = property["tooltip_docs"]
 		tooltip_text = tooltip_string
@@ -106,6 +112,7 @@ func show_input_warning(error: InputError= null,mute_warnings=false):
 		return
 	material.set_shader_parameter("error_color", error_color)
 	material.set_shader_parameter("active", true)
+	emit_signal("error_occurred", self)
 	if error:
 		var message = error.create_error_tooltip()
 		if message:
@@ -141,6 +148,17 @@ func return_empty_value(error_object: InputError = null):
 		error_object.toggle_error("EMPTY", true)
 		return error_object
 
+
+func toggle_focus_shadow():
+	var style_box = get_theme_stylebox("panel").duplicate()
+	if style_box.shadow_size:
+		style_box.shadow_size = 0
+	else:
+		style_box.shadow_color = Color(207, 255, 253)
+		style_box.shadow_size = 1
+	add_theme_stylebox_override("panel", style_box)
+
+
 func set_indent_color():
 	if indent_level != 0:
 		var stylebox_indent_index = (indent_level - 1) % indent_panel_resources.size()
@@ -150,3 +168,7 @@ func set_indent_color():
 			add_theme_stylebox_override("panel", fitting_stylebox)
 		else:
 			Helper.throw_error("Stylebox Path for Input is broken")
+
+func _on_input_focus_changed():
+	toggle_focus_shadow()
+	pass

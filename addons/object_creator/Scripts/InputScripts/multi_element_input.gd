@@ -15,6 +15,7 @@ var sub_obj_infos: Dictionary
 
 var selected_type: Variant.Type = Variant.Type.TYPE_NIL
 var input_managers: Array
+var element_containers : Array
 
 var input_scenes = {
 	"default": preload("res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"),
@@ -28,6 +29,8 @@ var input_scenes = {
 var sub_config: Dictionary
 
 var included_types: Array = []
+
+var focused_input: int = -1
 
 ## gets called first and is used to initialize values
 func initialize_input(property_dict: Dictionary):
@@ -66,7 +69,7 @@ func check_typed():
 func add_element(element_type: Variant.Type, def_input=null):
 	pass
 
-## called by array/dict scripts to create the scene
+## called by array/dict scripts to create the scene of the child inputs
 func create_scene_by_type(type: Variant.Type) -> Dictionary:
 	var return_dict = {}
 	var is_vector = false
@@ -114,6 +117,10 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 			new_input_manager.apply_config_rules([sub_config])
 
 	on_elements_changed_size()
+
+	var connect_focus_node = new_input_manager.input_node if new_input_manager.input_node else new_input_manager
+	connect_focus_node.connect("focus_entered", _on_input_focus_changed)
+	connect_focus_node.connect("focus_exited", _on_input_focus_changed)
 
 	return_dict = {
 		"is_vector": is_vector,
@@ -213,4 +220,30 @@ func _on_minimize_pressed():
 
 func _on_add_element_button_pressed() -> void:
 	add_element(selected_type)
+
+
+func _on_input_focus_changed():
+	var focus_before = focused_input
+	focused_input = -1
+	print(focus_before)
+
+	for i in input_managers.size():
+		var input = input_managers[i]
+		if input.input_node:
+			if input.input_node.has_focus():
+				print(str(i) + " has focus")
+				focused_input = i
+				break
+		elif input is MultiElementInput and input.focused_input > 0:
+			focused_input = i
+			break
+
+	if focused_input > -1:
+		if focus_before == -1:
+			emit_signal("focus_entered")
+			toggle_focus_shadow()
+	elif focus_before > -1:
+		emit_signal("focus_exited")
+		toggle_focus_shadow()
+
 #endregion

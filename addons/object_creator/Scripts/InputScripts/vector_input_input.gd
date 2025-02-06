@@ -15,7 +15,13 @@ var input_array: Array
 var accept_empty
 var change_empty_default
 
-	
+var is_focused: bool
+
+
+func _ready() -> void:
+	for input in input_array:
+		input.connect("focus_entered", _on_input_focus_entered)
+		input.connect("focus_exited", _on_input_focus_exited)
 
 func create_vector_UI(type: Variant.Type):
 	x_input = $X
@@ -96,3 +102,15 @@ func return_input() -> Variant:
 	# TODO: fix error behavior for vectors
 	return_vector = Helper.custom_to_vector(value_array, is_int)
 	return return_vector
+
+func _on_input_focus_exited():
+	if input_array.filter(func(x): return x.has_focus()):
+		return
+	else:
+		emit_signal("focus_exited")
+
+func _on_input_focus_entered():
+	if is_focused:
+		return
+	else:
+		emit_signal("focus_entered")

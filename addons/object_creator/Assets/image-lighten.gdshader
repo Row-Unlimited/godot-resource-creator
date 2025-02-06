@@ -1,6 +1,7 @@
 shader_type canvas_item;
 
 uniform bool active;
+uniform sampler2D color_override;
 
 void fragment() {
 	if (active) {

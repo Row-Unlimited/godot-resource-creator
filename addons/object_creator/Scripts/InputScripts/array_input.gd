@@ -40,6 +40,8 @@ func add_element(element_type: Variant.Type, def_input=null):
 	var new_input_node: MultiElementContainer = result_dict["input_node"]
 	var new_input_manager: InputManager = result_dict["input_manager"]
 	
+	element_containers.append(new_input_node)
+
 	# connect remove and move buttons
 	new_input_node.connect("move_node", _on_move_node)
 	if def_input != null:
@@ -98,8 +100,9 @@ func receive_input(input):
 ## Is called by a signal when the remove Button is pressed in MultiElementContainer
 ## Since the Array UI represents the Array Position later on, this also sorts the Input Managers
 func _on_move_node(node: MultiElementContainer, new_position: int):
-	if new_position >= multi_input_vbox.get_children().size() - 1 or new_position < 1:
-		return # elements shouldn't be under the warning or over the first element
+	print(new_position)
+	if new_position >= multi_input_vbox.get_children().size() or new_position < 1:
+		return false# elements shouldn't be under the warning or over the first element
 	else:
 		multi_input_vbox.move_child(node, new_position)
 		node.position_child = new_position
@@ -113,6 +116,7 @@ func _on_move_node(node: MultiElementContainer, new_position: int):
 			i += 1
 		
 		input_managers.sort_custom(func(a, b): return a.array_position < b.array_position)
+		return true
 
 ## Removes InputNode from the Array UI
 func _on_remove_node(node: MultiElementContainer):
@@ -120,3 +124,19 @@ func _on_remove_node(node: MultiElementContainer):
 	on_elements_changed_size()
 	multi_input_vbox.remove_child(node)
 #endregion
+
+## input func that allows for array elements to be swapped via short cut
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.is_released():
+		if event.alt_pressed and focused_input > -1:
+			match event.keycode:
+				KEY_UP:
+					var input_container = element_containers.filter(func(x): return x.input_manager == input_managers[focused_input])[0]
+					var move_success = _on_move_node(input_container, (focused_input - 1) + 1)
+					if move_success:
+						focused_input = (focused_input - 1)
+				KEY_DOWN:
+					var input_container = element_containers.filter(func(x): return x.input_manager == input_managers[focused_input])[0]
+					var move_success = _on_move_node(input_container, (focused_input + 1) + 1)
+					if move_success:
+						focused_input = (focused_input + 1)

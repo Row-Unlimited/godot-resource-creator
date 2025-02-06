@@ -2,8 +2,6 @@
 class_name DictionaryInput
 extends MultiElementInput
 
-var element_containers : Array
-
 ## will be added once typed_dicts are added
 func check_typed():
 	pass

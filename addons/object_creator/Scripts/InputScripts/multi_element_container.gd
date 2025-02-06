@@ -40,10 +40,10 @@ func initialize_input(input: InputManager):
 		indent_container = get_node("IndentContainer")
 	button_container = indent_container.get_node("ButtonContainer")
 	input_manager = input
+	input.initialize_input({})
 	indent_container.add_child(input)
 	indent_container.move_child(input, 0)
 	self.input = input
-	input.initialize_input({})
 	input.array_position = position_child - 1 # to make sure input has a position
 	disable_buttons()
 

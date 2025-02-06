@@ -80,6 +80,7 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 			var property_input_scene = TypeManager.get_input_scene(property_type)
 			var new_input : InputManager = property_input_scene.instantiate()
 
+			new_input.connect("error_occurred", _on_error_occurred)
 			# connect sub resource signals to creation manager
 			if property_type == TYPE_OBJECT:
 				new_input.connect("edit_sub_object_clicked", object_edited_callable)
@@ -252,3 +253,12 @@ func _on_toggle_hidden(toggle_mode):
 	for node: InputManager in input_nodes:
 		if node.hide_input:
 			node.visible = toggle_mode
+
+## if an error occurred it scrolls the scrollbar so the center of the input is visible on the screen and the user sees that an error occurred.
+func _on_error_occurred(input: InputManager):
+	var input_rect = input.get_global_rect()
+
+	if get_global_rect().size.y < input_rect.get_center().y:
+		var scroll_container: ScrollContainer = get_node("ScrollContainer")
+		var local_input_center = input_rect.get_center().y - get_global_rect().position.y
+		scroll_container.scroll_vertical = local_input_center
