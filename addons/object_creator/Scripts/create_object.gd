@@ -43,6 +43,10 @@ func _ready() -> void:
 	submit_button.connect("pressed", on_submit_pressed)
 	toggle_json_button.connect("toggled", _on_toggle_json)
 	toggle_hidden_button.connect("toggled", _on_toggle_hidden)
+	
+	if not object_wrapper is ObjectWrapper: # suppresses error at starting of project, but no idea why the plugin calls create_object without any clicks on a create object button
+		return
+	
 	if object_wrapper.parent_wrapper:
 		toggle_json_button.disabled = true
 	
@@ -77,7 +81,7 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 		var property_type = property["type"]
 
 		if property_type in TypeManager.SUPPORTED_TYPES and not SKIPPED_PROPERTIES.has(property_name) and property_name in export_var_lines:
-			var property_input_scene = TypeManager.get_input_scene(property_type)
+			var property_input_scene = TypeManager.get_input_scene(property_type, property)
 			var new_input : InputManager = property_input_scene.instantiate()
 
 			new_input.connect("error_occurred", _on_error_occurred)

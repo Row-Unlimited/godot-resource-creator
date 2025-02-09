@@ -14,6 +14,7 @@ enum TestEnum {
 
 ## test array
 @export var test_array: Array
+@export var test_array_simple: Array
 @export var test_typed_array := [1] as Array[int]
 @export var test_dict : Dictionary
 ## test enum [br]

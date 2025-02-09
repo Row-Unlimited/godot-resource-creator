@@ -5,21 +5,30 @@
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/tab_manager.gd" id="2_cx134"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/screen_manager.gd" id="4_13l1c"]
 [ext_resource type="PackedScene" uid="uid://cjrjsmw62bo4a" path="res://addons/object_creator/Scenes/MainMenuUI/overview_menu.tscn" id="5_k30fj"]
-[ext_resource type="Shader" path="res://addons/object_creator/Assets/image-lighten.gdshader" id="6_5m0cy"]
 [ext_resource type="Texture2D" uid="uid://s63n8ht61j33" path="res://addons/object_creator/Assets/textures/settings-button-small.png" id="6_7i13x"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/Settings/settings_button.gd" id="7_ra1gh"]
-[ext_resource type="Texture2D" uid="uid://uj6y2seqm8ba" path="res://addons/object_creator/Assets/textures/home-icon.png" id="8_fgsov"]
 [ext_resource type="Texture2D" uid="uid://ba82sqmg0g2yb" path="res://addons/object_creator/Assets/textures/home-icon-normal.png" id="8_sgjep"]
+[ext_resource type="Shader" path="res://addons/object_creator/Assets/button_shader.gdshader" id="11_b60u8"]
 [ext_resource type="Texture2D" uid="uid://fe4lo44jn42d" path="res://addons/object_creator/Assets/textures/refresh.png" id="11_vvgd0"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/shader_effect_button.gd" id="12_spw37"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2k06y"]
-shader = ExtResource("6_5m0cy")
+shader = ExtResource("11_b60u8")
 shader_parameter/active = false
+shader_parameter/color_override = Color(0.650128, 0.650128, 0.650128, 1)
+shader_parameter/override_color = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hixpf"]
+shader = ExtResource("11_b60u8")
+shader_parameter/active = false
+shader_parameter/color_override = Color(0.65098, 0.65098, 0.65098, 1)
+shader_parameter/override_color = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qpr53"]
-shader = ExtResource("6_5m0cy")
+shader = ExtResource("11_b60u8")
 shader_parameter/active = true
+shader_parameter/color_override = Color(1, 0, 0, 1)
+shader_parameter/override_color = true
 
 [node name="MainScene" type="Control"]
 layout_mode = 3
@@ -102,6 +111,7 @@ texture_normal = ExtResource("6_7i13x")
 script = ExtResource("7_ra1gh")
 
 [node name="ObjectOverviewButton" type="TextureButton" parent="MenuSideBar"]
+material = SubResource("ShaderMaterial_hixpf")
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.1
@@ -111,9 +121,17 @@ anchor_bottom = 0.15
 offset_bottom = -1.52588e-05
 grow_horizontal = 2
 texture_normal = ExtResource("8_sgjep")
-texture_pressed = ExtResource("8_fgsov")
 ignore_texture_size = true
 stretch_mode = 5
+script = ExtResource("12_spw37")
+enable_active_checks = false
+shader_switch_params = {
+"active": {
+"def": false,
+"down": true,
+"up": false
+}
+}
 
 [node name="RefreshButton" type="TextureButton" parent="MenuSideBar"]
 material = SubResource("ShaderMaterial_qpr53")

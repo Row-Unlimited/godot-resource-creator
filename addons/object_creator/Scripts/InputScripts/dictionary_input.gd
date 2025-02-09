@@ -106,6 +106,7 @@ func set_input_disabled(is_disabled: bool):
 
 ## Removes InputNode from the Dictionary UI
 func _on_remove_node(node: MultiElementContainer):
+	element_containers = element_containers.filter(func(x): return x != node)
 	input_managers.remove_at(input_managers.find(node.input))
 	on_elements_changed_size()
 	multi_input_vbox.remove_child(node)

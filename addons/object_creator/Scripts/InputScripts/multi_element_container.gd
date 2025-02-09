@@ -57,7 +57,7 @@ func calc_minimum_size():
 
 func disable_buttons():
 	if button_container and button_container.get_children():
-		var buttons = button_container.get_children().filter(func(x): return x is Button)
+		var buttons = button_container.get_children().filter(func(x): return x is TextureButton)
 		for button in buttons:
 			button.disabled = disabled_for_user
 

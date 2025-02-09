@@ -32,6 +32,7 @@ const INPUT_SCENES = {
 	"array": "res://addons/object_creator/Scenes/Variable Input Scenes/array_input.tscn",
 	"dictionary": "res://addons/object_creator/Scenes/Variable Input Scenes/dictionary_input.tscn",
 	"object": "res://addons/object_creator/Scenes/Variable Input Scenes/object_input.tscn",
+	"enum": "res://addons/object_creator/Scenes/Variable Input Scenes/enum_input.tscn",
 }
 
 enum TypeValue {
@@ -53,11 +54,14 @@ static func find_type_value(value, return_type = -1):
 static func get_all_values(return_type: TypeValue):
 	return TYPE_GROUPS.map(func(x): return x[return_type])
 
-static func get_input_scene(input_type: Variant.Type):
+static func get_input_scene(input_type: Variant.Type, property_dict = {}):
 	var new_scene
 	match input_type:
 		TYPE_INT:
-			new_scene = INPUT_SCENES["default"]
+			if property_dict and property_dict["class_name"]:
+				new_scene = INPUT_SCENES["enum"]
+			else:
+				new_scene = INPUT_SCENES["default"]
 		TYPE_FLOAT:
 			new_scene = INPUT_SCENES["default"]
 		TYPE_STRING:

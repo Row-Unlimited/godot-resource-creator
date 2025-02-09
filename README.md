@@ -26,3 +26,4 @@ Here is a list of all types we currently support:
 
 - Currently enum values can only be created if a set enum variable is defined in the class.  
   This means you cannot create Enum Values in Arrays or Dictionaries for now.
+- Dictionary Keys are only allowed to be strings, other types are not supported as of now

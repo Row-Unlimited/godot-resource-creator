@@ -12,25 +12,26 @@ func check_typed():
 	var possible_class_names = ClassLoader.new().return_class_names()
 
 	var type_arr
-	var hint_string : String = property["hint_string"]
-	match property["hint"]:
-		31:
-			type_arr = hint_string
-		23:
-			var regex = RegEx.new()
-			regex.compile("([1-9]{1}[0-9]{0,1}):")
-			type_arr = regex.search(hint_string).get_string().to_int()
-	if not type_arr:
-		return
-	if type_arr in TypeManager.SUPPORTED_TYPES:
-		disable_select_type_button([type_arr], true, true)
-	elif Helper.check_string_contains_array(possible_class_names, hint_string):
-		var class_name_string = Array(hint_string.split(":")).back()
-		typed_object_type = class_name_string
-		disable_select_type_button(["Object"], true, true)
-	else:
-		# TODO  find solution
-		Helper.throw_error("unsupported type in typed array")
+	if "hint_string" in property.keys():
+		var hint_string : String = property["hint_string"]
+		match property["hint"]:
+			31:
+				type_arr = hint_string
+			23:
+				var regex = RegEx.new()
+				regex.compile("([1-9]{1}[0-9]{0,1}):")
+				type_arr = regex.search(hint_string).get_string().to_int()
+		if not type_arr:
+			return
+		if type_arr in TypeManager.SUPPORTED_TYPES:
+			disable_select_type_button([type_arr], true, true)
+		elif Helper.check_string_contains_array(possible_class_names, hint_string):
+			var class_name_string = Array(hint_string.split(":")).back()
+			typed_object_type = class_name_string
+			disable_select_type_button(["Object"], true, true)
+		else:
+			# TODO  find solution
+			Helper.throw_error("unsupported type in typed array")
 
 ## adds a new element to the input UI
 ## loads the correct InputManager and puts it into an MultiElementContainer		
@@ -100,7 +101,6 @@ func receive_input(input):
 ## Is called by a signal when the remove Button is pressed in MultiElementContainer
 ## Since the Array UI represents the Array Position later on, this also sorts the Input Managers
 func _on_move_node(node: MultiElementContainer, new_position: int):
-	print(new_position)
 	if new_position >= multi_input_vbox.get_children().size() or new_position < 1:
 		return false# elements shouldn't be under the warning or over the first element
 	else:
@@ -128,7 +128,7 @@ func _on_remove_node(node: MultiElementContainer):
 ## input func that allows for array elements to be swapped via short cut
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.is_released():
-		if event.alt_pressed and focused_input > -1:
+		if event.alt_pressed and focused_input > -1 and not disable_editing:
 			match event.keycode:
 				KEY_UP:
 					var input_container = element_containers.filter(func(x): return x.input_manager == input_managers[focused_input])[0]

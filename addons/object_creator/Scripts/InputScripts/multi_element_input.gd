@@ -6,6 +6,7 @@ var element_container_scene = preload("res://addons/object_creator/Scenes/Variab
 
 var add_element_button: Button
 var element_type_button: DataTypeOptionButton
+var minimize_button: Button
 var is_minimized = false
 var add_element_section: HBoxContainer
 var multi_input_vbox: VBoxContainer
@@ -17,14 +18,6 @@ var selected_type: Variant.Type = Variant.Type.TYPE_NIL
 var input_managers: Array
 var element_containers : Array
 
-var input_scenes = {
-	"default": preload("res://addons/object_creator/Scenes/Variable Input Scenes/default_input.tscn"),
-	"bool": preload("res://addons/object_creator/Scenes/Variable Input Scenes/bool_input.tscn"),
-	"vector": preload("res://addons/object_creator/Scenes/Variable Input Scenes/vector_input.tscn"),
-	"array": load("res://addons/object_creator/Scenes/Variable Input Scenes/array_input.tscn"),
-	"dictionary": load("res://addons/object_creator/Scenes/Variable Input Scenes/dictionary_input.tscn"),
-	"object": preload("res://addons/object_creator/Scenes/Variable Input Scenes/object_input.tscn")
-}
 ## holds the sub_config which describes how the items of this dict/arr behave
 var sub_config: Dictionary
 
@@ -51,7 +44,8 @@ func set_up_nodes():
 	# connect buttons
 	add_element_button.connect("pressed", _on_add_element_button_pressed)
 	element_type_button.connect("item_selected", _on_type_button_selected)
-	add_element_section.get_node("MinimizeButton").connect("pressed", _on_minimize_pressed)
+	minimize_button = add_element_section.get_node("MinimizeButton")
+	minimize_button.connect("pressed", _on_minimize_pressed)
 	
 	for type in TypeManager.get_all_values(TypeManager.TypeValue.READ_STRING):
 		element_type_button.add_item(type)
@@ -214,8 +208,11 @@ func _on_minimize_pressed():
 		if node.name != "AddElementSection" and node.name != "Warning":
 			node.visible = is_minimized
 	if is_minimized:
+		minimize_button.text = "-"
 		is_minimized = false
+		
 	else:
+		minimize_button.text = "+"
 		is_minimized = true
 
 func _on_add_element_button_pressed() -> void:
@@ -225,13 +222,11 @@ func _on_add_element_button_pressed() -> void:
 func _on_input_focus_changed():
 	var focus_before = focused_input
 	focused_input = -1
-	print(focus_before)
 
 	for i in input_managers.size():
 		var input = input_managers[i]
 		if input.input_node:
 			if input.input_node.has_focus():
-				print(str(i) + " has focus")
 				focused_input = i
 				break
 		elif input is MultiElementInput and input.focused_input > 0:

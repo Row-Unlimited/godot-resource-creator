@@ -1,9 +1,32 @@
-[gd_scene load_steps=5 format=3 uid="uid://c4nafikdyelds"]
+[gd_scene load_steps=10 format=3 uid="uid://c4nafikdyelds"]
 
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/multi_element_container.gd" id="1_d8801"]
+[ext_resource type="Shader" path="res://addons/object_creator/Assets/button_shader.gdshader" id="2_7u2ek"]
 [ext_resource type="Texture2D" uid="uid://cya8l0htpkrnn" path="res://addons/object_creator/Assets/textures/Arrow-Up.png" id="2_8ajga"]
 [ext_resource type="Texture2D" uid="uid://b3b6pivlgk6nc" path="res://addons/object_creator/Assets/textures/Arrow-Down.png" id="3_knb70"]
 [ext_resource type="Texture2D" uid="uid://cw164j5sq8t7c" path="res://addons/object_creator/Assets/textures/Cross.png" id="4_h1ket"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/shader_effect_button.gd" id="4_jent8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kjbo7"]
+resource_local_to_scene = true
+shader = ExtResource("2_7u2ek")
+shader_parameter/active = false
+shader_parameter/color_override = Color(1, 1, 1, 1)
+shader_parameter/override_color = null
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b8vyo"]
+resource_local_to_scene = true
+shader = ExtResource("2_7u2ek")
+shader_parameter/active = false
+shader_parameter/color_override = Color(1, 1, 1, 1)
+shader_parameter/override_color = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_on4e4"]
+resource_local_to_scene = true
+shader = ExtResource("2_7u2ek")
+shader_parameter/active = false
+shader_parameter/color_override = Color(1, 1, 1, 1)
+shader_parameter/override_color = null
 
 [node name="MultiElementContainer" type="MarginContainer"]
 anchors_preset = -1
@@ -28,23 +51,50 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
 
-[node name="MoveUpButton" type="Button" parent="IndentContainer/ButtonContainer"]
+[node name="MoveUpButton" type="TextureButton" parent="IndentContainer/ButtonContainer"]
+material = SubResource("ShaderMaterial_kjbo7")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.1
-icon = ExtResource("2_8ajga")
+texture_normal = ExtResource("2_8ajga")
+script = ExtResource("4_jent8")
+shader_switch_params = {
+"active": {
+"def": false,
+"down": true,
+"up": false
+}
+}
 
-[node name="MoveDownButton" type="Button" parent="IndentContainer/ButtonContainer"]
+[node name="MoveDownButton" type="TextureButton" parent="IndentContainer/ButtonContainer"]
+material = SubResource("ShaderMaterial_b8vyo")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.1
-icon = ExtResource("3_knb70")
+texture_normal = ExtResource("3_knb70")
+script = ExtResource("4_jent8")
+shader_switch_params = {
+"active": {
+"def": false,
+"down": true,
+"up": false
+}
+}
 
-[node name="RemoveButton" type="Button" parent="IndentContainer/ButtonContainer"]
+[node name="RemoveButton" type="TextureButton" parent="IndentContainer/ButtonContainer"]
+material = SubResource("ShaderMaterial_on4e4")
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.1
-icon = ExtResource("4_h1ket")
+texture_normal = ExtResource("4_h1ket")
+script = ExtResource("4_jent8")
+shader_switch_params = {
+"active": {
+"def": false,
+"down": true,
+"up": false
+}
+}
 
 [connection signal="pressed" from="IndentContainer/ButtonContainer/MoveUpButton" to="." method="_on_move_up_pressed"]
 [connection signal="pressed" from="IndentContainer/ButtonContainer/MoveDownButton" to="." method="_on_move_down_pressed"]
