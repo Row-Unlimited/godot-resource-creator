@@ -14,6 +14,7 @@ func _ready() -> void:
 	#test_tab_bar()
 	#test_dict_merge()
 	#test_doc_format()
+	test_scaling()
 	
 	pass
 
@@ -48,6 +49,12 @@ func test_helper_update():
 	test_object_1.print_me()
 	print("--------------------------------")
 	test_object_2.print_me()
+
+func test_scaling():
+	var obj = ScaleAssistant.new()
+	obj.tree_levels = 5
+	obj.scale_node = get_child(0)
+	pass
 
 func test_dict_merge():
 	var base_dict = {"test": {"test1": 10, "test2":20}}
