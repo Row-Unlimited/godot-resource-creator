@@ -54,6 +54,8 @@ func _ready() -> void:
 		export_path_edit.text = object_wrapper.export_path
 	if object_wrapper.class_config and "is_export_path_static" in object_wrapper.class_config.keys():
 		export_path_edit.editable = not object_wrapper.class_config["is_export_path_static"]
+	
+	get_node("ScaleAssistant")._on_scale_node_ready()
 
 ## Creates the create_object menu UI and Logic[br]
 ## takes the class from the object_wrapper and gets the property list[br]

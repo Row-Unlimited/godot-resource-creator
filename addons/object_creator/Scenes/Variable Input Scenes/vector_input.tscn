@@ -15,7 +15,6 @@ shader_parameter/opacity = 0.4
 
 [node name="VectorInput" type="PanelContainer"]
 material = SubResource("ShaderMaterial_4c8qu")
-custom_minimum_size = Vector2(0, 47.3333)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

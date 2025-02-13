@@ -1,7 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://cjmgc5xx5ty71"]
+[gd_scene load_steps=17 format=3 uid="uid://cjmgc5xx5ty71"]
 
 [ext_resource type="Theme" uid="uid://du8tldypjrsog" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/default_theme.tres" id="1_1ak1c"]
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/popup_scene.gd" id="1_p2bw2"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/scale_assistant.gd" id="3_lbvbj"]
 
 [sub_resource type="Gradient" id="Gradient_dd03f"]
 interpolation_mode = 2
@@ -146,6 +147,15 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_1ak1c")
 theme_override_styles/panel = SubResource("StyleBoxFlat_mgkc8")
+
+[node name="ScaleAssistant" type="Node" parent="PopupWindow" node_paths=PackedStringArray("scale_node")]
+script = ExtResource("3_lbvbj")
+scale_node = NodePath("..")
+node_active_start = true
+max_size_modifiers = Vector2(200, 120)
+font_size_steps = Vector2(50, 30)
+default_to_max_distance = 4
+max_font_difference = 10
 
 [node name="HeaderLabel" type="Label" parent="PopupWindow"]
 layout_mode = 1

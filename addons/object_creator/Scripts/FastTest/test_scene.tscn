@@ -9,7 +9,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_2aoag")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 1
@@ -25,12 +24,10 @@ anchors_preset = -1
 anchor_left = 0.1
 anchor_right = 0.9
 anchor_bottom = 0.2
-offset_left = -20.0
-offset_right = 20.0
-offset_bottom = 23.0
 grow_horizontal = 2
-text = "abcefghijklmnopqrstuvwxyz"
+text = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
 autowrap_mode = 2
+clip_text = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control"]
 layout_mode = 1
@@ -43,22 +40,33 @@ grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="Label" type="Label" parent="Control/VBoxContainer"]
-visible = false
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 text = "Test scale Label Container 1"
 autowrap_mode = 2
 
 [node name="Label2" type="Label" parent="Control/VBoxContainer"]
-visible = false
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 text = "Test scale Label Container 2"
 autowrap_mode = 2
 
 [node name="Label3" type="Label" parent="Control/VBoxContainer"]
-visible = false
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 text = "Test scale Label Container 3"
 autowrap_mode = 2
+
+[node name="Button" type="Button" parent="Control"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.8
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
+autowrap_mode = 3
+
+[node name="FastTest" type="Node" parent="."]
+script = ExtResource("1_2aoag")

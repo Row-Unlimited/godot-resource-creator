@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bfnivp2qemwie"]
+[gd_scene load_steps=4 format=3 uid="uid://bfnivp2qemwie"]
 
 [ext_resource type="Script" path="res://addons/object_creator/Scripts/create_object.gd" id="1_m440h"]
+[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/scale_assistant.gd" id="2_ih7s3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h874h"]
 bg_color = Color(0.110331, 0.257836, 0.583369, 1)
@@ -54,15 +55,20 @@ anchor_left = 0.05
 anchor_top = 0.1
 anchor_right = 0.25
 anchor_bottom = 0.4
+grow_horizontal = 2
+grow_vertical = 2
 text = "JSON Export"
+clip_text = true
 
 [node name="ToggleViewHidden" type="CheckButton" parent="SubmitBox"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.35
-anchor_top = 0.05
+anchor_top = 0.1
 anchor_right = 0.55
 anchor_bottom = 0.4
+grow_horizontal = 2
+grow_vertical = 2
 text = "Show hidden"
 
 [node name="ExportPathEdit" type="LineEdit" parent="SubmitBox"]
@@ -76,3 +82,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 10
 placeholder_text = "Export Path"
+
+[node name="ScaleAssistant" type="Node" parent="." node_paths=PackedStringArray("scale_node")]
+script = ExtResource("2_ih7s3")
+scale_node = NodePath("..")
+max_size_modifiers = Vector2(600, 360)
+font_size_steps = Vector2(100, 60)
+default_to_max_distance = 6
+max_font_difference = 14

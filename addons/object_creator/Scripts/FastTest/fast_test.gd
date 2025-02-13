@@ -52,8 +52,7 @@ func test_helper_update():
 
 func test_scaling():
 	var obj = ScaleAssistant.new()
-	obj.tree_levels = 5
-	obj.scale_node = get_child(0)
+	obj.scale_node = get_parent().get_child(0)
 	pass
 
 func test_dict_merge():

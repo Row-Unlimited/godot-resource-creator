@@ -1,7 +1,8 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://du8tldypjrsog"]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://du8tldypjrsog"]
 
 [ext_resource type="StyleBox" uid="uid://csfryudfcvpm2" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/Button/normal_button.tres" id="1_0mf4v"]
 [ext_resource type="StyleBox" uid="uid://wv6wb4yvd6h5" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/Button/disabled_button.tres" id="1_h2nm5"]
+[ext_resource type="FontFile" uid="uid://cxt5ef71bmhp5" path="res://addons/object_creator/Assets/Fonts/Roboto/Roboto-Medium.ttf" id="1_rbkne"]
 [ext_resource type="StyleBox" uid="uid://dg2apy28lmh00" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/Button/pressed_button.tres" id="2_7va0d"]
 [ext_resource type="StyleBox" uid="uid://b1dkrl6x32b30" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/Button/hovered_button.tres" id="3_gayt0"]
 [ext_resource type="StyleBox" uid="uid://do4kpj3gy3oar" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/Panel/normal_panel.tres" id="3_nmqo7"]
@@ -18,10 +19,12 @@ Button/colors/font_disabled_color = Color(0.556548, 0.5789, 1, 0.556863)
 Button/colors/font_focus_color = Color(0.803922, 0.521569, 0, 1)
 Button/colors/font_hover_color = Color(0.988396, 0.645401, 0, 1)
 Button/colors/font_pressed_color = Color(0.278431, 0, 0.870588, 1)
+Button/fonts/font = ExtResource("1_rbkne")
 Button/styles/disabled = ExtResource("1_h2nm5")
 Button/styles/hover = ExtResource("3_gayt0")
 Button/styles/normal = ExtResource("1_0mf4v")
 Button/styles/pressed = ExtResource("2_7va0d")
+CheckButton/fonts/font = ExtResource("1_rbkne")
 HBoxContainer/constants/separation = 8
 LineEdit/colors/font_color = Color(1, 0.758316, 0.455031, 1)
 LineEdit/colors/font_placeholder_color = Color(1, 0.756863, 0.454902, 0.635294)
