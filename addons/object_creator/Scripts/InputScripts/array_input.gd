@@ -90,7 +90,9 @@ func submit_status_dict():
 ## takes an array and fills the input with input fields for each array element
 func receive_input(input):
 	await self.ready
-
+	if typeof(input) == TYPE_ARRAY and input:
+		for container in element_containers:
+			_on_remove_node(container)
 	for element in input:
 		add_element(typeof(element), element)
 	#update_sizes()

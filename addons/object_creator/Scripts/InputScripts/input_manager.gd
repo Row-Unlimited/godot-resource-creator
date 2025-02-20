@@ -27,6 +27,9 @@ const indent_panel_resources = [
 	]
 #endregion
 
+## variable to keep track of if the variable has been saved already or is new, so that default values aren't reapplied
+var has_been_saved: bool = false
+
 #region config_variables
 ## range describes number range for int/float and size range for string/array/dictionary
 var config
@@ -93,7 +96,7 @@ func apply_config_rules(configs_ordered: Array):
 	Helper.apply_dict_values_object(self, final_config.duplicate(true))
 	
 	set_input_disabled(disable_editing)
-	if default_value and typeof(default_value) in GlobalCollections.AcceptedTypes:
+	if default_value and typeof(default_value) in GlobalCollections.AcceptedTypes and not has_been_saved:
 		receive_input(default_value)
 	
 	if hide_input:
@@ -147,7 +150,6 @@ func return_empty_value(error_object: InputError = null):
 	else:
 		error_object.toggle_error("EMPTY", true)
 		return error_object
-
 
 func toggle_focus_shadow():
 	var style_box = get_theme_stylebox("panel").duplicate()

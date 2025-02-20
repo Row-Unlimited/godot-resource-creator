@@ -67,7 +67,7 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 	# create object of the class from the script path and get the property list
 	var class_script: Script = load(object_wrapper.path)
 	property_list = class_script.get_script_property_list()
-	input_root_node = get_node("ScrollContainer/VBoxContainer")
+	input_root_node = get_node("ScrollContainer/MarginContainer/InputContainer")
 	property_list = find_tooltip_comments(property_list, class_script.source_code)
 
 	# sets up the window settings, so whether it is a special menu or whether it should accept empty inputs
@@ -111,6 +111,7 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 			if object_wrapper.obj:
 				var object_pre_value = object_wrapper.obj.get(property_name)
 				if typeof(object_pre_value) == property_type :
+					new_input.has_been_saved = true
 					new_input.receive_input(object_pre_value)
 			
 			new_input.set_up_config_rules(object_wrapper.class_config)
@@ -179,9 +180,9 @@ func create_settings_menu():
 	menu_type = CreateMenuType.SETTINGS
 	var submit_panel = get_node("SubmitBox")
 	submit_panel.get_node("CreateObject").text = "Save Settings"
-	var check_buttons = submit_panel.get_children().filter(func(x): return x is CheckButton)
-	for check_button in check_buttons:
-		check_button.visible = false
+	var create_elements = submit_panel.get_children().filter(func(x): return x.name != "CreateObject" )
+	for element in create_elements:
+		element.visible = false
 
 ## adds a headline with [paramname text] as String value at the top of the window
 func add_headline(text: String):
