@@ -61,6 +61,7 @@ func style_input():
 	type_label.text = TypeManager.find_type_value(property["type"], TypeManager.TypeValue.READ_STRING)
 
 func receive_input(input):
+	print(typeof(input))
 	var acceptable_types = [TYPE_INT, TYPE_FLOAT, TYPE_STRING]
 	if typeof(input) in acceptable_types:
 		input_node.text = str(input)

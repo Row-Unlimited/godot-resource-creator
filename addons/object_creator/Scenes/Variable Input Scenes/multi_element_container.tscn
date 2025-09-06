@@ -1,18 +1,18 @@
 [gd_scene load_steps=10 format=3 uid="uid://c4nafikdyelds"]
 
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/InputScripts/multi_element_container.gd" id="1_d8801"]
-[ext_resource type="Shader" path="res://addons/object_creator/Assets/button_shader.gdshader" id="2_7u2ek"]
+[ext_resource type="Script" uid="uid://df8n2o5m427fs" path="res://addons/object_creator/Scripts/InputScripts/multi_element_container.gd" id="1_d8801"]
+[ext_resource type="Shader" uid="uid://cabeyila2a4te" path="res://addons/object_creator/Assets/button_shader.gdshader" id="2_7u2ek"]
 [ext_resource type="Texture2D" uid="uid://cya8l0htpkrnn" path="res://addons/object_creator/Assets/textures/Arrow-Up.png" id="2_8ajga"]
 [ext_resource type="Texture2D" uid="uid://b3b6pivlgk6nc" path="res://addons/object_creator/Assets/textures/Arrow-Down.png" id="3_knb70"]
 [ext_resource type="Texture2D" uid="uid://cw164j5sq8t7c" path="res://addons/object_creator/Assets/textures/Cross.png" id="4_h1ket"]
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/shader_effect_button.gd" id="4_jent8"]
+[ext_resource type="Script" uid="uid://63ut4iosa7yl" path="res://addons/object_creator/Scripts/UI-Scripts/shader_effect_button.gd" id="4_jent8"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kjbo7"]
 resource_local_to_scene = true
 shader = ExtResource("2_7u2ek")
 shader_parameter/active = false
 shader_parameter/color_override = Color(1, 1, 1, 1)
-shader_parameter/override_color = null
+shader_parameter/override_color = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_b8vyo"]
 resource_local_to_scene = true
@@ -26,7 +26,7 @@ resource_local_to_scene = true
 shader = ExtResource("2_7u2ek")
 shader_parameter/active = false
 shader_parameter/color_override = Color(1, 1, 1, 1)
-shader_parameter/override_color = null
+shader_parameter/override_color = false
 
 [node name="MultiElementContainer" type="MarginContainer"]
 anchors_preset = -1

@@ -1,16 +1,16 @@
 [gd_scene load_steps=15 format=3 uid="uid://dp37abkh7wgph"]
 
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/creation_manager.gd" id="1_6is2m"]
+[ext_resource type="Script" uid="uid://eessycipboij" path="res://addons/object_creator/Scripts/creation_manager.gd" id="1_6is2m"]
 [ext_resource type="Theme" uid="uid://du8tldypjrsog" path="res://addons/object_creator/Assets/ThemeAssets/DefaultTheme/default_theme.tres" id="1_imsfs"]
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/tab_manager.gd" id="2_cx134"]
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/screen_manager.gd" id="4_13l1c"]
+[ext_resource type="Script" uid="uid://bker533513h3x" path="res://addons/object_creator/Scripts/UI-Scripts/tab_manager.gd" id="2_cx134"]
+[ext_resource type="Script" uid="uid://b4m1mwaw240lt" path="res://addons/object_creator/Scripts/UI-Scripts/screen_manager.gd" id="4_13l1c"]
 [ext_resource type="PackedScene" uid="uid://cjrjsmw62bo4a" path="res://addons/object_creator/Scenes/MainMenuUI/overview_menu.tscn" id="5_k30fj"]
 [ext_resource type="Texture2D" uid="uid://s63n8ht61j33" path="res://addons/object_creator/Assets/textures/settings-button-small.png" id="6_7i13x"]
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/Settings/settings_button.gd" id="7_ra1gh"]
+[ext_resource type="Script" uid="uid://c25i5mw7vcd77" path="res://addons/object_creator/Scripts/Settings/settings_button.gd" id="7_ra1gh"]
 [ext_resource type="Texture2D" uid="uid://ba82sqmg0g2yb" path="res://addons/object_creator/Assets/textures/home-icon-normal.png" id="8_sgjep"]
-[ext_resource type="Shader" path="res://addons/object_creator/Assets/button_shader.gdshader" id="11_b60u8"]
+[ext_resource type="Shader" uid="uid://cabeyila2a4te" path="res://addons/object_creator/Assets/button_shader.gdshader" id="11_b60u8"]
 [ext_resource type="Texture2D" uid="uid://fe4lo44jn42d" path="res://addons/object_creator/Assets/textures/refresh.png" id="11_vvgd0"]
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/shader_effect_button.gd" id="12_spw37"]
+[ext_resource type="Script" uid="uid://63ut4iosa7yl" path="res://addons/object_creator/Scripts/UI-Scripts/shader_effect_button.gd" id="12_spw37"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2k06y"]
 shader = ExtResource("11_b60u8")

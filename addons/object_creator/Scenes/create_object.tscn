@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bfnivp2qemwie"]
 
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/create_object.gd" id="1_m440h"]
-[ext_resource type="Script" path="res://addons/object_creator/Scripts/UI-Scripts/scale_assistant.gd" id="2_ih7s3"]
+[ext_resource type="Script" uid="uid://be3xo25amykh8" path="res://addons/object_creator/Scripts/create_object.gd" id="1_m440h"]
+[ext_resource type="Script" uid="uid://c65t5ehwsxafp" path="res://addons/object_creator/Scripts/UI-Scripts/scale_assistant.gd" id="2_ih7s3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h874h"]
 bg_color = Color(0.110331, 0.257836, 0.583369, 1)

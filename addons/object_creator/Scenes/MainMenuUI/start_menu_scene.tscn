@@ -33,6 +33,7 @@ grow_horizontal = 2
 grow_vertical = 0
 selected = 0
 item_count = 1
+popup/item_0/id = 0
 
 [node name="possible_path" type="Control" parent="path_menu"]
 layout_mode = 1
@@ -52,3 +53,4 @@ grow_horizontal = 2
 grow_vertical = 0
 selected = 0
 item_count = 1
+popup/item_0/id = 0
