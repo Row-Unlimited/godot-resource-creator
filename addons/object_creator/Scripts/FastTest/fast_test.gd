@@ -107,31 +107,31 @@ func parse_level_items(level_item: Dictionary, level_item_arr):
 	var bracket_text = level_item["bracket_text"]
 	var sub_items = {}
 	var sub_count = 0
+	var removed_text_number = 0
 	for sub_item_pos in level_item["sub_item_positions"]:
 		var sub_item = level_item_arr[sub_item_pos]
 		var sub_text = sub_item["bracket_text"]
-		var find_position = bracket_text.find(sub_text, sub_item["opening_pos"] - 1)
-		var length_text = sub_item["closing_pos"] - sub_item["opening_pos"]
+		var find_position = bracket_text.find(sub_text)
+		var length_text = sub_item["closing_pos"] - sub_item["opening_pos"] + 1
 		if find_position: # issue: need to find clean way to only replace the one correct sub item, currently after the first the others arent detected because position doesnt work anymore
 			var item_id = str(sub_count) + "SUB_ITEM"
-			var text_from_find = bracket_text.substr(find_position, length_text).replace(sub_text.substr(1, sub_text.length() - 2), item_id)
+			var bracketfree_sub_text = sub_text.substr(1, sub_text.length() - 2)
+			var text_from_find = bracket_text.substr(find_position, length_text)
+			text_from_find = text_from_find.replace(bracketfree_sub_text, item_id)
 			bracket_text = bracket_text.replace(sub_text, "")
 			bracket_text = bracket_text.insert(find_position, text_from_find)
-			#bracket_text = bracket_text.replace(sub_text.substr(1, sub_text.length() - 2), item_id)
 			sub_items[item_id] = sub_item
 			sub_count += 1
-		pass
+			removed_text_number += length_text - 2 - item_id.length()
 
 	var parse_text = bracket_text#.replace("\n", "").replace("\t", "").replace(" ", "")
 	parse_text = parse_text.substr(1, parse_text.length() - 2) # remove first and last bracket
 	var regex = RegEx.new()
 	if bracket_text[0] == "{":
-		regex.compile('(\\"\\w+\\"\\:(?:\\d+\\.{0,1}\\d*|\\[\\d+SUB_ITEM\\]|\\{\\d+SUB_ITEM\\}|\\"[^\\"]*\\"|(?:true|false)))')
+		regex.compile('(\\"\\w+\\"\\:(?:-?\\d+\\.{0,1}\\d*|\\[\\d+SUB_ITEM\\]|\\{\\d+SUB_ITEM\\}|\\"[^\\"]*\\"|(?:true|false)))')
 	else:
-		regex.compile('(\\d+\\.{0,1}\\d*|\\[\\d+SUB_ITEM\\]|\\{\\d+SUB_ITEM\\}|\\"[^\\"]*\\"|(?:true|false))(?:\\,|$)')
-	var sub_texts = regex.search_all(parse_text).map(func(x): return x.get_string())
-
-	print("---> ", sub_texts)
+		regex.compile('(-?\\d+\\.{0,1}\\d*|\\[\\d+SUB_ITEM\\]|\\{\\d+SUB_ITEM\\}|\\"[^\\"]*\\"|(?:true|false))(?:\\,|$)')
+	var sub_texts = regex.search_all(parse_text).map(func(x): return x.get_string(1))
 
 	if bracket_text[0] == "{":
 		return_value = {}
@@ -157,7 +157,6 @@ func parse_level_items(level_item: Dictionary, level_item_arr):
 			return_value.append(value)
 	if not "upper_item_pos" in level_item.keys():
 		pass
-	print("\n+++> ", return_value)
 	
 	return return_value
 
