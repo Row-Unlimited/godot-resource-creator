@@ -24,30 +24,40 @@ var class_names: Array = []
 var select_index_to_wrapper: Dictionary
 
 var select_index: int
+var setup_done = false
 
 var status_dict: Dictionary
 
 func initialize_input(property_dict: Dictionary):
+	if property_dict.is_empty():
+		# should add if condition into multi element container
+		property_dict = {"class_name": "Resource"}
+	class_names = []
+	wrappers = []
 	property = property_dict
 	input_type = TYPE_OBJECT
+	
 
 
 	# assign nodes variables
-	input_container = get_node("MarginContainer/InputContainer")
-	property_select = input_container.get_node("ClassSection/PropterySelect")
-	property_name_label = input_container.get_node("ClassSection/PropertyName")
-	property_type_label = input_container.get_node("ClassSection/PropertyType")
-	class_name_label = input_container.get_node("EditSection/ClassName")
-	choose_class_button = input_container.get_node("ClassSection/ChooseClassButton")
-	edit_button = input_container.get_node("EditSection/EditButton")
-	clear_button = input_container.get_node("EditSection/ClearButton")
+	if !setup_done:
+		input_container = get_node("MarginContainer/InputContainer")
+		property_select = input_container.get_node("ClassSection/PropterySelect")
+		property_name_label = input_container.get_node("ClassSection/PropertyName")
+		property_type_label = input_container.get_node("ClassSection/PropertyType")
+		class_name_label = input_container.get_node("EditSection/ClassName")
+		choose_class_button = input_container.get_node("ClassSection/ChooseClassButton")
+		edit_button = input_container.get_node("EditSection/EditButton")
+		clear_button = input_container.get_node("EditSection/ClearButton")
 
-	property_select.connect("item_selected", _on_item_selected)
-	choose_class_button.connect("pressed", _on_choose_class_button_clicked)
-	edit_button.connect("pressed", _on_edit_button_clicked)
-	clear_button.connect("pressed", _on_clear_button_clicked)
-	if property_dict:
-		property_type_label.text = property_dict["class_name"]
+		property_select.connect("item_selected", _on_item_selected)
+		choose_class_button.connect("pressed", _on_choose_class_button_clicked)
+		edit_button.connect("pressed", _on_edit_button_clicked)
+		clear_button.connect("pressed", _on_clear_button_clicked)
+		if property_dict:
+			property_type_label.text = property_dict["class_name"]
+		setup_done = true
+	
 
 	# load classes for object select
 	# TODO: add integration
@@ -59,10 +69,11 @@ func initialize_input(property_dict: Dictionary):
 	for i in wrappers.size():
 		var wrapper = wrappers[i]
 		var wrapper_obj = Helper.create_null_instance(load(wrapper.path))
-		#var wrapper_obj = load(wrapper.path).new()
 		var wrapper_name = wrapper_obj.get_script().get_global_name()
-		if property_dict["class_name"] == wrapper_name or wrapper_obj.is_class(property_dict["class_name"]):
-			class_names.append(wrapper.real_class_name if wrapper.real_class_name else Helper.file_name_to_class_name(wrapper.file_class_name))
+		var c_name = property_dict["class_name"]
+		if (c_name == wrapper_name or wrapper_obj.is_class(c_name)):
+			if c_name not in class_names: 
+				class_names.append(wrapper.real_class_name if wrapper.real_class_name else Helper.file_name_to_class_name(wrapper.file_class_name))
 		else:
 			wrong_wrappers.append(i)
 	
@@ -77,6 +88,7 @@ func initialize_input(property_dict: Dictionary):
 	if "name" in property_dict.keys():
 		property_name_label.text = property_dict["name"] if property_dict else ""
 	
+	property_select.clear() # clears options since arrays somehow call this function twice
 	for i in class_names.size():
 		var class_option = class_names[i]
 		select_index_to_wrapper[property_select.item_count] = wrappers[i]

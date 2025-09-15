@@ -8,7 +8,6 @@ extends MultiElementInput
 var child_sizes: Dictionary = {}
 
 func check_typed():
-
 	var possible_class_names = ClassLoader.new().return_class_names()
 
 	var type_arr

@@ -49,7 +49,7 @@ func _create_base_nodes():
 	set_column_expand_ratio(0, 1)
 
 func add_new_object(object_wrapper, path_editable = true):
-	if "is_export_path_static" in object_wrapper.class_config.keys():
+	if object_wrapper.class_config and "is_export_path_static" in object_wrapper.class_config.keys():
 		path_editable = not object_wrapper.class_config["is_export_path_static"]
 	if get_item_by_id(object_wrapper.id):
 		return

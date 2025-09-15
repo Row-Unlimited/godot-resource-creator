@@ -18,3 +18,13 @@ Future TODOs:
 	- Code refactoring:
 		+ Move Vector match statements into TypeManager
 		+ Redo how vectors apply sub_configs, so that they have a X_CONFIG property that gets written into directly instead of doing all these shenanigans.
+
+BUG LOG:
+	- Saving Object input that is inside of an array, will add this object to the tree view at the start, but if you delete it in the array the object will still be there
+	- Editing an Object with an array that holds Objects after saving them, will sometimes not load all objects, and those objects are then also not exported:
+		Description:
+		+ Creating objects in array, saving and then exporting works
+		+ Once you edit the top object and add a new object to the array, only this new object will be remembered
+		+ But if you edit the top object and then edit the object that was created before and save it again, it will still be remembered
+		=> Currently you need to edit and save every single object in the array again to actually save them when editing
+		+ THIS BUG ALSO PERSISTS IN NORMAL OBJECT_INPUTS NOT ONLY THE ARRAYS
