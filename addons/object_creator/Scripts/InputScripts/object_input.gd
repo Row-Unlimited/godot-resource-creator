@@ -1,6 +1,9 @@
 @tool
 class_name ObjectInput
 extends InputManager
+## Input class for Objects
+## Allows for picking of Resource Class and editing of object
+## Submits an ObjectWrapper holding the created object if an object was successfully created
 
 signal edit_sub_object_clicked(wrapper: ObjectWrapper, object_input: ObjectInput)
 signal choose_class_button_clicked(wrapper: ObjectWrapper, object_input: ObjectInput)
@@ -81,8 +84,6 @@ func initialize_input(property_dict: Dictionary):
 	wrong_wrappers.reverse()
 	for pos in wrong_wrappers:
 		wrappers.remove_at(pos)
-
-	#class_names = wrappers.map(func(x): return x.real_class_name if x.real_class_name else Helper.file_name_to_class_name(x.file_class_name))
 	
 	# set up select class button
 	if "name" in property_dict.keys():
@@ -106,6 +107,8 @@ func attempt_submit(mute_warnings=false):
 	var return_value = null
 	if object_create_screen:
 		return_value = object_create_screen.on_submit_pressed()
+	elif chosen_wrapper and chosen_wrapper.obj:
+		return chosen_wrapper
 	
 	if return_value == null or return_value is InputError:
 		# TODO: implement actual response to return_value giving you an error
@@ -124,7 +127,7 @@ func receive_input(input):
 					property_select.select(i)
 					select_index = i
 					select_index_to_wrapper[i].obj = input
-					_on_choose_class_button_clicked()
+					_on_choose_class_button_clicked() # sets up wrapper and emits signal to creation manager
 					
 	else:
 		Helper.throw_error("ERROR: NON OBJECT CANNOT BE RECEIVED AS INPUT FOR OBJECT INPUT")

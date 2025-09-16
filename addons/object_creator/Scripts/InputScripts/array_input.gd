@@ -121,6 +121,8 @@ func _on_move_node(node: MultiElementContainer, new_position: int):
 
 ## Removes InputNode from the Array UI
 func _on_remove_node(node: MultiElementContainer):
+	if node.input.input_type == TYPE_OBJECT and node.input.chosen_wrapper:
+		node.input.chosen_wrapper.delete_wrapper = true
 	input_managers.remove_at(input_managers.find(node.input))
 	on_elements_changed_size()
 	multi_input_vbox.remove_child(node)

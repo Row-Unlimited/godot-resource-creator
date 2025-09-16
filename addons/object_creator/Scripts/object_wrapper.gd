@@ -27,6 +27,8 @@ var save_dict: Dictionary :
 	set(value):
 		save_dict = value
 
+var delete_wrapper: bool = false
+
 
 func _init(path: String = "", name: String = "", obj = null, config = {}):
 	self.path = path

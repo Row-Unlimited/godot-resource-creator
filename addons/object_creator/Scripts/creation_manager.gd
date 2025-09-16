@@ -235,6 +235,10 @@ func _on_object_created(object_wrapper: ObjectWrapper):
 			parent_wrapper.child_wrapper_ids.append(object_wrapper.id)
 	created_object_wrappers.append(object_wrapper)
 	export_tree.add_new_object(object_wrapper)
+	for wrapper in created_object_wrappers:
+		if wrapper.delete_wrapper and wrapper.id:
+			remove_wrapper(wrapper.id)
+			export_tree.reset_export_view(created_object_wrappers)
 	main_screen.set_active_node(main_screen_node)
 	tab_manager.close_tab(object_wrapper.id)
 

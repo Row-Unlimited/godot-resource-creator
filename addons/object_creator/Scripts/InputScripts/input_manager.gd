@@ -80,7 +80,7 @@ func set_up_config_rules(config):
 		return
 	self.config = Helper.flatten_sub_dicts(config)
 	var config_strings = ["CLASS_GENERAL_CONFIG", TypeManager.find_type_value(input_type, TypeManager.TypeValue.TYPE_ENUM_STRING)]
-	config_strings = config_strings + [property["name"]] if property else config_strings
+	config_strings = config_strings + [property["name"]] if property and "name" in property.keys() else config_strings
 	config_strings = config_strings.filter(func(x): return x in self.config.keys())
 	var configs_ordered = []
 	for key in config_strings:
