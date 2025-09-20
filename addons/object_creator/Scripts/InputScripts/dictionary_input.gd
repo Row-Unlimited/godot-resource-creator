@@ -83,8 +83,11 @@ func submit_status_dict():
 	return status_dict
 
 func receive_input(input: Dictionary):
+	await self.ready
 	for key in input.keys():
 		var item_value = input[key]
+		if item_value is ObjectWrapper:
+			item_value = item_value.obj
 		add_element(typeof(item_value), key, item_value)
 
 func get_all_keys() -> Array[String]:
@@ -106,6 +109,8 @@ func set_input_disabled(is_disabled: bool):
 
 ## Removes InputNode from the Dictionary UI
 func _on_remove_node(node: MultiElementContainer):
+	if node.input.input_type == TYPE_OBJECT and node.input.chosen_wrapper:
+		node.input.emit_signal("wrapper_removed", node.input.chosen_wrapper)
 	element_containers = element_containers.filter(func(x): return x != node)
 	input_managers.remove_at(input_managers.find(node.input))
 	on_elements_changed_size()

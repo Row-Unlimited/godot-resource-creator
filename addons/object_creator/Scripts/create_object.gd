@@ -27,6 +27,7 @@ var session_dict : Dictionary
 # these are given to CreateObject by CreationManager after instantiating
 var object_chosen_callable: Callable
 var object_edited_callable: Callable
+var delete_wrapper_callable: Callable
 var accept_empty_inputs
 
 @onready var submit_button: Button = get_node("SubmitBox/CreateObject")
@@ -91,6 +92,7 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 			if property_type == TYPE_OBJECT:
 				new_input.connect("edit_sub_object_clicked", object_edited_callable)
 				new_input.connect("choose_class_button_clicked", object_chosen_callable)
+				new_input.connect("wrapper_removed", delete_wrapper_callable)
 				new_input.parent_wrapper = object_wrapper
 			
 			# give the sub-object callables to arr/dict since they can contain sub-objects
@@ -98,6 +100,7 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 				new_input.sub_obj_infos = {
 					"edit_callable": object_edited_callable,
 					"choose_callable": object_chosen_callable,
+					"delete_wrapper_callable": delete_wrapper_callable,
 					"parent_wrapper": object_wrapper
 					}
 

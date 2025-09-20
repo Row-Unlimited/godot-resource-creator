@@ -87,7 +87,8 @@ func add_new_object(object_wrapper, path_editable = true):
 
 func reset_export_view(wrappers: Array[ObjectWrapper]):
 	for item in tree_items:
-		item.free()
+		if item:
+			item.free()
 	tree_items.clear()
 	edit_path_item = null
 

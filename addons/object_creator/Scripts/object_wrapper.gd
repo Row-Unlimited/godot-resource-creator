@@ -11,7 +11,14 @@ var export_path = ""
 var id
 var parent_wrapper: ObjectWrapper
 var child_wrapper_ids: Array
-var obj
+var obj :
+	set(value): # this needs to be reevaluated since it could lead to errors
+		if value is Object:
+			if value.has_meta("id") and value.get_meta("id") != id:
+				id = value.get_meta("id")
+			else:
+				value.set_meta("id", id)
+		obj = value
 var real_class_name: String
 var creation_properties
 
@@ -26,8 +33,6 @@ var class_config = {}
 var save_dict: Dictionary :
 	set(value):
 		save_dict = value
-
-var delete_wrapper: bool = false
 
 
 func _init(path: String = "", name: String = "", obj = null, config = {}):

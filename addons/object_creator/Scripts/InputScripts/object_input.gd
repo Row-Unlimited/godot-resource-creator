@@ -7,6 +7,7 @@ extends InputManager
 
 signal edit_sub_object_clicked(wrapper: ObjectWrapper, object_input: ObjectInput)
 signal choose_class_button_clicked(wrapper: ObjectWrapper, object_input: ObjectInput)
+signal wrapper_removed(wrapper: ObjectWrapper)
 
 var property_select: OptionButton
 var property_name_label: Label
@@ -127,8 +128,7 @@ func receive_input(input):
 					property_select.select(i)
 					select_index = i
 					select_index_to_wrapper[i].obj = input
-					_on_choose_class_button_clicked() # sets up wrapper and emits signal to creation manager
-					
+					_on_choose_class_button_clicked() # sets up wrapper and emits signal to creation manager			
 	else:
 		Helper.throw_error("ERROR: NON OBJECT CANNOT BE RECEIVED AS INPUT FOR OBJECT INPUT")
 

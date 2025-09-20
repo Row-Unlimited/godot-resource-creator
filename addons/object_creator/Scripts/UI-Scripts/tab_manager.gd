@@ -31,6 +31,9 @@ func create_new_tab(tab_name, tab_node: TabScreen = null, tab_id = "") -> String
 	tab_counter += 1
 	var tab_index = tab_bar.tab_count
 	tab_id = tab_id if tab_id else str(tab_counter)
+	if tab_id in tab_id_mapping.keys():
+		select_tab(get_tab_index(tab_id))
+		return tab_id
 	tab_id_mapping[tab_id] = {"index": tab_index, "tab_node": tab_node}
 	
 	tab_bar.add_tab(tab_name)
@@ -79,6 +82,8 @@ func get_hover_index(mouse_pos: Vector2):
 				return i
 	return -1
 
+## internal func, that is connected with tab_selected signal.
+## To change the actual tab you should use select_tab func since this one does not cause the tab in the tabbar to be highlighted 
 func change_tab_screen(index: int):
 	if index < 0:
 		return

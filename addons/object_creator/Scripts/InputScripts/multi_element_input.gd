@@ -97,6 +97,7 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 	if type == TYPE_OBJECT: # set up object inputs with callables since they have to interact with the creation_manager
 		new_input_manager.connect("edit_sub_object_clicked", sub_obj_infos["edit_callable"])
 		new_input_manager.connect("choose_class_button_clicked", sub_obj_infos["choose_callable"])
+		new_input_manager.connect("wrapper_removed", sub_obj_infos["delete_wrapper_callable"])
 		new_input_manager.parent_wrapper = sub_obj_infos["parent_wrapper"]
 
 		if typed_object_type:

@@ -100,6 +100,7 @@ func create_new_creation_screen(object_wrapper: ObjectWrapper, menu_type=CreateO
 	# give CreateObject callables to connect sub resource input managers to CreationManager
 	new_create_window.object_chosen_callable = _on_sub_object_class_chosen
 	new_create_window.object_edited_callable = _on_sub_object_edit_clicked
+	new_create_window.delete_wrapper_callable = _on_wrapper_removed
 	
 	new_create_window.initialize_UI(object_wrapper, menu_type)
 	tab_manager.create_new_tab(object_wrapper.file_class_name, new_create_window, object_wrapper.id)
@@ -148,6 +149,8 @@ func set_up_new_wrapper(wrapper: ObjectWrapper):
 func remove_wrapper(id):
 	tab_manager.close_tab(id)
 	created_object_wrappers = created_object_wrappers.filter(func(x): return x.id != id)
+	# filter wrapper from export tree so it doesnt appear there as a child element anymore
+	export_tree.temp_child_wrappers = export_tree.temp_child_wrappers.filter(func(x): return x.id != id) 
 	export_tree.reset_export_view(created_object_wrappers)
 
 func open_popup(type: PopupTypes):
@@ -233,12 +236,12 @@ func _on_object_created(object_wrapper: ObjectWrapper):
 		var parent_wrapper = get_wrapper(object_wrapper.parent_wrapper.id)
 		if parent_wrapper:
 			parent_wrapper.child_wrapper_ids.append(object_wrapper.id)
-	created_object_wrappers.append(object_wrapper)
+	var get_wrapper_duplicate = get_wrapper(object_wrapper.id)
+	if  get_wrapper_duplicate == null:
+		created_object_wrappers.append(object_wrapper)
+	else:
+		created_object_wrappers.set(created_object_wrappers.find(get_wrapper_duplicate), object_wrapper)
 	export_tree.add_new_object(object_wrapper)
-	for wrapper in created_object_wrappers:
-		if wrapper.delete_wrapper and wrapper.id:
-			remove_wrapper(wrapper.id)
-			export_tree.reset_export_view(created_object_wrappers)
 	main_screen.set_active_node(main_screen_node)
 	tab_manager.close_tab(object_wrapper.id)
 
@@ -279,6 +282,10 @@ func _on_sub_object_edit_clicked(wrapper: ObjectWrapper, input_manager: ObjectIn
 func _on_plugin_refresh_clicked():
 	var popup = open_popup(PopupTypes.RELOAD)
 	popup.connect("popup_continue", func():self.emit_signal("reload_plugin"))
+
+func _on_wrapper_removed(wrapper: ObjectWrapper):
+	if wrapper.id:
+		remove_wrapper(wrapper.id)
 
 func _on_reload_plugin():
 	emit_signal("reload_plugin")

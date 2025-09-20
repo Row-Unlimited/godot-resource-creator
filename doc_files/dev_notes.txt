@@ -20,4 +20,4 @@ Future TODOs:
 		+ Redo how vectors apply sub_configs, so that they have a X_CONFIG property that gets written into directly instead of doing all these shenanigans.
 
 BUG LOG:
-	- Saving Object input that is inside of an array, will add this object to the tree view at the start, but if you delete it in the array the object will still be there
+	- using FastTestScript as object input causes error: "Invalid operands Nil and int in operator +
