@@ -322,7 +322,8 @@ static func get_export_var_docs(property_list: Array, source_code: String):
 			last_position = i + 1
 	var locations = export_var_locations.values().map(func(x): return x["location"] if x else null)
 	locations = locations.filter(func(x): return x != null)
-	source_code_lines.resize(locations.max() + 1)
+	if locations.max():
+		source_code_lines.resize(locations.max() + 1)
 
 	for var_name in export_var_locations:
 		var check_lines = export_var_locations[var_name]["lines"]

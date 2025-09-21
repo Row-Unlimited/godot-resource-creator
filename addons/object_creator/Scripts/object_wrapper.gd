@@ -30,9 +30,7 @@ var constr_invalid: bool = false
 
 var obj_script: Script
 var class_config = {}
-var save_dict: Dictionary :
-	set(value):
-		save_dict = value
+var save_dict: Dictionary
 
 
 func _init(path: String = "", name: String = "", obj = null, config = {}):

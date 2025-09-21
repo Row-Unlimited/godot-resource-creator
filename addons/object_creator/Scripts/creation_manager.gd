@@ -236,6 +236,14 @@ func _on_object_created(object_wrapper: ObjectWrapper):
 		var parent_wrapper = get_wrapper(object_wrapper.parent_wrapper.id)
 		if parent_wrapper:
 			parent_wrapper.child_wrapper_ids.append(object_wrapper.id)
+			if parent_wrapper.obj: # check if parent_wrapper was already saved, and if yes replace the earlier sub_object so sub objects can be saved independently from their top object
+				for property_dict in parent_wrapper.obj.get_property_list():
+					var property_name = property_dict["name"]
+					var value = parent_wrapper.obj.get(property_name)
+					if value is Resource and value.has_meta("id") and value.get_meta("id") == object_wrapper.id:
+						parent_wrapper.obj.set(property_name, object_wrapper.obj)
+						if property_name in parent_wrapper.save_dict["properties"].keys(): # replace save dict since that is applied to top object before exporting
+							parent_wrapper.save_dict["properties"][property_name] = object_wrapper.obj
 	var get_wrapper_duplicate = get_wrapper(object_wrapper.id)
 	if  get_wrapper_duplicate == null:
 		created_object_wrappers.append(object_wrapper)

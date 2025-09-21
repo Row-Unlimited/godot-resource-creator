@@ -32,7 +32,7 @@ func export_wrappers(wrappers: Array[ObjectWrapper]):
 func export_files(path: String, export_objects : Array):
 	var file_names = []
 	for object in export_objects:
-		file_names.append(create_file_name(path, object))
+		file_names.append(create_file_name(path, object, file_names))
 	
 	for i in file_names.size():
 		var file = ResourceSaver.save(export_objects[i], path + file_names[i])
@@ -40,7 +40,7 @@ func export_files(path: String, export_objects : Array):
 func export_to_json(path: String, export_objects: Array):
 	var file_names = []
 	for object in export_objects:
-		file_names.append(create_file_name(path, object, true))
+		file_names.append(create_file_name(path, object, file_names, true))
 	
 	# make it into a dict so we can stringify it
 
@@ -50,9 +50,10 @@ func export_to_json(path: String, export_objects: Array):
 		file.store_string(JSON.stringify(object_string))
 		file.close()
 
-func create_file_name(path: String, object: Object, is_json=false) -> String:
+func create_file_name(path: String, object: Object, file_names: Array, is_json=false) -> String:
 	var directory = DirAccess.open(path)
 	var dir_files = directory.get_files()
+	dir_files.append_array(PackedStringArray(file_names))
 	var number_files = 0
 	var fileName: String
 	var file_ending = ".tres" if not is_json else ".json"

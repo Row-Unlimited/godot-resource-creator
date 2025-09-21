@@ -14,10 +14,10 @@ TODOs:
 		+ add functions that create a create_object window without displaying it, to allow integration without swapping the main-screen
 
 Future TODOs:
+	- Implement Option into Object_Input to use a created wrapper to assign it to multiple values.
 	- Implement Color Input type
 	- Code refactoring:
 		+ Move Vector match statements into TypeManager
 		+ Redo how vectors apply sub_configs, so that they have a X_CONFIG property that gets written into directly instead of doing all these shenanigans.
 
 BUG LOG:
-	- using FastTestScript as object input causes error: "Invalid operands Nil and int in operator +
