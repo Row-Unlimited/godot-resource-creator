@@ -1,4 +1,5 @@
 TODOs:
+	- Add duplicate button in overview menu so people can duplicate objects and then edit the copy
 	- Implement popup for deleting objects
 	- Implement variable in plugin_config to disable popups for quicker navigation
 	- Implement more formatting for the comment tooltips

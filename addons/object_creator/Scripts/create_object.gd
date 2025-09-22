@@ -22,6 +22,8 @@ var input_nodes: Array
 var object_wrapper: ObjectWrapper
 var property_list: Array
 
+var is_submitted = false
+
 var session_dict : Dictionary
 
 # these are given to CreateObject by CreationManager after instantiating
@@ -122,6 +124,11 @@ func initialize_UI(object_wrapper, create_menu_type: CreateMenuType = CreateMenu
 ## Handles the submit of the Object on the upper-most level
 ## Calls for all inputManager to submit their values and then it creates it into one big object
 func on_submit_pressed():
+	# shortcut causes this to be triggered multiple times, so to fix that and to reduce potential bugs, we limit submitting to one
+	if is_submitted:
+		return
+	else:
+		is_submitted = true
 	var properties: Dictionary
 	for property in property_list:
 		properties[property["name"]] = property
@@ -272,3 +279,9 @@ func _on_error_occurred(input: InputManager):
 		var scroll_container: ScrollContainer = get_node("ScrollContainer")
 		var local_input_center = input_rect.get_center().y - get_global_rect().position.y
 		scroll_container.scroll_vertical = local_input_center
+
+## input func that implements shift-s as a shortcut to pressing the create object button
+func _input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.ctrl_pressed and event.keycode == KEY_S:
+			on_submit_pressed()
