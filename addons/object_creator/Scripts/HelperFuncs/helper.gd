@@ -435,13 +435,11 @@ static func apply_dict_values_object(obj: Object, value_dict: Dictionary):
 	for key in keys:
 		var prop_type = typeof(obj.get(key))
 		var new_value = value_dict[key]
-		if prop_type in [TYPE_ARRAY]:
+		if prop_type in [TYPE_ARRAY, TYPE_DICTIONARY]:
 			var base_array = obj.get(key)
 			base_array.assign(new_value)
 			new_value = base_array
-
 		obj.set(key, new_value)
-	
 	return obj
 
 ## Goes through dictionary and removes all entries where the callable [param condition] returns false

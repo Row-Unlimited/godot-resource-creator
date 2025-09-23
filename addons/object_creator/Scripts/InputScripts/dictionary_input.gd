@@ -2,9 +2,42 @@
 class_name DictionaryInput
 extends MultiElementInput
 
-## will be added once typed_dicts are added
+## parses the property information and determines if property is typed.
+## If so it changes UI to match that by for example disabling all other types in the type select
 func check_typed():
-	pass
+	# this currently only returns all custom classes so other Resource sub classes would cause errors
+	var possible_class_names = ClassLoader.new().return_class_names() # TODO: write function that returns all possible resource classes
+	possible_class_names.append("Resource")
+	var regex = RegEx.new()
+	regex.compile("(?:(?<key>\\d\\d?(?:\\/\\d\\d)?):(?<key_object>\\w*))(?=\\;);(?<=\\;)(?:(?<value>\\d\\d?(?:\\/\\d\\d)?):(?<value_object>\\w*))")
+	print(property)
+	var type_arr
+	var type_arr_key
+	if "hint_string" in property.keys() and not property["hint_string"].is_empty():
+		var hint_string : String = property["hint_string"]
+		var search_hint = regex.search(hint_string)
+		var hint_key = search_hint.get_string("key")
+		var hint_key_object = search_hint.get_string("key_object")
+		var hint_value = search_hint.get_string("value")
+		var hint_value_object = search_hint.get_string("value_object")
+
+		if hint_value_object :
+			if hint_value_object in possible_class_names:
+				type_arr = TYPE_OBJECT
+				typed_object_type = hint_value_object
+			else:
+				Helper.throw_error("ERROR: variable uses Object type "+ hint_value_object + " outside of plugin scope")
+		elif hint_value.is_valid_int():
+			if hint_value.to_int() in TypeManager.SUPPORTED_TYPES:
+				type_arr = hint_value.to_int()
+			elif hint_value.to_int() == 0:
+				#TODO: decide how to implement Variant for dictionaries
+				pass
+		
+		#TODO: implement key
+				
+		if type_arr:
+			disable_select_type_button([type_arr], true, true)
 
 ## Adds a new element to a Dictionary Input
 func add_element( value_type: Variant.Type, def_key="", def_input = null):

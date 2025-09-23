@@ -1,4 +1,9 @@
 TODOs:
+	- Implement typed dicts
+		+ create check_typed() method in dictionary input
+		+ add some kind of label to dict input scene to show that the key is of a certain type
+		+ Implement all other inputs to function as keys for dictionaries
+	- Make typed the type select for arrays and dicts be grayed out if it's typed instead of just allowing a single type
 	- Add duplicate button in overview menu so people can duplicate objects and then edit the copy
 	- Implement popup for deleting objects
 	- Implement variable in plugin_config to disable popups for quicker navigation
@@ -22,3 +27,4 @@ Future TODOs:
 		+ Redo how vectors apply sub_configs, so that they have a X_CONFIG property that gets written into directly instead of doing all these shenanigans.
 
 BUG LOG:
+	- Editing object after saving where object input is used in array or dict will not correctly add the priorly saved object to the array/dict

@@ -269,6 +269,7 @@ func _on_export_reset_clicked():
 func _on_obj_edit_clicked(obj_id):
 	var wrapper = get_wrapper(obj_id)
 	create_new_creation_screen(wrapper)
+	tab_manager.select_new_tab()
 
 ## is called by a signal when in the ObjectInput class the ChooseClassButton is pressed sucessfully.
 func _on_sub_object_class_chosen(wrapper: ObjectWrapper, input_manager: ObjectInput):

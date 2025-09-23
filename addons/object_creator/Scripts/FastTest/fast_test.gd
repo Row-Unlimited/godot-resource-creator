@@ -16,6 +16,7 @@ func _ready() -> void:
 	#test_doc_format()
 	#test_scaling()
 	#test_json_parsing()
+	test_typed_dicts()
 	
 	pass
 
@@ -23,6 +24,12 @@ func test_crap():
 	var strings = ["(12, 2, 3, 0)", [0, 1, 2, 3], ["0", 2, 34, "123"]]
 	for string in strings:
 		print(Helper.custom_to_vector(string, true))
+	pass
+
+func test_typed_dicts():
+	var dict: Dictionary[int, bool] = {1:true}
+	var dict2: Dictionary[int, Variant] = {1:"hello"}
+	var dict3: Dictionary[int, Resource] = {1:TestScript.new()}
 	pass
 
 func test_json_parsing():

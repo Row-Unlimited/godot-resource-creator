@@ -9,7 +9,6 @@ var child_sizes: Dictionary = {}
 
 func check_typed():
 	var possible_class_names = ClassLoader.new().return_class_names()
-
 	var type_arr
 	if "hint_string" in property.keys():
 		var hint_string : String = property["hint_string"]
