@@ -32,6 +32,11 @@ func initialize_input(property_dict: Dictionary):
 	if property_dict:
 		name_label.text = property_dict["name"]
 		input_type = property_dict["type"]
+	remove_unused_nodes()
+
+func remove_unused_nodes():
+	if name_label and name_label.text.is_empty():
+		name_label.free()
 
 func set_up_nodes():
 	multi_input_vbox = get_node("MarginContainer/MultiInputVBox")

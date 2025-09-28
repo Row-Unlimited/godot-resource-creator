@@ -14,6 +14,14 @@ func initialize_input(property_dict: Dictionary):
 	if property_dict:
 		set_property_information(property_dict)
 		type_label.text = TypeManager.find_type_value(property["type"], TypeManager.TypeValue.READ_STRING)
+	
+	remove_unused_nodes()
+
+func remove_unused_nodes():
+	if name_label and name_label.text.is_empty():
+		name_label.free()
+		if input_container.get_child(0) is MarginContainer:
+			input_container.get_child(0).free()
 
 func attempt_submit(mute_warnings=false) -> Variant:
 	

@@ -53,6 +53,13 @@ func initialize_input(property_dict: Dictionary):
 func set_up_nodes():
 	pass
 
+## virtual function that is redefined in each input
+## inputs have name labels that are empty when it's not a property but a cell in an array
+## this function should be used to remove these empty nodes so the UI is more compact
+func remove_unused_nodes():
+	# TODO: also implement it to remove type node when it is a typed array. But first types need to be shown more  specifically in the actual array input so like Array[Type] instead of just Array
+	pass
+
 func _ready() -> void:
 	if input_node:
 		input_node.connect("focus_entered", _on_input_focus_changed)

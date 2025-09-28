@@ -12,7 +12,6 @@ func set_up_nodes():
 	input_node = input_container.get_node("Input")
 	input_node.connect("item_selected", _on_item_selected)
 
-
 func initialize_input(property_dict: Dictionary):
 	if property_dict:
 		property = property_dict

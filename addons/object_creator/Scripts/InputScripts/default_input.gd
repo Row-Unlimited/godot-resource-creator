@@ -13,6 +13,14 @@ func initialize_input(property_dict: Dictionary):
 	if property_dict:
 		set_property_information(property_dict)
 		style_input()
+	
+	remove_unused_nodes()
+
+func remove_unused_nodes():
+	if name_label and name_label.text.is_empty():
+		name_label.free()
+		if input_container.get_child(0) is MarginContainer:
+			input_container.get_child(0).free()
 
 func attempt_submit(mute_warnings=false) -> Variant:
 	var error_object = InputError.new_error_object(["TYPE_INVALID"])

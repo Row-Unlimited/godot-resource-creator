@@ -1,4 +1,8 @@
 TODOs:
+	- Redesign object input UI:
+		+ remove x button and just make the confirm button a toggle if object isn't typed(unsure?)
+		+ find way of implementing assigning other objects to the object input, maybe by reference, by duplicate or maybe make both possible
+		+ remove redundant chosen script label that shows what is already written in select
 	- Implement typed dicts
 		+ create check_typed() method in dictionary input
 		+ add some kind of label to dict input scene to show that the key is of a certain type
@@ -27,4 +31,4 @@ Future TODOs:
 		+ Redo how vectors apply sub_configs, so that they have a X_CONFIG property that gets written into directly instead of doing all these shenanigans.
 
 BUG LOG:
-	- Editing object after saving where object input is used in array or dict will not correctly add the priorly saved object to the array/dict
+	- Object inputs in a typed array with type e.g. Array[TestScript] will show "Resource" in type UI label. It should be TestScript tho

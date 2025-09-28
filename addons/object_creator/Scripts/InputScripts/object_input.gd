@@ -103,6 +103,15 @@ func initialize_input(property_dict: Dictionary):
 		# automatically select the class if there is only one possible class
 		_on_choose_class_button_clicked()
 		clear_button.disabled = true
+	remove_unused_nodes()
+
+func remove_unused_nodes():
+	if property_name_label and property_name_label.text.is_empty():
+		property_name_label.free()
+		input_container.get_node("ClassSection/NameMargin").free()
+		input_container.get_node("EditSection/IndentSpace").free()
+		input_container.get_node("EditSection/NameMargin").free()
+		
 
 func attempt_submit(mute_warnings=false):
 	var return_value = null

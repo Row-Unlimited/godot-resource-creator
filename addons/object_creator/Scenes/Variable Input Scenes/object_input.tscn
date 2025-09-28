@@ -20,6 +20,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
 focus_mode = 1
 theme_override_styles/panel = ExtResource("1_4gqrx")
 script = ExtResource("2_r24lb")
@@ -43,11 +44,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 size_flags_stretch_ratio = 0.8
-text = "PropertyName"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Margin2" type="MarginContainer" parent="MarginContainer/InputContainer/ClassSection"]
+[node name="NameMargin" type="MarginContainer" parent="MarginContainer/InputContainer/ClassSection"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.2
@@ -89,12 +89,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.8
 
-[node name="Margin2" type="MarginContainer" parent="MarginContainer/InputContainer/EditSection"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
-size_flags_stretch_ratio = 0.2
-
-[node name="Margin" type="MarginContainer" parent="MarginContainer/InputContainer/EditSection/Margin2"]
+[node name="NameMargin" type="MarginContainer" parent="MarginContainer/InputContainer/EditSection"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 size_flags_stretch_ratio = 0.2
