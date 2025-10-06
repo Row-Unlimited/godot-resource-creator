@@ -29,14 +29,17 @@ var focused_input: int = -1
 func initialize_input(property_dict: Dictionary):
 	property = property_dict
 	set_up_nodes()
-	if property_dict:
+	if "name" in property_dict.keys():
 		name_label.text = property_dict["name"]
+	if "type" in property_dict.keys():
 		input_type = property_dict["type"]
-	remove_unused_nodes()
 
 func remove_unused_nodes():
-	if name_label and name_label.text.is_empty():
+	if ui_status == UiStatus.NO_NAME or ui_status == UiStatus.MINIMUM:
 		name_label.free()
+	if ui_status == UiStatus.MINIMUM:
+		# this should maybe be changed if array is typed
+		type_label.free()
 
 func set_up_nodes():
 	multi_input_vbox = get_node("MarginContainer/MultiInputVBox")
@@ -109,6 +112,8 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 			new_input_manager.initialize_input({"class_name": typed_object_type})
 		else:
 			new_input_manager.initialize_input({})
+
+	new_input_manager.ui_status = UiStatus.NO_NAME
 
 	new_input_node.connect("remove_node", Callable(self, "_on_remove_node"))
 	if config:

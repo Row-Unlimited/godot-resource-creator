@@ -1,12 +1,11 @@
 TODOs:
+	- Implement typed dicts
+		+ make it so the actual class_name is added to the key type select
+		+ Implement classconfigs so users can define how keys should be handled
 	- Redesign object input UI:
 		+ remove x button and just make the confirm button a toggle if object isn't typed(unsure?)
 		+ find way of implementing assigning other objects to the object input, maybe by reference, by duplicate or maybe make both possible
-		+ remove redundant chosen script label that shows what is already written in select
-	- Implement typed dicts
-		+ create check_typed() method in dictionary input
-		+ add some kind of label to dict input scene to show that the key is of a certain type
-		+ Implement all other inputs to function as keys for dictionaries
+		+ remove redundant chosen script label that shows what is already written in select, probably replace it with a button that opens the select object menu described directly above
 	- Make typed the type select for arrays and dicts be grayed out if it's typed instead of just allowing a single type
 	- Add duplicate button in overview menu so people can duplicate objects and then edit the copy
 	- Implement popup for deleting objects
@@ -32,3 +31,5 @@ Future TODOs:
 
 BUG LOG:
 	- Object inputs in a typed array with type e.g. Array[TestScript] will show "Resource" in type UI label. It should be TestScript tho
+	- pressing on dict creates highlight effect that is somehow still there when changing tabs
+	- Margin still exists for Vector types in array which should be changed

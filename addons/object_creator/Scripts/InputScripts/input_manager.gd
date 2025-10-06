@@ -14,6 +14,12 @@ var array_position: int # position if inputmanager is within an array
 var accept_empty_inputs : bool
 var tooltip_string: String = ""
 
+## used to tell input that it is not a proper variable but a sub input in for example a dictionary or array and can thus use minimized UI
+var ui_status: UiStatus = UiStatus.DEFAULT :
+	set(value):
+		ui_status = value
+		self.remove_unused_nodes()
+
 var current_errors: InputError
 @onready var error_color = load("res://addons/object_creator/PluginConfig.tres").error_color
 
@@ -41,9 +47,17 @@ var disable_editing: bool = false
 var default_value
 var hide_input: bool = false
 var final_value = null
+var dict_string_default = false
 #endregion
 
+enum UiStatus {
+	DEFAULT,
+	NO_NAME,
+	MINIMUM
+}
+
 signal error_occurred(input_manager)
+
 
 ## set up function that is called by the CreateObject class [br]
 ## is the first function that is called, before the ready func
@@ -114,8 +128,10 @@ func apply_config_rules(configs_ordered: Array):
 ## sets the labels and vars for a given property, is used in non array inputs
 func set_property_information(property: Dictionary):
 	self.property = property
-	name_label.text = property["name"]
-	input_type = property["type"]
+	if "name" in property.keys():
+		name_label.text = property["name"]
+	if "type" in property.keys():
+		input_type = property["type"]
 
 func show_input_warning(error: InputError= null,mute_warnings=false):
 	if mute_warnings:

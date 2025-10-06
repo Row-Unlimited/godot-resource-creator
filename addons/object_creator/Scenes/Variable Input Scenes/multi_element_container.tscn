@@ -38,20 +38,23 @@ grow_vertical = 2
 theme_override_constants/margin_left = 10
 script = ExtResource("1_d8801")
 
-[node name="IndentContainer" type="HBoxContainer" parent="."]
+[node name="KeyInputContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
 
-[node name="ButtonContainer" type="HBoxContainer" parent="IndentContainer"]
+[node name="IndentContainer" type="HBoxContainer" parent="KeyInputContainer"]
+layout_mode = 2
+
+[node name="ButtonContainer" type="HBoxContainer" parent="KeyInputContainer/IndentContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 alignment = 2
 
-[node name="Margin" type="MarginContainer" parent="IndentContainer/ButtonContainer"]
+[node name="Margin" type="MarginContainer" parent="KeyInputContainer/IndentContainer/ButtonContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 3.0
 
-[node name="MoveUpButton" type="TextureButton" parent="IndentContainer/ButtonContainer"]
+[node name="MoveUpButton" type="TextureButton" parent="KeyInputContainer/IndentContainer/ButtonContainer"]
 material = SubResource("ShaderMaterial_kjbo7")
 layout_mode = 2
 size_flags_horizontal = 3
@@ -66,7 +69,7 @@ shader_switch_params = {
 }
 }
 
-[node name="MoveDownButton" type="TextureButton" parent="IndentContainer/ButtonContainer"]
+[node name="MoveDownButton" type="TextureButton" parent="KeyInputContainer/IndentContainer/ButtonContainer"]
 material = SubResource("ShaderMaterial_b8vyo")
 layout_mode = 2
 size_flags_horizontal = 3
@@ -81,7 +84,7 @@ shader_switch_params = {
 }
 }
 
-[node name="RemoveButton" type="TextureButton" parent="IndentContainer/ButtonContainer"]
+[node name="RemoveButton" type="TextureButton" parent="KeyInputContainer/IndentContainer/ButtonContainer"]
 material = SubResource("ShaderMaterial_on4e4")
 layout_mode = 2
 size_flags_horizontal = 3
@@ -96,6 +99,6 @@ shader_switch_params = {
 }
 }
 
-[connection signal="pressed" from="IndentContainer/ButtonContainer/MoveUpButton" to="." method="_on_move_up_pressed"]
-[connection signal="pressed" from="IndentContainer/ButtonContainer/MoveDownButton" to="." method="_on_move_down_pressed"]
-[connection signal="pressed" from="IndentContainer/ButtonContainer/RemoveButton" to="." method="_on_remove_button_pressed"]
+[connection signal="pressed" from="KeyInputContainer/IndentContainer/ButtonContainer/MoveUpButton" to="." method="_on_move_up_pressed"]
+[connection signal="pressed" from="KeyInputContainer/IndentContainer/ButtonContainer/MoveDownButton" to="." method="_on_move_down_pressed"]
+[connection signal="pressed" from="KeyInputContainer/IndentContainer/ButtonContainer/RemoveButton" to="." method="_on_remove_button_pressed"]

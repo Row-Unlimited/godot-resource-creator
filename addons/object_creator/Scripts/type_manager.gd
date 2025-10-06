@@ -80,6 +80,13 @@ static func get_input_scene(input_type: Variant.Type, property_dict = {}):
 	new_scene = load(new_scene)
 	return new_scene
 
+static func is_empty_value(value):
+	var type = typeof(value)
+	if type in SUPPORTED_TYPES:
+		return TYPE_MAPPING[type][3] == value
+	else:
+		Helper.throw_error("Value is not supported by TypeManager")
+
 const TYPE_MAPPING = {
 	TYPE_BOOL: [TYPE_BOOL, "bool", "TYPE_BOOL", false],
 	"bool": [TYPE_BOOL, "bool", "TYPE_BOOL", false],

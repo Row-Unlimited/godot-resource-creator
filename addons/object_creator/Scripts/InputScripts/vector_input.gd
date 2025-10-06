@@ -46,6 +46,16 @@ func receive_input(input):
 		if(typeof(input) > 10):
 			input_node.w_input.text = str(input.w)
 
+func remove_unused_nodes():
+	if ui_status == UiStatus.NO_NAME or ui_status == UiStatus.MINIMUM:
+		name_label.free()
+		if input_container.get_child(0) is MarginContainer:
+			input_container.get_child(0).free()
+	if ui_status == UiStatus.MINIMUM:
+		type_label.free()
+		if input_container.get_child(0) is MarginContainer:
+			input_container.get_child(0).free()
+
 func is_vector(input) -> bool:
 	return typeof(input) in vector_enum_types
 

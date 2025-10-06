@@ -2,6 +2,9 @@
 class_name DictionaryInput
 extends MultiElementInput
 
+var key_type: Variant.Type = 0
+var key_object_name: String
+
 ## parses the property information and determines if property is typed.
 ## If so it changes UI to match that by for example disabling all other types in the type select
 func check_typed():
@@ -31,13 +34,31 @@ func check_typed():
 			if hint_value.to_int() in TypeManager.SUPPORTED_TYPES:
 				type_arr = hint_value.to_int()
 			elif hint_value.to_int() == 0:
+				type_arr = 0
 				#TODO: decide how to implement Variant for dictionaries
 				pass
 		
-		#TODO: implement key
-				
+		#TODO: implement key this is only copy paste from value for now
+		if hint_key_object :
+			if hint_key_object in possible_class_names:
+				type_arr_key = TYPE_OBJECT
+				key_object_name = hint_key_object
+			else:
+				Helper.throw_error("ERROR: variable uses Object type "+ hint_key_object + " outside of plugin scope")
+		elif hint_key.is_valid_int():
+			if hint_key.to_int() in TypeManager.SUPPORTED_TYPES:
+				type_arr_key = hint_value.to_int()
+			elif hint_key.to_int() == 0:
+				type_arr_key = 0
+				#TODO: decide how to implement Variant for dictionaries
+
+				pass
+		print(hint_key, " ", hint_value)
+		print(type_arr_key, " : ", type_arr)
 		if type_arr:
 			disable_select_type_button([type_arr], true, true)
+		if type_arr_key:
+			key_type = type_arr_key
 
 ## Adds a new element to a Dictionary Input
 func add_element( value_type: Variant.Type, def_key="", def_input = null):
@@ -48,14 +69,15 @@ func add_element( value_type: Variant.Type, def_key="", def_input = null):
 
 	# dictionary values set up
 	new_input_node.input_manager = new_input_manager # give the container the manager for the key exchange
-	new_input_node.add_key_lineEdit() # Add lineEdit for entering keys
+	new_input_node.dict_string_default = dict_string_default
+	new_input_node.add_key_lineEdit(key_type, key_object_name) # Add lineEdit for entering keys
 	new_input_node.remove_move_buttons()
 	element_containers.append(new_input_node)
 	
 	if def_key and not (def_key in get_all_keys()):
 		if def_input:
 			new_input_manager.receive_input(def_input)
-		new_input_node.key_line_edit.text = def_key
+		new_input_node.set_key(def_key) 
 
 
 func attempt_submit(mute_warnings=false) -> Variant:
@@ -66,7 +88,7 @@ func attempt_submit(mute_warnings=false) -> Variant:
 
 	for container in element_containers:
 		var input_manager = container.input_manager 
-		var new_key = container.key_line_edit.text
+		var new_key = container.get_key()
 		var value = input_manager.attempt_submit()
 
 		if value is InputError and value.is_ignore():
@@ -102,7 +124,7 @@ func submit_status_dict():
 	var value_list = {} # value of the status_dict; Contains all input nodes status_dicts
 	for container in element_containers:
 		var input_dict = container.input_manager.submit_status_dict()
-		var container_key = container.key_line_edit.text
+		var container_key = container.get_key()
 
 		if not container_key or container_key in value_list.keys():
 			# TODO: add correct behavior for reaction
@@ -127,7 +149,7 @@ func get_all_keys() -> Array[String]:
 	var key_list: Array[String] = [] as Array[String]
 	
 	for container in element_containers:
-		var key_input = container.key_line_edit.text
+		var key_input = container.get_key()
 		if key_input:
 			key_list.append(key_input)
 
@@ -136,7 +158,7 @@ func get_all_keys() -> Array[String]:
 func set_input_disabled(is_disabled: bool):
 	super(is_disabled)
 	for container in element_containers:
-		container.key_line_edit.editable = is_disabled
+		container.set_key_disable(is_disabled)
 
 #region signal_methods
 

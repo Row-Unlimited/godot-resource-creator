@@ -12,13 +12,20 @@ func initialize_input(property_dict: Dictionary):
 
 	if property_dict:
 		set_property_information(property_dict)
-		style_input()
-	
-	remove_unused_nodes()
+		if "name" in property_dict.keys():
+			name_label.text = property["name"]
+			type_label.text = TypeManager.find_type_value(property["type"], TypeManager.TypeValue.READ_STRING)
+		if "type" in property_dict.keys():
+			type_label.text = TypeManager.find_type_value(property["type"], TypeManager.TypeValue.READ_STRING)
+			
 
 func remove_unused_nodes():
-	if name_label and name_label.text.is_empty():
+	if ui_status == UiStatus.NO_NAME or ui_status == UiStatus.MINIMUM:
 		name_label.free()
+		if input_container.get_child(0) is MarginContainer:
+			input_container.get_child(0).free()
+	if ui_status == UiStatus.MINIMUM:
+		type_label.free()
 		if input_container.get_child(0) is MarginContainer:
 			input_container.get_child(0).free()
 
@@ -63,10 +70,6 @@ func submit_status_dict():
 		property_value = property_value.to_float()
 	var status_dict = {"value" : property_value, "type" : input_type, "name" : property_name}
 	return status_dict
-
-func style_input():
-	name_label.text = property["name"]
-	type_label.text = TypeManager.find_type_value(property["type"], TypeManager.TypeValue.READ_STRING)
 
 func receive_input(input):
 	var acceptable_types = [TYPE_INT, TYPE_FLOAT, TYPE_STRING]

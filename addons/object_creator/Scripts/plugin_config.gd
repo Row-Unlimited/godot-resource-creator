@@ -14,6 +14,8 @@ var object_wrappers: Array
 @export var use_null_values_for_empty: bool = false
 ## enter resource path to scene that should be used instead of the default scene
 @export var override_default_scene: String
+## if in config no type for a dictionary is defined, plugin defaults to string and doesn't give the extended menu
+@export var dict_string_default: bool
 
 ## config users can create to define precisely how they want the creation to be handled [br]
 ## can be used to:[br] - define default property values [br] - exclude classes as sub_classes [br]

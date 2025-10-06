@@ -58,7 +58,7 @@ func initialize_input(property_dict: Dictionary):
 		choose_class_button.connect("pressed", _on_choose_class_button_clicked)
 		edit_button.connect("pressed", _on_edit_button_clicked)
 		clear_button.connect("pressed", _on_clear_button_clicked)
-		if property_dict:
+		if "class_name" in property_dict.keys():
 			property_type_label.text = property_dict["class_name"]
 		setup_done = true
 	
@@ -103,10 +103,9 @@ func initialize_input(property_dict: Dictionary):
 		# automatically select the class if there is only one possible class
 		_on_choose_class_button_clicked()
 		clear_button.disabled = true
-	remove_unused_nodes()
 
 func remove_unused_nodes():
-	if property_name_label and property_name_label.text.is_empty():
+	if ui_status == UiStatus.NO_NAME or ui_status == UiStatus.MINIMUM:
 		property_name_label.free()
 		input_container.get_node("ClassSection/NameMargin").free()
 		input_container.get_node("EditSection/IndentSpace").free()
