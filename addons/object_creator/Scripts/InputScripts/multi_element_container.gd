@@ -15,6 +15,7 @@ var key_is_line_edit: bool = true
 var key_type: Variant.Type
 var key_object_type: String ## name of the object if key is typed object
 var dict_string_default: bool
+var sub_obj_infos: Dictionary
 
 var button_container : HBoxContainer
 
@@ -111,6 +112,7 @@ func add_key_lineEdit(key_typed: Variant.Type = 0, key_object_name = ""):
 func _on_set_key_pressed():
 	key_node = KEY_INPUT_SCENE.instantiate()
 	key_node.key_type = key_type
+	key_node.sub_obj_infos = sub_obj_infos
 	if key_object_type:
 		key_node.key_object_type = key_object_type
 	key_node_open_button.disabled = true

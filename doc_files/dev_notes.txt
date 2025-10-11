@@ -1,6 +1,7 @@
 TODOs:
 	- Implement typed dicts
-		+ make it so the actual class_name is added to the key type select
+		+ change it so container doesn't spawn button if the type is string/float/int but just a regular line-edit
+		+ implement receive_input for keys
 		+ Implement classconfigs so users can define how keys should be handled
 	- Redesign object input UI:
 		+ remove x button and just make the confirm button a toggle if object isn't typed(unsure?)

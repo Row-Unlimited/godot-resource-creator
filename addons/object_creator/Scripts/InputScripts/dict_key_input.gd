@@ -6,11 +6,13 @@ extends InputManager
 var key_type_button: OptionButton
 var key_type: Variant.Type
 var key_object_type: String
+var sub_obj_infos: Dictionary
 
 func _ready() -> void:
 	# setup nodes
 	input_container = get_node("MarginContainer/KeyInputSection")
 	key_type_button = input_container.get_node("KeyTypeButton")
+	key_type_button.clear()
 	for type in TypeManager.get_all_values(TypeManager.TypeValue.READ_STRING):
 		if key_type == 0 or TypeManager.TYPE_MAPPING[type][TypeManager.TypeValue.TYPE_ENUM] == key_type:
 			key_type_button.add_item(type)
@@ -67,6 +69,9 @@ func on_type_selected(index: int):
 	var property_dict_custom = {"type": new_type}
 	if key_object_type:
 		property_dict_custom["class_name"] = key_object_type
+		input_node.connect("edit_sub_object_clicked", sub_obj_infos["edit_callable"])
+		input_node.connect("choose_class_button_clicked", sub_obj_infos["choose_callable"])
+		input_node.connect("wrapper_removed", sub_obj_infos["delete_wrapper_callable"])
 	input_node.initialize_input(property_dict_custom)
 	input_node.ui_status = InputManager.UiStatus.MINIMUM
 	# TODO: make UI adequate by removing/changing themes

@@ -81,6 +81,7 @@ func create_scene_by_type(type: Variant.Type) -> Dictionary:
 	if TypeManager.VECTOR_TYPES.has(type):
 		is_vector = true
 	var new_input_node: MultiElementContainer =  element_container_scene.instantiate()
+	new_input_node.sub_obj_infos = sub_obj_infos
 
 	new_input_node.disabled_for_user = disable_editing # tell container to disable the move/delete buttons
 

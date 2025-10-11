@@ -35,10 +35,10 @@ func check_typed():
 				type_arr = hint_value.to_int()
 			elif hint_value.to_int() == 0:
 				type_arr = 0
-				#TODO: decide how to implement Variant for dictionaries
+				#TODO: check if this is alright as a way to handle Variant
 				pass
 		
-		#TODO: implement key this is only copy paste from value for now
+		#TODO: implement key this is most copy paste from value for now
 		if hint_key_object :
 			if hint_key_object in possible_class_names:
 				type_arr_key = TYPE_OBJECT
@@ -50,11 +50,6 @@ func check_typed():
 				type_arr_key = hint_value.to_int()
 			elif hint_key.to_int() == 0:
 				type_arr_key = 0
-				#TODO: decide how to implement Variant for dictionaries
-
-				pass
-		print(hint_key, " ", hint_value)
-		print(type_arr_key, " : ", type_arr)
 		if type_arr:
 			disable_select_type_button([type_arr], true, true)
 		if type_arr_key:
